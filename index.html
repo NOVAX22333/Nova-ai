@@ -19,7 +19,7 @@
                     <button class="mode-btn active" data-mode="general">💬 General AI</button>
                     <button class="mode-btn" data-mode="study">📚 Study AI</button>
                     <button class="mode-btn" data-mode="coding">💻 Coding AI</button>
-                    <button class="mode-btn" data-mode="research"> Research AI</button>
+                    <button class="mode-btn" data-mode="research">🔬 Research AI</button>
                 </div>
                 <p class="future-modules">Future modules: Vision · Voice · Files · Agents</p>
             </div>
@@ -33,20 +33,28 @@
 
         <!-- MAIN CONTENT -->
         <main>
-            <div class="hero">
-                <h1>What can I help you with?</h1>
-                <p>Your all-in-one AI workspace.</p>
+            <!-- Welcome Screen (Visible initially) -->
+            <div id="welcome-screen" class="welcome-screen">
+                <div class="hero">
+                    <h1>What can I help you with?</h1>
+                    <p>Your all-in-one AI workspace.</p>
+                </div>
+                <div class="suggestions">
+                    <button class="suggestion-chip">Explain AI</button>
+                    <button class="suggestion-chip">Teach coding</button>
+                    <button class="suggestion-chip">Help me study</button>
+                </div>
             </div>
 
-            <div class="suggestions">
-                <button class="suggestion-chip">Explain AI</button>
-                <button class="suggestion-chip">Teach coding</button>
-                <button class="suggestion-chip">Help me study</button>
+            <!-- Chat History (Hidden initially) -->
+            <div id="chat-history" class="chat-history hidden">
+                <!-- Messages will appear here -->
             </div>
 
+            <!-- Input Area (Always visible) -->
             <div class="chat-input-container">
                 <div class="chat-input-wrapper">
-                    <input type="text" class="chat-input" placeholder="Message Nova AI..." id="chatInput">
+                    <input type="text" class="chat-input" placeholder="Message Nova AI..." id="chatInput" autocomplete="off">
                     <button class="send-btn" id="sendBtn">➤</button>
                 </div>
             </div>
@@ -57,4 +65,4 @@
 
     <script src="App.js"></script>
 </body>
-                  </html>
+                        </html>
