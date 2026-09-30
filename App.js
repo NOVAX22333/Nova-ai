@@ -1,3 +1,10 @@
+// ===== CONFIGURATION =====
+// ⚠️ PASTE YOUR API KEY INSIDE THE QUOTES BELOW
+const API_KEY = "PASTE_YOUR_GOOGLE_API_KEY_HERE"; 
+
+// Using gemini-1.5-flash for maximum stability and zero "Model Not Found" bugs
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
 // ===== DOM ELEMENTS =====
 const modeButtons = document.querySelectorAll('.mode-btn');
 const activeModeName = document.getElementById('activeModeName');
@@ -19,89 +26,79 @@ modeButtons.forEach(btn => {
     });
 });
 
-// ===== AI RESPONSE LOGIC =====
-const aiResponses = {
-    general: [
-        "That's an interesting question! Let me think about it...",
-        "I'd be happy to help you with that!",
-        "Great question! Here's what I think...",
-        "I understand what you're asking. Let me explain..."
-    ],
-    study: [
-        "Let me help you understand this concept better...",
-        "Here's a study tip that might help...",
-        "This topic is fascinating! Let me break it down...",
-        "I'll explain this in a way that's easy to remember..."
-    ],
-    coding: [
-        "Here's how you can solve that coding problem...",
-        "Let me show you the code for that...",
-        "This is a common programming challenge. Here's the solution...",
-        "I can help you debug that! Let's look at the code..."
-    ],
-    research: [
-        "Based on my research, here's what I found...",
-        "This is an interesting topic to explore...",
-        "Let me provide some insights on this subject...",
-        "Here are some key findings about this topic..."
-    ]
-};
-
-const specificResponses = {
-    'hello': "Hello! 👋 How can I help you today?",
-    'hi': "Hi there! What would you like to know?",
-    'help': "I can help you with:\n• Explaining concepts\n• Teaching coding\n• Study assistance\n• Research topics\n\nJust ask me anything!",
-    'what can you do': "I'm Nova AI, your all-in-one AI workspace! I can answer questions, help you study, teach coding, and assist with research.",
-    'thank you': "You're welcome! 😊 Is there anything else I can help you with?",
-    'thanks': "Happy to help! Let me know if you need anything else."
-};
-
-// ===== FUNCTIONS =====
-function createMessageBubble(text, isUser) {
+// ===== HELPER FUNCTIONS =====
+function createMessageBubble(text, isUser, isLoading = false) {
     const bubble = document.createElement('div');
     bubble.className = `message-bubble ${isUser ? 'user-message' : 'ai-message'}`;
-    // Convert newlines to breaks for better formatting
+    if (isLoading) bubble.classList.add('loading-bubble');
+    
+    // Convert newlines to breaks so the AI's formatting looks good
     bubble.innerHTML = text.replace(/\n/g, '<br>'); 
     return bubble;
 }
 
-function getAIResponse(userMessage) {
-    const lowerMessage = userMessage.toLowerCase().trim();
-    
-    // Check for specific keyword matches first
-    for (let key in specificResponses) {
-        if (lowerMessage.includes(key)) {
-            return specificResponses[key];
-        }
+// ===== THE REAL AI BRAIN =====
+async function getRealAIResponse(userMessage) {
+    // Safety check: Did they forget the API key?
+    if (API_KEY === "PASTE_YOUR_GOOGLE_API_KEY_HERE" || API_KEY === "") {
+        return "⚠️ Error: You forgot to add your API key in the App.js file!";
     }
-    
-    // Fallback to random mode-based response
-    const modeResponses = aiResponses[currentMode] || aiResponses.general;
-    const randomIndex = Math.floor(Math.random() * modeResponses.length);
-    return modeResponses[randomIndex];
+
+    // Add system instructions based on the selected mode
+    let systemPrompt = "You are Nova AI, a helpful, friendly, and professional AI assistant.";
+    if (currentMode === 'study') systemPrompt += " You are an expert tutor. Explain things simply and use examples.";
+    if (currentMode === 'coding') systemPrompt += " You are an expert programmer. Provide clean, well-commented code examples.";
+    if (currentMode === 'research') systemPrompt += " You are a research analyst. Provide detailed, factual, and structured answers.";
+
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: `${systemPrompt}\n\nUser: ${userMessage}` }] }]
+            })
+        });
+
+        const data = await response.json();
+        
+        // Check if the API returned a valid answer
+        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+            return data.candidates[0].content.parts[0].text;
+        } else {
+            return "I'm sorry, I couldn't generate a response. The API might be blocked or the prompt was unsafe.";
+        }
+    } catch (error) {
+        console.error("API Error:", error);
+        return "️ Network error. Please check your internet connection or verify your API key.";
+    }
 }
 
-function sendMessage() {
+// ===== SEND MESSAGE LOGIC =====
+async function sendMessage() {
     const message = chatInput.value.trim();
-    if (!message) return;
+    if (!message) return; // Bug prevention: Don't send empty messages
     
-    // 1. Hide welcome screen, show chat history
+    // 1. UI Setup: Hide welcome, show chat
     welcomeScreen.classList.add('hidden');
     chatHistory.classList.remove('hidden');
     
-    // 2. Add user message
+    // 2. Add User Message
     chatHistory.appendChild(createMessageBubble(message, true));
     chatInput.value = '';
-    
-    // 3. Scroll to bottom immediately
     chatHistory.scrollTop = chatHistory.scrollHeight;
     
-    // 4. Simulate AI thinking delay
-    setTimeout(() => {
-        const aiResponse = getAIResponse(message);
-        chatHistory.appendChild(createMessageBubble(aiResponse, false));
-        chatHistory.scrollTop = chatHistory.scrollHeight;
-    }, 800); // 800ms delay for realism
+    // 3. Add "Thinking..." Bubble
+    const loadingBubble = createMessageBubble("Thinking", false, true);
+    chatHistory.appendChild(loadingBubble);
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+    
+    // 4. Get AI Response
+    const aiResponse = await getRealAIResponse(message);
+    
+    // 5. Remove loading bubble and show real response
+    loadingBubble.remove();
+    chatHistory.appendChild(createMessageBubble(aiResponse, false));
+    chatHistory.scrollTop = chatHistory.scrollHeight;
 }
 
 // ===== EVENT LISTENERS =====
@@ -109,11 +106,11 @@ sendBtn.addEventListener('click', sendMessage);
 
 chatInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
+        e.preventDefault(); // Prevents the page from refreshing if inside a form
         sendMessage();
     }
 });
 
-// Suggestion chips click
 document.querySelectorAll('.suggestion-chip').forEach(chip => {
     chip.addEventListener('click', () => {
         chatInput.value = chip.textContent;
@@ -121,9 +118,8 @@ document.querySelectorAll('.suggestion-chip').forEach(chip => {
     });
 });
 
-// New Chat button
 newChatBtn.addEventListener('click', () => {
-    chatHistory.innerHTML = ''; // Clear messages
+    chatHistory.innerHTML = ''; 
     chatHistory.classList.add('hidden');
     welcomeScreen.classList.remove('hidden');
     chatInput.value = '';
