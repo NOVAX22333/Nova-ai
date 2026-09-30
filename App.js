@@ -1,78 +1,131 @@
-const modes = {
-  general: "General AI",
-  study: "Study AI",
-  coding: "Coding AI",
-  research: "Research AI"
+// ===== DOM ELEMENTS =====
+const modeButtons = document.querySelectorAll('.mode-btn');
+const activeModeName = document.getElementById('activeModeName');
+const sendBtn = document.getElementById('sendBtn');
+const chatInput = document.getElementById('chatInput');
+const welcomeScreen = document.getElementById('welcome-screen');
+const chatHistory = document.getElementById('chat-history');
+const newChatBtn = document.getElementById('newChatBtn');
+
+let currentMode = 'general';
+
+// ===== MODE SWITCHING =====
+modeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        modeButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentMode = btn.dataset.mode;
+        activeModeName.textContent = btn.textContent.trim();
+    });
+});
+
+// ===== AI RESPONSE LOGIC =====
+const aiResponses = {
+    general: [
+        "That's an interesting question! Let me think about it...",
+        "I'd be happy to help you with that!",
+        "Great question! Here's what I think...",
+        "I understand what you're asking. Let me explain..."
+    ],
+    study: [
+        "Let me help you understand this concept better...",
+        "Here's a study tip that might help...",
+        "This topic is fascinating! Let me break it down...",
+        "I'll explain this in a way that's easy to remember..."
+    ],
+    coding: [
+        "Here's how you can solve that coding problem...",
+        "Let me show you the code for that...",
+        "This is a common programming challenge. Here's the solution...",
+        "I can help you debug that! Let's look at the code..."
+    ],
+    research: [
+        "Based on my research, here's what I found...",
+        "This is an interesting topic to explore...",
+        "Let me provide some insights on this subject...",
+        "Here are some key findings about this topic..."
+    ]
 };
 
-const chat = document.getElementById("chat");
-const input = document.getElementById("input");
-const composer = document.getElementById("composer");
-const title = document.getElementById("title");
-const newChat = document.getElementById("newChat");
+const specificResponses = {
+    'hello': "Hello! 👋 How can I help you today?",
+    'hi': "Hi there! What would you like to know?",
+    'help': "I can help you with:\n• Explaining concepts\n• Teaching coding\n• Study assistance\n• Research topics\n\nJust ask me anything!",
+    'what can you do': "I'm Nova AI, your all-in-one AI workspace! I can answer questions, help you study, teach coding, and assist with research.",
+    'thank you': "You're welcome! 😊 Is there anything else I can help you with?",
+    'thanks': "Happy to help! Let me know if you need anything else."
+};
 
-document.querySelectorAll(".mode").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".mode").forEach(b => b.classList.remove("active"));
-    button.classList.add("active");
-
-    const mode = button.dataset.mode;
-    title.textContent = modes[mode];
-  });
-});
-
-document.querySelectorAll("[data-prompt]").forEach(button => {
-  button.addEventListener("click", () => {
-    input.value = button.dataset.prompt;
-    input.focus();
-  });
-});
-
-composer.addEventListener("submit", event => {
-  event.preventDefault();
-
-  const message = input.value.trim();
-
-  if (!message) return;
-
-  addMessage("You", message);
-
-  input.value = "";
-
-  setTimeout(() => {
-    addMessage(
-      "Nova AI",
-      "I received your message. AI responses will be connected here next."
-    );
-  }, 500);
-});
-
-function addMessage(sender, message) {
-  const messageBox = document.createElement("div");
-
-  messageBox.className = "message";
-
-  messageBox.innerHTML = `
-    <strong>${sender}</strong>
-    <p>${escapeHTML(message)}</p>
-  `;
-
-  chat.appendChild(messageBox);
-  chat.scrollTop = chat.scrollHeight;
+// ===== FUNCTIONS =====
+function createMessageBubble(text, isUser) {
+    const bubble = document.createElement('div');
+    bubble.className = `message-bubble ${isUser ? 'user-message' : 'ai-message'}`;
+    // Convert newlines to breaks for better formatting
+    bubble.innerHTML = text.replace(/\n/g, '<br>'); 
+    return bubble;
 }
 
-function escapeHTML(text) {
-  const div = document.createElement("div");
-  div.textContent = text;
-  return div.innerHTML;
+function getAIResponse(userMessage) {
+    const lowerMessage = userMessage.toLowerCase().trim();
+    
+    // Check for specific keyword matches first
+    for (let key in specificResponses) {
+        if (lowerMessage.includes(key)) {
+            return specificResponses[key];
+        }
+    }
+    
+    // Fallback to random mode-based response
+    const modeResponses = aiResponses[currentMode] || aiResponses.general;
+    const randomIndex = Math.floor(Math.random() * modeResponses.length);
+    return modeResponses[randomIndex];
 }
 
-newChat.addEventListener("click", () => {
-  chat.innerHTML = `
-    <div class="welcome">
-      <div class="logo">✦</div>
-      <h1>What can I help you with?</h1>
-      <p>Your all-in-one AI workspace.</p>
-    </div>
-  `;
+function sendMessage() {
+    const message = chatInput.value.trim();
+    if (!message) return;
+    
+    // 1. Hide welcome screen, show chat history
+    welcomeScreen.classList.add('hidden');
+    chatHistory.classList.remove('hidden');
+    
+    // 2. Add user message
+    chatHistory.appendChild(createMessageBubble(message, true));
+    chatInput.value = '';
+    
+    // 3. Scroll to bottom immediately
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+    
+    // 4. Simulate AI thinking delay
+    setTimeout(() => {
+        const aiResponse = getAIResponse(message);
+        chatHistory.appendChild(createMessageBubble(aiResponse, false));
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+    }, 800); // 800ms delay for realism
+}
+
+// ===== EVENT LISTENERS =====
+sendBtn.addEventListener('click', sendMessage);
+
+chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        sendMessage();
+    }
+});
+
+// Suggestion chips click
+document.querySelectorAll('.suggestion-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+        chatInput.value = chip.textContent;
+        sendMessage();
+    });
+});
+
+// New Chat button
+newChatBtn.addEventListener('click', () => {
+    chatHistory.innerHTML = ''; // Clear messages
+    chatHistory.classList.add('hidden');
+    welcomeScreen.classList.remove('hidden');
+    chatInput.value = '';
+    chatInput.focus();
 });
