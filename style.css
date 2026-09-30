@@ -281,3 +281,21 @@ main {
     .hero h1 { font-size: 2rem; }
     main { padding: 20px; }
                                 }
+/* Loading Animation */
+.loading-bubble {
+    font-style: italic;
+    color: #8b8fa3;
+    opacity: 0.7;
+}
+
+.loading-bubble::after {
+    content: '';
+    animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: ''; }
+    40% { content: '.'; }
+    60% { content: '..'; }
+    80%, 100% { content: '...'; }
+         }
