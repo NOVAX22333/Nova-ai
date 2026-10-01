@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    const CONFIG = { USE_MOCK_API: false, API_ENDPOINT: 'https://ace-x.vercel.app/api/chat', API_TIMEOUT: 15000 };
+    const CONFIG = { USE_MOCK_API: false, API_ENDPOINT: 'https://nova-ai-backend.vercel.app/api/chat', API_TIMEOUT: 15000 };
     const state = { chatStarted: false, messageCount: 0, isProcessing: false, webSearchEnabled: false };
     const dom = {};
 
