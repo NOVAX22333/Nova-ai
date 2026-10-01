@@ -2,96 +2,44 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Nova AI</title>
-<style>
-:root{--g:#1f9d63;--side:#0a1f1a;--bg:#f4f7f6;--card:#fff;--tx:#14231e;--mu:#6b7c75;--bd:#e2e9e6}
-[data-theme=dark]{--bg:#0d1714;--card:#14221d;--tx:#e8f1ed;--mu:#8fa39b;--bd:#223630}
-*{box-sizing:border-box}
-html,body{height:100%;margin:0}
-body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx)}
-[hidden]{display:none!important}
-button,input,select,textarea{font:inherit;color:inherit}
-button{cursor:pointer}
-.btn{background:var(--g);color:#fff;border:0;border-radius:10px;padding:11px 16px;font-weight:600}
-.btn.o{background:none;color:var(--tx);border:1px solid var(--bd)}
-input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--bd);border-radius:10px;background:var(--card)}
-#auth{min-height:100%;display:flex;align-items:center;justify-content:center;padding:16px;background:linear-gradient(135deg,#06140f,#0f3d2c)}
-.box{background:#fff;color:#14231e;border-radius:16px;padding:26px;width:100%;max-width:380px}
-.box h2{margin:0 0 4px}.box p{margin:0 0 12px;color:#6b7c75}
-.box label{display:block;font-size:13px;margin:10px 0 4px}
-.box input{background:#f7faf9;color:#14231e;border-color:#e2e9e6}
-.box .btn{width:100%;margin-top:14px}
-#err{color:#c0392b;font-size:13px;min-height:18px;margin-top:8px}
-.lnk{background:none;border:0;color:var(--g);font-weight:600;padding:0}
-#app{display:flex;height:100%}
-aside{width:240px;background:var(--side);color:#dcebe5;display:flex;flex-direction:column;padding:16px;gap:4px;flex-shrink:0}
-.brand{font-size:20px;font-weight:700;margin-bottom:14px}.brand span{color:#3ddc97}
-aside .nav{background:none;border:0;color:inherit;text-align:left;padding:11px 12px;border-radius:10px}
-aside .nav.on{background:var(--g);color:#fff}
-.me{margin-top:auto;border-top:1px solid #1d3a31;padding-top:12px;font-size:14px}
-.me small{display:block;color:#8fb3a5}
-main{flex:1;display:flex;flex-direction:column;min-width:0}
-header{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--bd);background:var(--card)}
-header h3{margin:0}#burger{display:none;background:none;border:0;font-size:22px}
-.view{flex:1;overflow:auto;padding:20px;display:none}
-.view.on{display:block}
-#v-chat.on{display:flex;flex-direction:column;padding:0;overflow:hidden}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:16px 0}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;text-align:left}
-.card b{display:block;margin:6px 0 4px}.card span{color:var(--mu);font-size:13px}
-.hero{background:linear-gradient(120deg,#0a3d2b,#1f9d63);color:#fff;border-radius:14px;padding:20px;margin:6px 0 18px}
-.hero .btn{background:#fff;color:#0a3d2b;margin-top:10px}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:8px 14px;font-size:14px}
-#msgs{flex:1;overflow:auto;padding:18px}
-.m{max-width:760px;margin:0 auto 14px;display:flex;gap:10px}
-.av{width:30px;height:30px;border-radius:50%;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
-.m.user .av{background:#6b7c75}
-.bd{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px 14px;line-height:1.5;overflow-wrap:anywhere;min-width:0}
-.bd pre{background:#0a1f1a;color:#d6f5e6;padding:10px;border-radius:8px;overflow:auto;white-space:pre-wrap}
-.bd .sv{display:block;margin-top:6px;background:none;border:0;color:var(--g);font-size:13px;padding:0}
-.empty{text-align:center;color:var(--mu);margin:40px auto}
-.comp{display:flex;gap:8px;padding:12px;border-top:1px solid var(--bd);background:var(--card)}
-.comp textarea{resize:none;height:46px}.comp .btn{width:auto}
-.row{display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:10px}
-.row .t{cursor:pointer;flex:1;min-width:0;overflow-wrap:anywhere}
-.set{max-width:480px}.set label{display:block;margin:14px 0 4px;font-size:13px;color:var(--mu)}
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#14231e;color:#fff;padding:10px 16px;border-radius:10px;opacity:0;transition:.3s;pointer-events:none}
-#toast.on{opacity:1}
-@media(max-width:800px){aside{position:fixed;inset:0 auto 0 0;z-index:5;transform:translateX(-100%);transition:.25s}aside.open{transform:none}#burger{display:block}}
-</style></head><body>
+<link rel="stylesheet" href="style.css"></head><body>
 
-<div id="auth"><div class="box">
-<h2 id="at">Welcome Back</h2><p>Sign in to continue to Nova AI.</p>
+<div id="auth" hidden><div class="box">
+<button class="x" id="ax" aria-label="Close">✕</button>
+<h2 id="at">Log in</h2><p id="am">Log in to continue.</p>
 <div id="nm" hidden><label>Full name</label><input id="name" autocomplete="name"></div>
 <label>Email</label><input id="email" type="email" autocomplete="email">
 <label>Password</label><input id="pw" type="password" autocomplete="current-password">
 <div id="err"></div>
-<button class="btn" id="go">Sign In</button>
+<button class="btn" id="go">Log in</button>
 <p style="margin-top:14px;text-align:center"><span id="sw">Don't have an account?</span> <button class="lnk" id="tg">Sign Up</button></p>
 </div></div>
 
-<div id="app" hidden>
+<div id="app">
 <aside id="side"><div class="brand">✦ Nova <span>AI</span></div>
-<button class="nav on" data-v="home">🏠 Home</button>
-<button class="nav" data-v="chat" id="newc">💬 New Chat</button>
+<button class="nav" data-v="home">🏠 Home</button>
+<button class="nav on" data-v="chat" id="newc">💬 New Chat</button>
 <button class="nav" data-v="history">🕘 Chat History</button>
 <button class="nav" data-v="saved">🔖 Saved Items</button>
 <button class="nav" data-v="tools">🧰 Tools</button>
 <button class="nav" data-v="settings">⚙️ Settings</button>
-<div class="me"><span id="mn"></span><small id="mr"></small></div></aside>
-<main><header><button id="burger" aria-label="Menu">☰</button><h3 id="ttl">Home</h3></header>
+<div class="me"><span id="mn">Guest</span><small id="mr"></small>
+<button class="btn" id="li">Log in / Sign up</button>
+<button class="btn o" id="up">⭐ Upgrade to Pro</button></div></aside>
+<main><header><button id="burger" aria-label="Menu">☰</button><h3 id="ttl">New Chat</h3></header>
 
-<section class="view on" id="v-home"><h2 id="hi"></h2><p style="color:var(--mu)">Ready to explore, learn and achieve more?</p>
+<section class="view" id="v-home"><h2 id="hi"></h2><p style="color:var(--mu)">Your coding and study assistant.</p>
 <div class="grid">
 <button class="card" data-p="">💬<b>Ask Anything</b><span>Get helpful answers in seconds.</span></button>
 <button class="card" data-p="Explain this topic step by step: ">📖<b>Study &amp; Learn</b><span>Simplify complex topics.</span></button>
-<button class="card" data-p="Help me plan and organise: ">⚡<b>Be More Productive</b><span>Plan and do more, faster.</span></button>
+<button class="card" data-p="Help me write and fix this code: ">💻<b>Code Help</b><span>Write, explain and debug code.</span></button>
 <button class="card" data-p="Give me creative ideas about: ">💡<b>Explore Ideas</b><span>Turn thoughts into results.</span></button></div>
 <div class="hero"><b>Your goals. Our support.</b><br>Nova AI helps you learn, solve and create.<br><button class="btn" id="startc">Start a new chat</button></div>
 <h3>Quick Actions</h3><div class="chips" id="qa"></div></section>
 
-<section class="view" id="v-chat"><div id="msgs"></div>
-<div class="comp"><textarea id="inp" placeholder="Type your message here..."></textarea><button class="btn" id="send">Send</button></div></section>
+<section class="view on" id="v-chat"><div id="msgs"></div>
+<div id="pv" hidden></div>
+<div class="comp"><button class="ic" id="bf" aria-label="Attach file">📎</button><button class="ic" id="bi" aria-label="Add image">🖼️</button><textarea id="inp" placeholder="Ask Nova anything..."></textarea><button class="btn" id="send">Send</button></div></section>
 <section class="view" id="v-history"></section>
 <section class="view" id="v-saved"></section>
 <section class="view" id="v-tools"><div class="grid" id="tl"></div></section>
@@ -103,99 +51,7 @@ header h3{margin:0}#burger{display:none;background:none;border:0;font-size:22px}
 <label>Data</label><button class="btn o" id="cl">Clear my chats</button>
 <label>Account</label><button class="btn o" id="lo">Log out</button></div></section>
 </main></div>
+<input type="file" id="fi" hidden accept=".txt,.md,.csv,.json,.js,.py,.html,.css,.java,.c,.cpp,.php,.sql,.xml,.ts,text/*">
+<input type="file" id="ii" hidden accept="image/*">
 <div id="toast"></div>
-
-<script>
-const API='https://nova-ai-backend-rho.vercel.app/api/chat';
-const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const ls={g:(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}},s:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
-let users=ls.g('nv_users',{}),me=ls.g('nv_me',null),chats=[],saved=[],chat=null,busy=false,signup=false;
-const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-const fmt=t=>esc(t).replace(/```(?:\w*\n)?([\s\S]*?)```/g,'<pre>$1</pre>').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
-const note=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2400)};
-const sha=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(x=>x.toString(16).padStart(2,'0')).join('');
-const load=()=>{chats=ls.g('nv_c_'+me,[]);saved=ls.g('nv_s_'+me,[])};
-const store=()=>{ls.s('nv_c_'+me,chats);ls.s('nv_s_'+me,saved)};
-document.documentElement.dataset.theme=ls.g('nv_th','light');
-
-/* ---- login ---- */
-function mode(s){signup=s;$('#at').textContent=s?'Create Account':'Welcome Back';$('#nm').hidden=!s;$('#go').textContent=s?'Sign Up':'Sign In';$('#sw').textContent=s?'Already have an account?':"Don't have an account?";$('#tg').textContent=s?'Sign In':'Sign Up';$('#err').textContent=''}
-$('#tg').onclick=()=>mode(!signup);
-$('#go').onclick=async()=>{
- const e=$('#email').value.trim().toLowerCase(),p=$('#pw').value,n=$('#name').value.trim(),er=m=>{$('#err').textContent=m};
- if(!/^\S+@\S+\.\S+$/.test(e))return er('Enter a valid email address.');
- if(p.length<6)return er('Password must be at least 6 characters.');
- if(!window.crypto||!crypto.subtle)return er('Open this site with https:// to sign in.');
- const h=await sha(p);
- if(signup){
-  if(!n)return er('Enter your name.');
-  if(users[e])return er('This email already has an account. Sign in instead.');
-  users[e]={name:n,role:'Student',h};ls.s('nv_users',users);
- }else if(!users[e]||users[e].h!==h)return er('Wrong email or password.');
- me=e;ls.s('nv_me',me);$('#pw').value='';enter();
-};
-function paint(){const u=users[me],h=new Date().getHours();$('#mn').textContent=u.name;$('#mr').textContent=u.role;$('#hi').textContent=(h<12?'Good morning':h<17?'Good afternoon':'Good evening')+', '+u.name.split(' ')[0]+' 👋'}
-function enter(){$('#auth').hidden=true;$('#app').hidden=false;load();$('#sn').value=users[me].name;$('#sr').value=users[me].role;paint();newChat();show('home')}
-
-/* ---- navigation ---- */
-const T={home:'Home',chat:'New Chat',history:'Chat History',saved:'Saved Items',tools:'Tools',settings:'Settings'};
-function show(v){$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('.nav').forEach(x=>x.classList.toggle('on',x.dataset.v===v));$('#ttl').textContent=T[v];$('#side').classList.remove('open');if(v==='history')renderHist();if(v==='saved')renderSaved();if(v==='chat')$('#inp').focus()}
-$$('.nav').forEach(b=>b.onclick=()=>{if(b.id==='newc')newChat();show(b.dataset.v)});
-$('#burger').onclick=()=>$('#side').classList.toggle('open');
-$('#startc').onclick=()=>{newChat();show('chat')};
-
-/* ---- chat ---- */
-function newChat(){chat={id:Date.now(),title:'New chat',msgs:[]};renderMsgs()}
-function renderMsgs(){const box=$('#msgs');box.innerHTML='';
- if(!chat.msgs.length){box.innerHTML='<div class="empty"><h2>Nova AI</h2>How can I help you today?</div>';return}
- chat.msgs.forEach(m=>{const d=document.createElement('div');d.className='m '+m.r;
-  d.innerHTML='<div class="av">'+(m.r==='user'?'U':'N')+'</div><div class="bd">'+fmt(m.t)+(m.r==='assistant'?'<button class="sv">🔖 Save reply</button>':'')+'</div>';
-  const b=d.querySelector('.sv');if(b)b.onclick=()=>{saved.unshift({id:Date.now(),t:m.t});store();note('Saved')};
-  box.appendChild(d)});
- box.scrollTop=box.scrollHeight}
-async function send(){
- const inp=$('#inp'),text=inp.value.trim();
- if(!text||busy)return;
- busy=true;inp.value='';
- const history=chat.msgs.slice(-20).map(m=>({role:m.r,content:m.t}));
- chat.msgs.push({r:'user',t:text});
- if(chat.msgs.length===1){chat.title=text.slice(0,40);chats.unshift(chat)}
- renderMsgs();
- const w=document.createElement('div');w.className='m';w.innerHTML='<div class="av">N</div><div class="bd">Thinking…</div>';$('#msgs').appendChild(w);$('#msgs').scrollTop=1e9;
- const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),45000);
- try{
-  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,history}),signal:ctl.signal});
-  if(!r.ok)throw new Error('Server error '+r.status+'. Try again.');
-  const d=await r.json();
-  chat.msgs.push({r:'assistant',t:d.reply||'No response received.'});
- }catch(e){
-  chat.msgs.pop();inp.value=text;
-  if(!chat.msgs.length)chats=chats.filter(c=>c!==chat);
-  note(e.name==='AbortError'?'Request timed out. Try again.':e.message);
- }
- clearTimeout(to);busy=false;store();renderMsgs()}
-$('#send').onclick=send;
-$('#inp').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});
-
-/* ---- history & saved ---- */
-function rows(v,list,label,onOpen,onDel,empty){v.innerHTML=list.length?'':'<div class="empty">'+empty+'</div>';
- list.forEach(x=>{const r=document.createElement('div');r.className='row';r.innerHTML='<div class="t"></div><button class="btn o">'+label+'</button>';
-  r.firstChild.textContent=x.title||x.t;r.firstChild.onclick=()=>onOpen(x);r.lastChild.onclick=()=>onDel(x);v.appendChild(r)})}
-function renderHist(){rows($('#v-history'),chats,'Delete',c=>{chat=c;renderMsgs();show('chat')},c=>{chats=chats.filter(x=>x!==c);store();renderHist()},'No chats yet. Start a new chat.')}
-function renderSaved(){rows($('#v-saved'),saved,'Remove',()=>{},s=>{saved=saved.filter(x=>x!==s);store();renderSaved()},'Nothing saved yet. Tap "Save reply" under an answer.')}
-
-/* ---- quick actions, tools, home cards ---- */
-const P=[['📝 Summarise text','Summarise this text:\n\n'],['📖 Explain a topic','Explain this topic simply, with examples: '],['✍️ Write an essay','Write an essay on: '],['🧮 Solve a problem','Solve this step by step: '],['📅 WASSCE study plan','Create a WASSCE study plan for: '],['✉️ Draft an official letter','Draft a formal official letter about: ']];
-function useP(t){newChat();show('chat');$('#inp').value=t;$('#inp').focus()}
-$('#qa').append(...P.map(p=>{const b=document.createElement('button');b.className='chip';b.textContent=p[0];b.onclick=()=>useP(p[1]);return b}));
-$('#tl').append(...P.map(p=>{const b=document.createElement('button');b.className='card';b.innerHTML='<b></b><span>Tap to start</span>';b.firstChild.textContent=p[0];b.onclick=()=>useP(p[1]);return b}));
-$$('#v-home .card').forEach(c=>c.onclick=()=>useP(c.dataset.p));
-
-/* ---- settings ---- */
-$('#ss').onclick=()=>{const n=$('#sn').value.trim();if(!n)return note('Enter your name.');users[me].name=n;users[me].role=$('#sr').value;ls.s('nv_users',users);paint();note('Changes saved')};
-$('#dk').onclick=()=>{const t=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=t;ls.s('nv_th',t)};
-$('#cl').onclick=()=>{if(!confirm('Delete all your chats on this device?'))return;chats=[];store();newChat();note('Chats cleared')};
-$('#lo').onclick=()=>{me=null;ls.s('nv_me',null);$('#app').hidden=true;$('#auth').hidden=false;$('#email').value='';mode(false)};
-
-if(me&&users[me])enter();
-</script></body></html>
+<script src="App.js"></script></body></html>
