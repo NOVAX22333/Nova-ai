@@ -1,68 +1,218 @@
+*Index*  (delete dis before paste) 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nova AI</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Nova AI - Your intelligent AI assistant">
+  <title>Nova AI</title>
+
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div class="app">
-        <!-- SIDEBAR -->
-        <aside>
-            <div class="logo">✦ Nova AI</div>
-            <button class="new-chat-btn" id="newChatBtn">+ New Chat</button>
 
-            <div class="modes-section">
-                <h3>AI Modes</h3>
-                <div class="mode-buttons">
-                    <button class="mode-btn active" data-mode="general">💬 General AI</button>
-                    <button class="mode-btn" data-mode="study">📚 Study AI</button>
-                    <button class="mode-btn" data-mode="coding">💻 Coding AI</button>
-                    <button class="mode-btn" data-mode="research">🔬 Research AI</button>
-                </div>
-                <p class="future-modules">Future modules: Vision · Voice · Files · Agents</p>
-            </div>
+  <div class="app">
 
-            <div class="active-mode">
-                <span class="menu-icon">☰</span>
-                <span class="mode-name" id="activeModeName">General AI</span>
-                <span class="status">Online</span>
-            </div>
-        </aside>
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
 
-        <!-- MAIN CONTENT -->
-        <main>
-            <!-- Welcome Screen (Visible initially) -->
-            <div id="welcome-screen" class="welcome-screen">
-                <div class="hero">
-                    <h1>What can I help you with?</h1>
-                    <p>Your all-in-one AI workspace.</p>
-                </div>
-                <div class="suggestions">
-                    <button class="suggestion-chip">Explain AI</button>
-                    <button class="suggestion-chip">Teach coding</button>
-                    <button class="suggestion-chip">Help me study</button>
-                </div>
-            </div>
+      <div class="brand">
+        <div class="brand-logo">✦</div>
+        <span>Nova AI</span>
+      </div>
 
-            <!-- Chat History (Hidden initially) -->
-            <div id="chat-history" class="chat-history hidden">
-                <!-- Messages will appear here -->
-            </div>
+      <button class="new-chat" id="newChatBtn">
+        <span>＋</span>
+        New Chat
+      </button>
 
-            <!-- Input Area (Always visible) -->
-            <div class="chat-input-container">
-                <div class="chat-input-wrapper">
-                    <input type="text" class="chat-input" placeholder="Message Nova AI..." id="chatInput" autocomplete="off">
-                    <button class="send-btn" id="sendBtn">➤</button>
-                </div>
-            </div>
+      <div class="sidebar-section">
+        <p class="section-title">Recent</p>
 
-            <p class="footer-note">AI can make mistakes. Check important information.</p>
-        </main>
+        <div class="chat-item active">
+          <span>💬</span>
+          <span class="chat-name">New conversation</span>
+        </div>
+
+        <div class="chat-item">
+          <span>💡</span>
+          <span class="chat-name">Project ideas</span>
+        </div>
+
+        <div class="chat-item">
+          <span>💻</span>
+          <span class="chat-name">Coding help</span>
+        </div>
+      </div>
+
+      <div class="sidebar-bottom">
+        <button class="side-button" id="settingsBtn">
+          ⚙️
+          <span>Settings</span>
+        </button>
+
+        <button class="side-button" id="themeBtn">
+          🌙
+          <span>Dark mode</span>
+        </button>
+      </div>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- TOP BAR -->
+      <header class="topbar">
+
+        <button class="menu-btn" id="menuBtn">
+          ☰
+        </button>
+
+        <div class="mobile-logo">
+          <div class="brand-logo">✦</div>
+          <span>Nova AI</span>
+        </div>
+
+        <div class="model">
+          <span class="status-dot"></span>
+          Nova AI
+        </div>
+
+        <button class="more-btn" id="moreBtn">
+          ⋮
+        </button>
+
+      </header>
+
+      <!-- CHAT -->
+      <section class="chat-container" id="chatContainer">
+
+        <div class="welcome" id="welcome">
+
+          <div class="welcome-logo">
+            ✦
+          </div>
+
+          <h1>What can I help you with?</h1>
+
+          <p>
+            Ask Nova anything. Explore ideas, learn, create and code.
+          </p>
+
+          <div class="suggestions">
+
+            <button class="suggestion" data-prompt="Explain something to me">
+              <span>💡</span>
+              <div>
+                <strong>Explain something</strong>
+                <small>Learn a new concept</small>
+              </div>
+              <span>→</span>
+            </button>
+
+            <button class="suggestion" data-prompt="Help me write some code">
+              <span>💻</span>
+              <div>
+                <strong>Write code</strong>
+                <small>Build something amazing</small>
+              </div>
+              <span>→</span>
+            </button>
+
+            <button class="suggestion" data-prompt="Give me some creative ideas">
+              <span>✨</span>
+              <div>
+                <strong>Get creative</strong>
+                <small>Generate fresh ideas</small>
+              </div>
+              <span>→</span>
+            </button>
+
+          </div>
+
+        </div>
+
+        <div class="messages" id="messages"></div>
+
+      </section>
+
+      <!-- INPUT -->
+      <div class="input-area">
+
+        <div class="input-wrapper">
+
+          <button class="input-btn" id="attachBtn" title="Attach file">
+            ＋
+          </button>
+
+          <textarea
+            id="messageInput"
+            placeholder="Message Nova AI..."
+            rows="1"
+          ></textarea>
+
+          <button class="input-btn mic-btn" id="micBtn" title="Voice">
+            🎙
+          </button>
+
+          <button class="send-btn" id="sendBtn">
+            ↑
+          </button>
+
+        </div>
+
+        <p class="disclaimer">
+          Nova AI is a frontend demo. Responses are simulated.
+        </p>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- SETTINGS MODAL -->
+  <div class="modal-overlay" id="settingsModal">
+
+    <div class="modal">
+
+      <div class="modal-header">
+        <h2>Settings</h2>
+        <button id="closeSettings">×</button>
+      </div>
+
+      <div class="setting">
+        <div>
+          <strong>Dark mode</strong>
+          <p>Use the dark Nova interface.</p>
+        </div>
+
+        <label class="switch">
+          <input type="checkbox" id="darkToggle" checked>
+          <span></span>
+        </label>
+      </div>
+
+      <div class="setting">
+        <div>
+          <strong>Animations</strong>
+          <p>Enable interface animations.</p>
+        </div>
+
+        <label class="switch">
+          <input type="checkbox" id="animationToggle" checked>
+          <span></span>
+        </label>
+      </div>
+
     </div>
 
-    <script src="App.js"></script>
+  </div>
+
+  <script src="script.js"></script>
+
 </body>
-                        </html>
+    </html>
