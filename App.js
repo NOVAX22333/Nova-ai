@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    const CONFIG = { USE_MOCK_API: true, API_ENDPOINT: '', API_TIMEOUT: 15000 };
+    const CONFIG = { USE_MOCK_API: false, API_ENDPOINT: 'https://ace-x.vercel.app/api/chat', API_TIMEOUT: 15000 };
     const state = { chatStarted: false, messageCount: 0, isProcessing: false, webSearchEnabled: false };
     const dom = {};
 
@@ -48,13 +48,13 @@
                 const response = await fetch(CONFIG.API_ENDPOINT, { 
                     method: 'POST', 
                     headers: { 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify({ prompt: prompt, model: model, webSearch: state.webSearchEnabled }), 
+                   body: JSON.stringify({ message: prompt, model: model, webSearch: state.webSearchEnabled }), 
                     signal: controller.signal 
                 });
                 clearTimeout(timeoutId);
                 if (!response.ok) throw new Error(`Server error: ${response.status}`);
                 const data = await response.json();
-                return data.response || data.message || "No response received.";
+               return data.reply || data.response || data.message || "No response received.";
             } catch (error) {
                 clearTimeout(timeoutId);
                 if (error.name === 'AbortError') throw new Error('Request timed out.');
