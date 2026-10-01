@@ -1,63 +1,208 @@
-:root{--g:#1f9d63;--side:#0a1f1a;--bg:#f4f7f6;--card:#fff;--tx:#14231e;--mu:#6b7c75;--bd:#e2e9e6}
-[data-theme=dark]{--bg:#0d1714;--card:#14221d;--tx:#e8f1ed;--mu:#8fa39b;--bd:#223630}
-*{box-sizing:border-box}
-html,body{height:100%;margin:0}
-body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx)}
-[hidden]{display:none!important}
-button,input,select,textarea{font:inherit;color:inherit}
-button{cursor:pointer}
-.btn{background:var(--g);color:#fff;border:0;border-radius:10px;padding:11px 16px;font-weight:600}
-.btn.o{background:none;color:var(--tx);border:1px solid var(--bd)}
-input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--bd);border-radius:10px;background:var(--card)}
-#auth{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(6,20,15,.75)}
-.box{position:relative;background:#fff;color:#14231e;border-radius:16px;padding:26px;width:100%;max-width:380px}
-.box h2{margin:0 0 4px}.box p{margin:0 0 12px;color:#6b7c75}
-.box label{display:block;font-size:13px;margin:10px 0 4px}
-.box input{background:#f7faf9;color:#14231e;border-color:#e2e9e6}
-.box .btn{width:100%;margin-top:14px}
-.x{position:absolute;top:10px;right:12px;width:auto!important;margin:0!important;padding:4px 8px;background:none;border:0;font-size:18px;color:#6b7c75}
-#err{color:#c0392b;font-size:13px;min-height:18px;margin-top:8px}
-.lnk{background:none;border:0;color:var(--g);font-weight:600;padding:0}
-#app{display:flex;height:100%}
-aside{width:240px;background:var(--side);color:#dcebe5;display:flex;flex-direction:column;padding:16px;gap:4px;flex-shrink:0;overflow:auto}
-.brand{font-size:20px;font-weight:700;margin-bottom:14px}.brand span{color:#3ddc97}
-aside .nav{background:none;border:0;color:inherit;text-align:left;padding:11px 12px;border-radius:10px}
-aside .nav.on{background:var(--g);color:#fff}
-.me{margin-top:auto;border-top:1px solid #1d3a31;padding-top:12px;font-size:14px}
-.me small{display:block;color:#8fb3a5}
-.me .btn{width:100%;margin-top:8px}
-.me .btn.o{color:#dcebe5;border-color:#1d3a31}
-main{flex:1;display:flex;flex-direction:column;min-width:0}
-header{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--bd);background:var(--card)}
-header h3{margin:0}#burger{display:none;background:none;border:0;font-size:22px}
-.view{flex:1;overflow:auto;padding:20px;display:none}
-.view.on{display:block}
-#v-chat.on{display:flex;flex-direction:column;padding:0;overflow:hidden}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:16px 0}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;text-align:left}
-.card b{display:block;margin:6px 0 4px}.card span{color:var(--mu);font-size:13px}
-.hero{background:linear-gradient(120deg,#0a3d2b,#1f9d63);color:#fff;border-radius:14px;padding:20px;margin:6px 0 18px}
-.hero .btn{background:#fff;color:#0a3d2b;margin-top:10px}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chips.e{justify-content:center;margin-top:14px}
-.chip{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:8px 14px;font-size:14px}
-#msgs{flex:1;overflow:auto;padding:18px}
-.m{max-width:760px;margin:0 auto 14px;display:flex;gap:10px}
-.av{width:30px;height:30px;border-radius:50%;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
-.m.user .av{background:#6b7c75}
-.bd{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px 14px;line-height:1.5;overflow-wrap:anywhere;min-width:0}
-.bd pre{background:#0a1f1a;color:#d6f5e6;padding:10px;border-radius:8px;overflow:auto;white-space:pre-wrap}
-.bd img{max-width:100%;max-height:220px;border-radius:8px;display:block;margin-bottom:6px}
-.bd .sv{display:inline-block;margin:6px 14px 0 0;background:none;border:0;color:var(--g);font-size:13px;padding:0}
-.empty{text-align:center;color:var(--mu);margin:40px auto}
-#pv{display:flex;align-items:center;gap:8px;padding:8px 12px;border-top:1px solid var(--bd);background:var(--card);font-size:14px}
-#pv button{background:none;border:0;color:var(--g);font-weight:600}
-.comp{display:flex;gap:8px;padding:12px;border-top:1px solid var(--bd);background:var(--card)}
-.comp textarea{resize:none;height:46px}.comp .btn{width:auto}
-.ic{background:none;border:1px solid var(--bd);border-radius:10px;width:46px;flex-shrink:0;font-size:18px}
-.row{display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:10px}
-.row .t{cursor:pointer;flex:1;min-width:0;overflow-wrap:anywhere}
-.set{max-width:480px}.set label{display:block;margin:14px 0 4px;font-size:13px;color:var(--mu)}
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#14231e;color:#fff;padding:10px 16px;border-radius:10px;opacity:0;transition:.3s;pointer-events:none;z-index:30}
-#toast.on{opacity:1}
-@media(max-width:800px){aside{position:fixed;inset:0 auto 0 0;z-index:5;transform:translateX(-100%);transition:.25s}aside.open{transform:none}#burger{display:block}}
+/* =========================================
+   1. CORE VARIABLES & RESET
+   ========================================= */
+:root {
+    --bg-main: #0b1120;
+    --bg-sidebar: #111827;
+    --bg-card: #1f2937;
+    --bg-input: #1f2937;
+    --accent: #10b981;
+    --accent-hover: #059669;
+    --text-main: #f3f4f6;
+    --text-muted: #9ca3af;
+    --border: #374151;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: var(--font);
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+}
+
+/* =========================================
+   2. LAYOUT & SIDEBAR
+   ========================================= */
+#app { display: flex; width: 100%; height: 100%; }
+
+#side {
+    width: 260px;
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.brand {
+    font-size: 24px; font-weight: bold; margin-bottom: 30px;
+    display: flex; align-items: center; gap: 10px;
+}
+.brand span { color: var(--accent); }
+
+.nav {
+    background: transparent; border: none; color: var(--text-muted);
+    padding: 12px 15px; margin-bottom: 5px; border-radius: 8px;
+    text-align: left; font-size: 15px; cursor: pointer;
+    display: flex; align-items: center; gap: 12px; width: 100%;
+    transition: all 0.2s;
+}
+.nav:hover { background-color: var(--bg-card); color: var(--text-main); }
+.nav.on { background-color: var(--accent); color: white; font-weight: 500; }
+
+.me { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border); }
+.me span { display: block; font-weight: bold; font-size: 14px; margin-bottom: 5px;}
+.me small { color: var(--text-muted); font-size: 12px; display: block; margin-bottom: 15px;}
+
+/* =========================================
+   3. MAIN CONTENT AREA
+   ========================================= */
+main { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+
+header {
+    padding: 20px 30px; display: flex; align-items: center; gap: 15px;
+    border-bottom: 1px solid var(--border); background: var(--bg-main);
+}
+#burger { background: none; border: none; color: var(--text-main); font-size: 24px; cursor: pointer; display: none; }
+
+/* View Switching Logic - THIS WAS THE BUG */
+.view { display: none; height: 100%; overflow-y: auto; }
+.view.on { display: block; padding: 30px; }
+
+/* Special flex layout for the Chat View so input sticks to bottom */
+#v-chat.on { 
+    display: flex; flex-direction: column; padding: 0; height: 100%; overflow: hidden; 
+}
+
+/* =========================================
+   4. HOME VIEW STYLES
+   ========================================= */
+#v-home h2 { font-size: 28px; margin-bottom: 10px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin: 30px 0; }
+
+.card {
+    background-color: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px; text-align: left; cursor: pointer; transition: transform 0.2s, border-color 0.2s;
+    color: var(--text-main); display: flex; flex-direction: column; align-items: flex-start;
+}
+.card:hover { transform: translateY(-2px); border-color: var(--accent); }
+.card b { margin: 10px 0 5px 0; font-size: 16px; }
+.card span { color: var(--text-muted); font-size: 13px; }
+
+.hero {
+    background: linear-gradient(135deg, #064e3b 0%, #10b981 100%);
+    padding: 30px; border-radius: 16px; margin: 30px 0; text-align: center;
+}
+.hero b { font-size: 20px; display: block; margin-bottom: 10px; }
+.hero button {
+    margin-top: 15px; background: white; color: #064e3b; border: none;
+    padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer;
+}
+
+.chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+.chips button {
+    background: var(--bg-card); border: 1px solid var(--border); color: var(--text-main);
+    padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px;
+}
+.chips button:hover { border-color: var(--accent); }
+
+/* =========================================
+   5. CHAT VIEW STYLES (FIXED)
+   ========================================= */
+#msgs {
+    flex: 1; overflow-y: auto; padding: 30px;
+    display: flex; flex-direction: column; gap: 20px;
+}
+
+.chat-message { display: flex; gap: 15px; max-width: 80%; }
+
+/* Push user messages to the right */
+.chat-message:has(.user-av) { align-self: flex-end; flex-direction: row-reverse; }
+.chat-message:has(.user-av) .msg-body { border-top-right-radius: 0; border-top-left-radius: 12px; background-color: #10b981; color: white;}
+.chat-message:has(.user-av) .msg-name { color: white; }
+
+.msg-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 14px; flex-shrink: 0;
+}
+.ai-av { background-color: #374151; color: white; }
+.user-av { background-color: #3b82f6; color: white; }
+
+.msg-body {
+    background-color: var(--bg-card); padding: 15px; border-radius: 12px;
+    border-top-left-radius: 0; line-height: 1.5;
+}
+.msg-header { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 12px; color: var(--text-muted); }
+.msg-name { font-weight: bold; color: var(--text-main); }
+
+/* Input Area */
+.comp {
+    padding: 20px 30px; background-color: var(--bg-main);
+    border-top: 1px solid var(--border); display: flex; align-items: center; gap: 10px;
+}
+.ic { background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; padding: 10px; }
+.ic:hover { color: var(--accent); }
+
+#inp {
+    flex: 1; background-color: var(--bg-input); border: 1px solid var(--border);
+    color: var(--text-main); padding: 15px; border-radius: 25px;
+    resize: none; font-family: var(--font); font-size: 15px; height: 50px;
+}
+#inp:focus { outline: none; border-color: var(--accent); }
+
+/* =========================================
+   6. SETTINGS & FORMS (FIXED)
+   ========================================= */
+.set { max-width: 500px; display: flex; flex-direction: column; gap: 10px; }
+.set label { font-size: 14px; color: var(--text-muted); margin-top: 15px; }
+.set input, .set select {
+    width: 100%; padding: 12px; background: var(--bg-input);
+    border: 1px solid var(--border); border-radius: 8px; color: var(--text-main);
+}
+
+/* Buttons */
+.btn {
+    background-color: var(--accent); color: white; border: none;
+    padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 500;
+    transition: background 0.2s; width: fit-content;
+}
+.btn:hover { background-color: var(--accent-hover); }
+.btn.o { background-color: transparent; border: 1px solid var(--border); color: var(--text-main); }
+.btn.o:hover { border-color: var(--accent); }
+.lnk { background: none; border: none; color: var(--accent); cursor: pointer; text-decoration: underline; }
+
+/* Auth Modal */
+#auth {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 1000;
+}
+#auth .box {
+    background: var(--bg-sidebar); padding: 30px; border-radius: 16px;
+    width: 90%; max-width: 400px; position: relative; border: 1px solid var(--border);
+}
+#auth input {
+    width: 100%; padding: 12px; margin: 10px 0; background: var(--bg-input);
+    border: 1px solid var(--border); border-radius: 8px; color: var(--text-main);
+}
+#auth label { font-size: 14px; color: var(--text-muted); display: block; margin-top: 10px;}
+.x { position: absolute; top: 15px; right: 15px; background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; }
+
+/* Toast */
+#toast { position: fixed; bottom: 20px; right: 20px; z-index: 2000; }
+
+/* =========================================
+   7. TABLET / MOBILE RESPONSIVE
+   ========================================= */
+@media (max-width: 768px) {
+    #side { position: fixed; left: -260px; height: 100%; z-index: 100; box-shadow: 2px 0 10px rgba(0,0,0,0.5); }
+    #side.open { transform: translateX(260px); } /* Note: Your JS needs to add class 'open' to #side for this to work */
+    #burger { display: block; }
+    .chat-message { max-width: 90%; }
+  }
