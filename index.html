@@ -1,209 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nova AI - Smarter. Faster. All in one.</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <!-- Toast Notifications -->
-    <div id="toast-container" class="toast-container"></div>
-
-    <!-- Hidden File Inputs (Triggered by JS) -->
-    <input type="file" id="file-input" hidden>
-    <input type="file" id="image-input" accept="image/*" hidden>
-
-    <!-- LEFT SIDEBAR -->
-    <aside class="sidebar-left">
-        <div class="logo-area">
-            <div class="logo-icon">
-                <svg width="36" height="36" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 4L24 16L36 20L24 24L20 36L16 24L4 20L16 16L20 4Z" fill="url(#logoGrad)"/>
-                    <circle cx="20" cy="20" r="4" fill="#a78bfa"/>
-                    <defs>
-                        <linearGradient id="logoGrad" x1="4" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="#a78bfa"/>
-                            <stop offset="1" stop-color="#6366f1"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
-            </div>
-            <div class="logo-text">
-                <h1>Nova <span>AI</span></h1>
-                <p>Smarter. Faster. All in one.</p>
-            </div>
-        </div>
-
-        <nav class="nav-menu">
-            <a href="#" class="nav-item active" data-page="chat"><i class="fas fa-comment-dots"></i><span>AI Chat</span></a>
-            <a href="#" class="nav-item" data-page="tutor"><i class="fas fa-book-open"></i><span>AI Tutor</span></a>
-            <a href="#" class="nav-item" data-page="code"><i class="fas fa-code"></i><span>Coding Assistant</span></a>
-            <a href="#" class="nav-item" data-page="research"><i class="fas fa-search"></i><span>Research</span></a>
-            <a href="#" class="nav-item" data-page="docs"><i class="fas fa-file-alt"></i><span>Documents</span></a>
-            <a href="#" class="nav-item" data-page="images"><i class="fas fa-image"></i><span>Images</span></a>
-            <a href="#" class="nav-item" data-page="voice"><i class="fas fa-microphone"></i><span>Voice</span></a>
-            <a href="#" class="nav-item" data-page="agents"><i class="fas fa-robot"></i><span>Agents (Beta)</span></a>
-            <a href="#" class="nav-item" data-page="settings"><i class="fas fa-cog"></i><span>Settings</span></a>
-        </nav>
-
-        <div class="recent-chats">
-            <div class="recent-header">
-                <span><i class="fas fa-clock"></i> Recent Chats</span>
-            </div>
-            <div class="locked-state">
-                <i class="fas fa-lock"></i>
-                <p>Sign in to save and view your chat history.</p>
-            </div>
-        </div>
-
-        <div class="auth-section">
-            <button class="btn-auth btn-login" type="button">Log In</button>
-            <button class="btn-auth btn-signup" type="button">Sign Up</button>
-        </div>
-    </aside>
-
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
-        <header class="top-bar">
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" id="search-input" placeholder="Search anything..." autocomplete="off">
-            </div>
-            <div class="top-actions">
-                <button class="pro-btn" type="button"><i class="fas fa-crown"></i> Upgrade to Pro</button>
-                <button class="btn-auth-top" type="button">Log In</button>
-            </div>
-        </header>
-
-        <!-- DYNAMIC VIEW AREA (Handles scrolling perfectly) -->
-        <div class="view-container" id="view-container">
-            
-            <!-- Welcome View -->
-            <div class="welcome-view" id="welcome-view">
-                <div class="welcome-section">
-                    <div class="welcome-icon">
-                        <svg width="60" height="60" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 4L24 16L36 20L24 24L20 36L16 24L4 20L16 16L20 4Z" fill="url(#welcomeGrad)"/>
-                            <defs>
-                                <linearGradient id="welcomeGrad" x1="4" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="#a78bfa"/>
-                                    <stop offset="1" stop-color="#6366f1"/>
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                    </div>
-                    <h1>Welcome to <span class="gradient-text">Nova AI</span></h1>
-                    <p class="welcome-subtitle">Your all-in-one AI assistant for study, work, creativity and more.</p>
-                    <p class="welcome-desc">Ask anything, get real answers, and achieve more.</p>
-                </div>
-
-                <div class="feature-cards">
-                    <div class="feature-card" data-feature="AI Chat">
-                        <div class="card-icon chat-icon"><i class="fas fa-comment-dots"></i></div>
-                        <h3>AI Chat</h3>
-                        <p>General questions and conversations</p>
-                        <i class="fas fa-arrow-right card-arrow"></i>
-                    </div>
-                    <div class="feature-card" data-feature="AI Tutor">
-                        <div class="card-icon tutor-icon"><i class="fas fa-book-open"></i></div>
-                        <h3>AI Tutor</h3>
-                        <p>Learn step by step and improve fast</p>
-                        <i class="fas fa-arrow-right card-arrow"></i>
-                    </div>
-                    <div class="feature-card" data-feature="Coding Assistant">
-                        <div class="card-icon code-icon"><i class="fas fa-code"></i></div>
-                        <h3>Coding Assistant</h3>
-                        <p>Write, debug and understand code</p>
-                        <i class="fas fa-arrow-right card-arrow"></i>
-                    </div>
-                    <div class="feature-card" data-feature="Research">
-                        <div class="card-icon research-icon"><i class="fas fa-search"></i></div>
-                        <h3>Research</h3>
-                        <p>Get reliable info and summaries</p>
-                        <i class="fas fa-arrow-right card-arrow"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Chat View (Hidden initially) -->
-            <div class="chat-view" id="chat-view" style="display: none;">
-                <div class="chat-messages" id="chat-messages"></div>
-            </div>
-        </div>
-
-        <!-- FIXED INPUT SECTION (Always at the bottom) -->
-        <div class="input-section">
-            <div class="input-box">
-                <input type="text" id="main-input" placeholder="Ask Nova anything..." autocomplete="off">
-                <div class="input-actions">
-                    <div class="input-tools">
-                        <button class="tool-btn" id="tool-add" title="Add content" type="button"><i class="fas fa-plus"></i></button>
-                        <button class="tool-btn" id="tool-upload" title="Upload file" type="button"><i class="fas fa-paperclip"></i></button>
-                        <button class="tool-btn" id="tool-image" title="Upload image" type="button"><i class="fas fa-image"></i></button>
-                        <button class="tool-btn" id="tool-web" title="Toggle web search" type="button"><i class="fas fa-globe"></i></button>
-                    </div>
-                    <div class="input-right">
-                        <select class="model-select" id="model-select">
-                            <option value="general">✨ General AI</option>
-                            <option value="research"> Research AI</option>
-                            <option value="code">💻 Code AI</option>
-                        </select>
-                        <button class="send-btn" id="send-btn" title="Send message" type="button">
-                            <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="suggestions" id="suggestions">
-                <p class="suggestions-label">Try asking:</p>
-                <div class="chips-grid">
-                    <button class="chip" data-prompt="Explain quadratic equations" type="button"><i class="fas fa-book"></i> Explain quadratic equations</button>
-                    <button class="chip" data-prompt="Write a Python script" type="button"><i class="fas fa-code"></i> Write a Python script</button>
-                    <button class="chip" data-prompt="Summarize this document" type="button"><i class="fas fa-file-alt"></i> Summarize this document</button>
-                    <button class="chip" data-prompt="Help me study for my exams" type="button"><i class="fas fa-graduation-cap"></i> Help me study for my exams</button>
-                    <button class="chip" data-prompt="Find latest tech news" type="button"><i class="fas fa-search"></i> Find latest tech news</button>
-                    <button class="chip" data-prompt="Create an image" type="button"><i class="fas fa-image"></i> Create an image</button>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- RIGHT SIDEBAR -->
-    <aside class="sidebar-right">
-        <div class="pro-card">
-            <div class="pro-header"><i class="fas fa-crown pro-crown"></i><span>Nova AI Pro</span></div>
-            <p>Unlock advanced features, higher limits and priority access for your institution.</p>
-            <button class="upgrade-btn" type="button">Upgrade Now <i class="fas fa-arrow-right"></i></button>
-        </div>
-
-        <div class="tools-card">
-            <h3>Tools & Features</h3>
-            <div class="tool-item"><div class="tool-icon"><i class="fas fa-file-upload"></i></div><div class="tool-info"><span class="tool-name">File Upload</span><span class="tool-desc">PDF, DOCX, TXT and more</span></div></div>
-            <div class="tool-item"><div class="tool-icon"><i class="fas fa-globe"></i></div><div class="tool-info"><span class="tool-name">Web Search</span><span class="tool-desc">Real-time information</span></div></div>
-            <div class="tool-item"><div class="tool-icon"><i class="fas fa-image"></i></div><div class="tool-info"><span class="tool-name">Image Generation</span><span class="tool-desc">Create stunning images</span></div></div>
-            <div class="tool-item"><div class="tool-icon"><i class="fas fa-microphone"></i></div><div class="tool-info"><span class="tool-name">Voice Chat</span><span class="tool-desc">Talk with Nova</span></div></div>
-            <div class="tool-item"><div class="tool-icon"><i class="fas fa-robot"></i></div><div class="tool-info"><span class="tool-name">Custom AI Agents</span><span class="tool-desc">Automate your tasks</span><span class="beta-badge">Beta</span></div></div>
-        </div>
-
-        <div class="quote-card">
-            <div class="quote-icon">
-                <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 4L24 16L36 20L24 24L20 36L16 24L4 20L16 16L20 4Z" fill="url(#quoteGrad)"/>
-                    <defs><linearGradient id="quoteGrad" x1="4" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop stop-color="#a78bfa"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs>
-                </svg>
-            </div>
-            <p class="quote-text">"The future belongs to those who learn, create and never stop exploring."</p>
-            <p class="quote-author">— Nova AI</p>
-        </div>
-    </aside>
-
-    <script src="App.js"></script>
-</body>
-    </html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nova AI</title>
+<style>
+:root{--g:#1f9d63;--side:#0a1f1a;--bg:#f4f7f6;--card:#fff;--tx:#14231e;--mu:#6b7c75;--bd:#e2e9e6}
+[data-theme=dark]{--bg:#0d1714;--card:#14221d;--tx:#e8f1ed;--mu:#8fa39b;--bd:#223630}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx)}
+[hidden]{display:none!important}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.btn{background:var(--g);color:#fff;border:0;border-radius:10px;padding:11px 16px;font-weight:600}
+.btn.o{background:none;color:var(--tx);border:1px solid var(--bd)}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--bd);border-radius:10px;background:var(--card)}
+#auth{min-height:100%;display:flex;align-items:center;justify-content:center;padding:16px;background:linear-gradient(135deg,#06140f,#0f3d2c)}
+.box{background:#fff;color:#14231e;border-radius:16px;padding:26px;width:100%;max-width:380px}
+.box h2{margin:0 0 4px}.box p{margin:0 0 12px;color:#6b7c75}
+.box label{display:block;font-size:13px;margin:10px 0 4px}
+.box input{background:#f7faf9;color:#14231e;border-color:#e2e9e6}
+.box .btn{width:100%;margin-top:14px}
+#err{color:#c0392b;font-size:13px;min-height:18px;margin-top:8px}
+.lnk{background:none;border:0;color:var(--g);font-weight:600;padding:0}
+#app{display:flex;height:100%}
+aside{width:240px;background:var(--side);color:#dcebe5;display:flex;flex-direction:column;padding:16px;gap:4px;flex-shrink:0}
+.brand{font-size:20px;font-weight:700;margin-bottom:14px}.brand span{color:#3ddc97}
+aside .nav{background:none;border:0;color:inherit;text-align:left;padding:11px 12px;border-radius:10px}
+aside .nav.on{background:var(--g);color:#fff}
+.me{margin-top:auto;border-top:1px solid #1d3a31;padding-top:12px;font-size:14px}
+.me small{display:block;color:#8fb3a5}
+main{flex:1;display:flex;flex-direction:column;min-width:0}
