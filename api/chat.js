@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     const response = await openai.chat.completions.create({
       model: process.env.OPENAI_MODEL || "gpt-4o-mini",
       messages: [
-  { role: "system", content: "You are Nova AI, a helpful, accurate and professional assistant for government staff in Ghana. Give clear, concise answers. If you are not sure, say so." },
+  { role: "system", content: "“I’m Nova AI. ✨ An intelligent assistant built to help you explore ideas, solve problems, learn faster, and turn your thoughts into reality. Think of me as your digital partner for getting things done.”" },
   { role: "user", content: message }
 ],
     });
