@@ -1,25 +1,61 @@
-# Nova AI
+# ✦ Nova AI
 
-A GitHub-ready starter repository for an all-in-one AI platform.
+Nova AI is a futuristic AI assistant frontend built with:
 
-## Included
-- AI chat
-- General, Study, Coding and Research modes
-- JWT authentication
-- SQLite database
-- Conversation and message storage
-- Basic memory endpoints
-- File metadata endpoint
-- Rate limiting
-- Mobile responsive UI
-- Provider abstraction for future vision, voice, image and agent modules
+- HTML
+- CSS
+- JavaScript
 
-## Run locally
-1. Install Node.js 20+.
-2. Run `npm install`.
-3. Copy `.env.example` to `.env`.
-4. Add an API key and a model supported by your chosen AI provider.
-5. Run `npm start`.
-6. Open `http://localhost:3000`.
+## Features
 
-Never commit `.env` or API keys.
+- Responsive AI chat interface
+- Dark/light mode
+- Mobile sidebar
+- New chat button
+- Suggested prompts
+- Simulated AI responses
+- Typing indicator
+- Settings modal
+- Voice button UI
+- File attachment UI
+- Responsive mobile design
+- No backend required
+
+## Project Structure
+
+nova-ai/
+│
+├── index.html
+├── style.css
+├── script.js
+└── README.md
+
+## Running Locally
+
+Open `index.html` in your browser.
+
+No installation is required.
+
+## GitHub Pages
+
+You can publish this project using GitHub Pages.
+
+Go to:
+
+Repository
+→ Settings
+→ Pages
+→ Deploy from branch
+→ Select `main`
+→ Select `/root`
+→ Save
+
+Your Nova AI frontend will then be available as a website.
+
+## Important
+
+This is a frontend-only project.
+
+The AI responses are simulated in JavaScript.
+
+To turn Nova AI into a real AI assistant, you would later connect it to a secure backend/API.
