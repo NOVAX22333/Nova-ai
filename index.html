@@ -1,218 +1,286 @@
-*Index*  (delete dis before paste) 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Nova AI - Your intelligent AI assistant">
-  <title>Nova AI</title>
-
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Nova AI - Smarter. Faster. All in one. AI assistant for students and professionals.">
+    <title>Nova AI - Smarter. Faster. All in one.</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-  <div class="app">
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
-
-      <div class="brand">
-        <div class="brand-logo">✦</div>
-        <span>Nova AI</span>
-      </div>
-
-      <button class="new-chat" id="newChatBtn">
-        <span>＋</span>
-        New Chat
-      </button>
-
-      <div class="sidebar-section">
-        <p class="section-title">Recent</p>
-
-        <div class="chat-item active">
-          <span>💬</span>
-          <span class="chat-name">New conversation</span>
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar-left" id="sidebar-left">
+        <div class="logo-area">
+            <div class="logo-icon">
+                <svg width="36" height="36" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 4L24 16L36 20L24 24L20 36L16 24L4 20L16 16L20 4Z" fill="url(#logoGrad)"/>
+                    <circle cx="20" cy="20" r="4" fill="#a78bfa"/>
+                    <defs>
+                        <linearGradient id="logoGrad" x1="4" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#a78bfa"/>
+                            <stop offset="1" stop-color="#6366f1"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <div class="logo-text">
+                <h1>Nova <span>AI</span></h1>
+                <p>Smarter. Faster. All in one.</p>
+            </div>
         </div>
 
-        <div class="chat-item">
-          <span>💡</span>
-          <span class="chat-name">Project ideas</span>
+        <nav class="nav-menu" id="nav-menu">
+            <a href="#" class="nav-item" data-page="home"><i class="fas fa-home"></i><span>Home</span></a>
+            <a href="#" class="nav-item active" data-page="chat"><i class="fas fa-comment-dots"></i><span>AI Chat</span></a>
+            <a href="#" class="nav-item" data-page="tutor"><i class="fas fa-book-open"></i><span>AI Tutor</span></a>
+            <a href="#" class="nav-item" data-page="code"><i class="fas fa-code"></i><span>Coding Assistant</span></a>
+            <a href="#" class="nav-item" data-page="research"><i class="fas fa-search"></i><span>Research</span></a>
+            <a href="#" class="nav-item" data-page="docs"><i class="fas fa-file-alt"></i><span>Documents</span></a>
+            <a href="#" class="nav-item" data-page="images"><i class="fas fa-image"></i><span>Images</span></a>
+            <a href="#" class="nav-item" data-page="voice"><i class="fas fa-microphone"></i><span>Voice</span></a>
+            <a href="#" class="nav-item" data-page="agents"><i class="fas fa-robot"></i><span>Agents (Beta)</span></a>
+            <a href="#" class="nav-item" data-page="settings"><i class="fas fa-cog"></i><span>Settings</span></a>
+        </nav>
+
+        <div class="recent-chats" id="recent-chats">
+            <div class="recent-header">
+                <span><i class="fas fa-clock"></i> Recent Chats</span>
+                <a href="#" class="view-all" id="view-all-btn">View all</a>
+            </div>
+            <div class="chat-list" id="chat-list">
+                <a href="#" class="chat-item" data-chat="quadratic">
+                    <i class="fas fa-file-alt"></i>
+                    <span class="chat-title">Quadratic equations help</span>
+                    <span class="chat-time">2h ago</span>
+                </a>
+                <a href="#" class="chat-item" data-chat="python">
+                    <i class="fas fa-file-alt"></i>
+                    <span class="chat-title">Python code explanation</span>
+                    <span class="chat-time">4h ago</span>
+                </a>
+                <a href="#" class="chat-item" data-chat="cyber">
+                    <i class="fas fa-file-alt"></i>
+                    <span class="chat-title">Cybersecurity career path</span>
+                    <span class="chat-time">6h ago</span>
+                </a>
+                <a href="#" class="chat-item" data-chat="energy">
+                    <i class="fas fa-file-alt"></i>
+                    <span class="chat-title">Research on renewable energy</span>
+                    <span class="chat-time">1d ago</span>
+                </a>
+                <a href="#" class="chat-item" data-chat="study">
+                    <i class="fas fa-file-alt"></i>
+                    <span class="chat-title">My study plan</span>
+                    <span class="chat-time">1d ago</span>
+                </a>
+            </div>
         </div>
 
-        <div class="chat-item">
-          <span>💻</span>
-          <span class="chat-name">Coding help</span>
+        <div class="user-profile" id="user-profile-btn">
+            <div class="user-avatar-small">W</div>
+            <div class="user-info">
+                <span class="user-name">Wonders</span>
+                <span class="user-status">Online</span>
+            </div>
+            <i class="fas fa-chevron-right"></i>
         </div>
-      </div>
-
-      <div class="sidebar-bottom">
-        <button class="side-button" id="settingsBtn">
-          ⚙️
-          <span>Settings</span>
-        </button>
-
-        <button class="side-button" id="themeBtn">
-          🌙
-          <span>Dark mode</span>
-        </button>
-      </div>
-
     </aside>
 
-    <!-- MAIN -->
-    <main class="main">
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="main-content">
+        <!-- TOP BAR -->
+        <header class="top-bar">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="Search anything..." autocomplete="off">
+            </div>
+            <div class="top-actions">
+                <button class="icon-btn" id="notif-btn" title="Notifications" type="button">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button class="pro-btn" id="pro-btn-top" type="button">
+                    <i class="fas fa-crown"></i> Pro
+                </button>
+                <div class="user-avatar" id="user-avatar-btn" title="Profile">W</div>
+            </div>
+        </header>
 
-      <!-- TOP BAR -->
-      <header class="topbar">
+        <!-- WELCOME VIEW -->
+        <div class="welcome-view" id="welcome-view">
+            <div class="welcome-section">
+                <div class="welcome-icon">
+                    <svg width="60" height="60" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 4L24 16L36 20L24 24L20 36L16 24L4 20L16 16L20 4Z" fill="url(#welcomeGrad)"/>
+                        <defs>
+                            <linearGradient id="welcomeGrad" x1="4" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#a78bfa"/>
+                                <stop offset="1" stop-color="#6366f1"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <h1>Welcome to <span class="gradient-text">Nova AI</span></h1>
+                <p class="welcome-subtitle">Your all-in-one AI assistant for study, work, creativity and more.</p>
+                <p class="welcome-desc">Ask anything, get real answers, and achieve more.</p>
+            </div>
 
-        <button class="menu-btn" id="menuBtn">
-          ☰
-        </button>
-
-        <div class="mobile-logo">
-          <div class="brand-logo">✦</div>
-          <span>Nova AI</span>
+            <div class="feature-cards" id="feature-cards">
+                <div class="feature-card" data-feature="AI Chat">
+                    <div class="card-icon chat-icon"><i class="fas fa-comment-dots"></i></div>
+                    <h3>AI Chat</h3>
+                    <p>General questions and conversations</p>
+                    <i class="fas fa-arrow-right card-arrow"></i>
+                </div>
+                <div class="feature-card" data-feature="AI Tutor">
+                    <div class="card-icon tutor-icon"><i class="fas fa-book-open"></i></div>
+                    <h3>AI Tutor</h3>
+                    <p>Learn step by step and improve fast</p>
+                    <i class="fas fa-arrow-right card-arrow"></i>
+                </div>
+                <div class="feature-card" data-feature="Coding Assistant">
+                    <div class="card-icon code-icon"><i class="fas fa-code"></i></div>
+                    <h3>Coding Assistant</h3>
+                    <p>Write, debug and understand code</p>
+                    <i class="fas fa-arrow-right card-arrow"></i>
+                </div>
+                <div class="feature-card" data-feature="Research">
+                    <div class="card-icon research-icon"><i class="fas fa-search"></i></div>
+                    <h3>Research</h3>
+                    <p>Get reliable info and summaries</p>
+                    <i class="fas fa-arrow-right card-arrow"></i>
+                </div>
+            </div>
         </div>
 
-        <div class="model">
-          <span class="status-dot"></span>
-          Nova AI
+        <!-- CHAT VIEW (hidden initially) -->
+        <div class="chat-view" id="chat-view" style="display: none;">
+            <div class="chat-container" id="chat-container"></div>
         </div>
 
-        <button class="more-btn" id="moreBtn">
-          ⋮
-        </button>
+        <!-- INPUT AREA -->
+        <div class="input-section" id="input-section">
+            <div class="input-box">
+                <input type="text" id="main-input" placeholder="Ask Nova anything..." autocomplete="off">
+                <div class="input-actions">
+                    <div class="input-tools">
+                        <button class="tool-btn" id="tool-add" title="Add content" type="button"><i class="fas fa-plus"></i></button>
+                        <button class="tool-btn" id="tool-upload" title="Upload file" type="button"><i class="fas fa-paperclip"></i></button>
+                        <button class="tool-btn" id="tool-image" title="Upload image" type="button"><i class="fas fa-image"></i></button>
+                        <button class="tool-btn" id="tool-web" title="Web search" type="button"><i class="fas fa-globe"></i></button>
+                    </div>
+                    <div class="input-right">
+                        <select class="model-select" id="model-select">
+                            <option value="general">✨ General AI</option>
+                            <option value="research">🔬 Research AI</option>
+                            <option value="code">💻 Code AI</option>
+                        </select>
+                        <button class="send-btn" id="send-btn" title="Send message" type="button">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-      </header>
-
-      <!-- CHAT -->
-      <section class="chat-container" id="chatContainer">
-
-        <div class="welcome" id="welcome">
-
-          <div class="welcome-logo">
-            ✦
-          </div>
-
-          <h1>What can I help you with?</h1>
-
-          <p>
-            Ask Nova anything. Explore ideas, learn, create and code.
-          </p>
-
-          <div class="suggestions">
-
-            <button class="suggestion" data-prompt="Explain something to me">
-              <span>💡</span>
-              <div>
-                <strong>Explain something</strong>
-                <small>Learn a new concept</small>
-              </div>
-              <span>→</span>
-            </button>
-
-            <button class="suggestion" data-prompt="Help me write some code">
-              <span>💻</span>
-              <div>
-                <strong>Write code</strong>
-                <small>Build something amazing</small>
-              </div>
-              <span>→</span>
-            </button>
-
-            <button class="suggestion" data-prompt="Give me some creative ideas">
-              <span>✨</span>
-              <div>
-                <strong>Get creative</strong>
-                <small>Generate fresh ideas</small>
-              </div>
-              <span>→</span>
-            </button>
-
-          </div>
-
+            <div class="suggestions" id="suggestions">
+                <p class="suggestions-label">Try asking:</p>
+                <div class="chips-grid">
+                    <button class="chip" data-prompt="Explain quadratic equations" type="button"><i class="fas fa-book"></i> Explain quadratic equations</button>
+                    <button class="chip" data-prompt="Write a Python script" type="button"><i class="fas fa-code"></i> Write a Python script</button>
+                    <button class="chip" data-prompt="Summarize this document" type="button"><i class="fas fa-file-alt"></i> Summarize this document</button>
+                    <button class="chip" data-prompt="Help me study for my exams" type="button"><i class="fas fa-graduation-cap"></i> Help me study for my exams</button>
+                    <button class="chip" data-prompt="Find latest tech news" type="button"><i class="fas fa-search"></i> Find latest tech news</button>
+                    <button class="chip" data-prompt="Create an image" type="button"><i class="fas fa-image"></i> Create an image</button>
+                </div>
+            </div>
         </div>
-
-        <div class="messages" id="messages"></div>
-
-      </section>
-
-      <!-- INPUT -->
-      <div class="input-area">
-
-        <div class="input-wrapper">
-
-          <button class="input-btn" id="attachBtn" title="Attach file">
-            ＋
-          </button>
-
-          <textarea
-            id="messageInput"
-            placeholder="Message Nova AI..."
-            rows="1"
-          ></textarea>
-
-          <button class="input-btn mic-btn" id="micBtn" title="Voice">
-            🎙
-          </button>
-
-          <button class="send-btn" id="sendBtn">
-            ↑
-          </button>
-
-        </div>
-
-        <p class="disclaimer">
-          Nova AI is a frontend demo. Responses are simulated.
-        </p>
-
-      </div>
-
     </main>
 
-  </div>
-
-  <!-- SETTINGS MODAL -->
-  <div class="modal-overlay" id="settingsModal">
-
-    <div class="modal">
-
-      <div class="modal-header">
-        <h2>Settings</h2>
-        <button id="closeSettings">×</button>
-      </div>
-
-      <div class="setting">
-        <div>
-          <strong>Dark mode</strong>
-          <p>Use the dark Nova interface.</p>
+    <!-- RIGHT SIDEBAR -->
+    <aside class="sidebar-right" id="sidebar-right">
+        <div class="pro-card">
+            <div class="pro-header">
+                <i class="fas fa-crown pro-crown"></i>
+                <span>Nova AI Pro</span>
+            </div>
+            <p>Unlock advanced features, higher limits and priority access.</p>
+            <button class="upgrade-btn" id="upgrade-btn" type="button">Upgrade Now <i class="fas fa-arrow-right"></i></button>
         </div>
 
-        <label class="switch">
-          <input type="checkbox" id="darkToggle" checked>
-          <span></span>
-        </label>
-      </div>
-
-      <div class="setting">
-        <div>
-          <strong>Animations</strong>
-          <p>Enable interface animations.</p>
+        <div class="tools-card">
+            <h3>Tools & Features</h3>
+            <div class="tool-item">
+                <div class="tool-icon"><i class="fas fa-file-upload"></i></div>
+                <div class="tool-info"><span class="tool-name">File Upload</span><span class="tool-desc">PDF, DOCX, TXT and more</span></div>
+            </div>
+            <div class="tool-item">
+                <div class="tool-icon"><i class="fas fa-globe"></i></div>
+                <div class="tool-info"><span class="tool-name">Web Search</span><span class="tool-desc">Real-time information</span></div>
+            </div>
+            <div class="tool-item">
+                <div class="tool-icon"><i class="fas fa-image"></i></div>
+                <div class="tool-info"><span class="tool-name">Image Generation</span><span class="tool-desc">Create stunning images</span></div>
+            </div>
+            <div class="tool-item">
+                <div class="tool-icon"><i class="fas fa-microphone"></i></div>
+                <div class="tool-info"><span class="tool-name">Voice Chat</span><span class="tool-desc">Talk with Nova</span></div>
+            </div>
+            <div class="tool-item">
+                <div class="tool-icon"><i class="fas fa-robot"></i></div>
+                <div class="tool-info"><span class="tool-name">Custom AI Agents</span><span class="tool-desc">Automate your tasks</span><span class="beta-badge">Beta</span></div>
+            </div>
         </div>
 
-        <label class="switch">
-          <input type="checkbox" id="animationToggle" checked>
-          <span></span>
-        </label>
-      </div>
+        <div class="stats-card">
+            <h3>Quick Stats</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <i class="fas fa-comment-dots stat-icon"></i>
+                    <div><span class="stat-label">Chat Messages</span><span class="stat-value" id="stat-messages">0</span></div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-file-upload stat-icon"></i>
+                    <div><span class="stat-label">Files Uploaded</span><span class="stat-value">3</span></div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-image stat-icon"></i>
+                    <div><span class="stat-label">Images Generated</span><span class="stat-value">5</span></div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-calendar stat-icon"></i>
+                    <div><span class="stat-label">Active Since</span><span class="stat-value">Sep 26, 2025</span></div>
+                </div>
+            </div>
+        </div>
 
-    </div>
+        <div class="quote-card">
+            <div class="quote-icon">
+                <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 4L24 16L36 20L24 24L20 36L16 24L4 20L16 16L20 4Z" fill="url(#quoteGrad)"/>
+                    <defs>
+                        <linearGradient id="quoteGrad" x1="4" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#a78bfa"/>
+                            <stop offset="1" stop-color="#6366f1"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <p class="quote-text">"The future belongs to those who learn, create and never stop exploring."</p>
+            <p class="quote-author">— Nova AI</p>
+        </div>
+    </aside>
 
-  </div>
-
-  <script src="script.js"></script>
-
+    <script src="App.js"></script>
 </body>
-    </html>
+              </html>
