@@ -1,127 +1,428 @@
-// ===== CONFIGURATION =====
-// ⚠️ PASTE YOUR API KEY INSIDE THE QUOTES BELOW
-const API_KEY = "PASTE_YOUR_GOOGLE_API_KEY_HERE"; 
+const messageInput = document.getElementById("messageInput");
+const sendBtn = document.getElementById("sendBtn");
+const messages = document.getElementById("messages");
+const welcome = document.getElementById("welcome");
 
-// Using gemini-1.5-flash for maximum stability and zero "Model Not Found" bugs
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+const newChatBtn = document.getElementById("newChatBtn");
+const menuBtn = document.getElementById("menuBtn");
+const sidebar = document.getElementById("sidebar");
 
-// ===== DOM ELEMENTS =====
-const modeButtons = document.querySelectorAll('.mode-btn');
-const activeModeName = document.getElementById('activeModeName');
-const sendBtn = document.getElementById('sendBtn');
-const chatInput = document.getElementById('chatInput');
-const welcomeScreen = document.getElementById('welcome-screen');
-const chatHistory = document.getElementById('chat-history');
-const newChatBtn = document.getElementById('newChatBtn');
+const settingsBtn = document.getElementById("settingsBtn");
+const settingsModal = document.getElementById("settingsModal");
+const closeSettings = document.getElementById("closeSettings");
 
-let currentMode = 'general';
+const themeBtn = document.getElementById("themeBtn");
+const darkToggle = document.getElementById("darkToggle");
 
-// ===== MODE SWITCHING =====
-modeButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        modeButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentMode = btn.dataset.mode;
-        activeModeName.textContent = btn.textContent.trim();
+const attachBtn = document.getElementById("attachBtn");
+const micBtn = document.getElementById("micBtn");
+
+const suggestions = document.querySelectorAll(".suggestion");
+
+
+// -------------------------
+// SEND MESSAGE
+// -------------------------
+
+function sendMessage() {
+
+  const text = messageInput.value.trim();
+
+  if (!text) return;
+
+  welcome.style.display = "none";
+
+  addMessage(text, "user");
+
+  messageInput.value = "";
+
+  resizeTextarea();
+
+  setTimeout(() => {
+
+    addTyping();
+
+    setTimeout(() => {
+
+      removeTyping();
+
+      const response = generateResponse(text);
+
+      addMessage(response, "nova");
+
+    }, 900);
+
+  }, 300);
+}
+
+
+// -------------------------
+// ADD MESSAGE
+// -------------------------
+
+function addMessage(text, sender) {
+
+  const message = document.createElement("div");
+
+  message.className = `message ${sender}`;
+
+  const avatar = document.createElement("div");
+
+  avatar.className = "avatar";
+
+  avatar.textContent =
+    sender === "user" ? "U" : "✦";
+
+  const content = document.createElement("div");
+
+  content.className = "message-content";
+
+  const name = document.createElement("div");
+
+  name.className = "message-name";
+
+  name.textContent =
+    sender === "user" ? "You" : "Nova AI";
+
+  const messageText = document.createElement("div");
+
+  messageText.className = "message-text";
+
+  messageText.textContent = text;
+
+  content.appendChild(name);
+  content.appendChild(messageText);
+
+  message.appendChild(avatar);
+  message.appendChild(content);
+
+  messages.appendChild(message);
+
+  scrollToBottom();
+}
+
+
+// -------------------------
+// TYPING INDICATOR
+// -------------------------
+
+function addTyping() {
+
+  const typing = document.createElement("div");
+
+  typing.className = "message nova";
+
+  typing.id = "typing";
+
+  typing.innerHTML = `
+    <div class="avatar">✦</div>
+
+    <div class="message-content">
+
+      <div class="message-name">
+        Nova AI
+      </div>
+
+      <div class="message-text">
+        <span class="typing-dots">Nova is thinking...</span>
+      </div>
+
+    </div>
+  `;
+
+  messages.appendChild(typing);
+
+  scrollToBottom();
+}
+
+
+function removeTyping() {
+
+  const typing = document.getElementById("typing");
+
+  if (typing) {
+    typing.remove();
+  }
+}
+
+
+// -------------------------
+// DEMO AI RESPONSE
+// -------------------------
+
+function generateResponse(input) {
+
+  const text = input.toLowerCase();
+
+  if (
+    text.includes("hello") ||
+    text.includes("hi") ||
+    text.includes("hey")
+  ) {
+
+    return "Hey! 👋 I'm Nova AI. What are we building today?";
+
+  }
+
+  if (
+    text.includes("code") ||
+    text.includes("coding") ||
+    text.includes("javascript") ||
+    text.includes("html")
+  ) {
+
+    return "Absolutely. I can help you plan the project, structure the frontend, and write the HTML, CSS and JavaScript. 🚀";
+
+  }
+
+  if (
+    text.includes("math") ||
+    text.includes("equation") ||
+    text.includes("calculate")
+  ) {
+
+    return "Let's break the maths problem down step by step and make sure every part is clear. 🧠";
+
+  }
+
+  if (
+    text.includes("idea") ||
+    text.includes("ideas") ||
+    text.includes("project")
+  ) {
+
+    return "Here's a project idea: build a personal AI dashboard with notes, a study planner, a coding playground and an AI chat interface.";
+
+  }
+
+  if (
+    text.includes("who are you") ||
+    text.includes("what are you")
+  ) {
+
+    return "I'm Nova AI — a futuristic AI assistant interface. This version is a frontend demo, so my responses are simulated.";
+
+  }
+
+  if (
+    text.includes("thank")
+  ) {
+
+    return "You're welcome! 😎";
+
+  }
+
+  return `I received your message:
+
+"${input}"
+
+This is currently a frontend-only Nova AI demo. Connect an AI backend later to generate real responses.`;
+}
+
+
+// -------------------------
+// ENTER TO SEND
+// -------------------------
+
+messageInput.addEventListener("keydown", function(event) {
+
+  if (
+    event.key === "Enter" &&
+    !event.shiftKey
+  ) {
+
+    event.preventDefault();
+
+    sendMessage();
+
+  }
+
+});
+
+
+// -------------------------
+// SEND BUTTON
+// -------------------------
+
+sendBtn.addEventListener(
+  "click",
+  sendMessage
+);
+
+
+// -------------------------
+// TEXTAREA AUTO RESIZE
+// -------------------------
+
+function resizeTextarea() {
+
+  messageInput.style.height = "auto";
+
+  messageInput.style.height =
+    Math.min(messageInput.scrollHeight, 150) + "px";
+
+}
+
+messageInput.addEventListener(
+  "input",
+  resizeTextarea
+);
+
+
+// -------------------------
+// SUGGESTIONS
+// -------------------------
+
+suggestions.forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    messageInput.value =
+      button.dataset.prompt;
+
+    resizeTextarea();
+
+    sendMessage();
+
+  });
+
+});
+
+
+// -------------------------
+// NEW CHAT
+// -------------------------
+
+newChatBtn.addEventListener("click", () => {
+
+  messages.innerHTML = "";
+
+  welcome.style.display = "block";
+
+  messageInput.value = "";
+
+  resizeTextarea();
+
+  sidebar.classList.remove("open");
+
+});
+
+
+// -------------------------
+// MOBILE SIDEBAR
+// -------------------------
+
+menuBtn.addEventListener("click", () => {
+
+  sidebar.classList.toggle("open");
+
+});
+
+
+// -------------------------
+// SETTINGS
+// -------------------------
+
+settingsBtn.addEventListener("click", () => {
+
+  settingsModal.classList.add("show");
+
+  sidebar.classList.remove("open");
+
+});
+
+closeSettings.addEventListener("click", () => {
+
+  settingsModal.classList.remove("show");
+
+});
+
+settingsModal.addEventListener("click", event => {
+
+  if (event.target === settingsModal) {
+
+    settingsModal.classList.remove("show");
+
+  }
+
+});
+
+
+// -------------------------
+// THEME
+// -------------------------
+
+function updateTheme() {
+
+  if (darkToggle.checked) {
+
+    document.body.classList.remove("light");
+
+  } else {
+
+    document.body.classList.add("light");
+
+  }
+
+}
+
+darkToggle.addEventListener(
+  "change",
+  updateTheme
+);
+
+themeBtn.addEventListener("click", () => {
+
+  darkToggle.checked =
+    !darkToggle.checked;
+
+  updateTheme();
+
+});
+
+
+// -------------------------
+// ATTACH BUTTON
+// -------------------------
+
+attachBtn.addEventListener("click", () => {
+
+  alert(
+    "File upload UI is ready. Connect a backend later to process uploaded files."
+  );
+
+});
+
+
+// -------------------------
+// MICROPHONE BUTTON
+// -------------------------
+
+micBtn.addEventListener("click", () => {
+
+  alert(
+    "Voice input is currently a frontend demo feature."
+  );
+
+});
+
+
+// -------------------------
+// SCROLL
+// -------------------------
+
+function scrollToBottom() {
+
+  const container =
+    document.getElementById("chatContainer");
+
+  setTimeout(() => {
+
+    container.scrollTo({
+      top: container.scrollHeight,
+      behavior: "smooth"
     });
-});
 
-// ===== HELPER FUNCTIONS =====
-function createMessageBubble(text, isUser, isLoading = false) {
-    const bubble = document.createElement('div');
-    bubble.className = `message-bubble ${isUser ? 'user-message' : 'ai-message'}`;
-    if (isLoading) bubble.classList.add('loading-bubble');
-    
-    // Convert newlines to breaks so the AI's formatting looks good
-    bubble.innerHTML = text.replace(/\n/g, '<br>'); 
-    return bubble;
+  }, 50);
+
 }
-
-// ===== THE REAL AI BRAIN =====
-async function getRealAIResponse(userMessage) {
-    // Safety check: Did they forget the API key?
-    if (API_KEY === "PASTE_YOUR_GOOGLE_API_KEY_HERE" || API_KEY === "") {
-        return "⚠️ Error: You forgot to add your API key in the App.js file!";
-    }
-
-    // Add system instructions based on the selected mode
-    let systemPrompt = "You are Nova AI, a helpful, friendly, and professional AI assistant.";
-    if (currentMode === 'study') systemPrompt += " You are an expert tutor. Explain things simply and use examples.";
-    if (currentMode === 'coding') systemPrompt += " You are an expert programmer. Provide clean, well-commented code examples.";
-    if (currentMode === 'research') systemPrompt += " You are a research analyst. Provide detailed, factual, and structured answers.";
-
-    try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: `${systemPrompt}\n\nUser: ${userMessage}` }] }]
-            })
-        });
-
-        const data = await response.json();
-        
-        // Check if the API returned a valid answer
-        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-            return data.candidates[0].content.parts[0].text;
-        } else {
-            return "I'm sorry, I couldn't generate a response. The API might be blocked or the prompt was unsafe.";
-        }
-    } catch (error) {
-        console.error("API Error:", error);
-        return "️ Network error. Please check your internet connection or verify your API key.";
-    }
-}
-
-// ===== SEND MESSAGE LOGIC =====
-async function sendMessage() {
-    const message = chatInput.value.trim();
-    if (!message) return; // Bug prevention: Don't send empty messages
-    
-    // 1. UI Setup: Hide welcome, show chat
-    welcomeScreen.classList.add('hidden');
-    chatHistory.classList.remove('hidden');
-    
-    // 2. Add User Message
-    chatHistory.appendChild(createMessageBubble(message, true));
-    chatInput.value = '';
-    chatHistory.scrollTop = chatHistory.scrollHeight;
-    
-    // 3. Add "Thinking..." Bubble
-    const loadingBubble = createMessageBubble("Thinking", false, true);
-    chatHistory.appendChild(loadingBubble);
-    chatHistory.scrollTop = chatHistory.scrollHeight;
-    
-    // 4. Get AI Response
-    const aiResponse = await getRealAIResponse(message);
-    
-    // 5. Remove loading bubble and show real response
-    loadingBubble.remove();
-    chatHistory.appendChild(createMessageBubble(aiResponse, false));
-    chatHistory.scrollTop = chatHistory.scrollHeight;
-}
-
-// ===== EVENT LISTENERS =====
-sendBtn.addEventListener('click', sendMessage);
-
-chatInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault(); // Prevents the page from refreshing if inside a form
-        sendMessage();
-    }
-});
-
-document.querySelectorAll('.suggestion-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-        chatInput.value = chip.textContent;
-        sendMessage();
-    });
-});
-
-newChatBtn.addEventListener('click', () => {
-    chatHistory.innerHTML = ''; 
-    chatHistory.classList.add('hidden');
-    welcomeScreen.classList.remove('hidden');
-    chatInput.value = '';
-    chatInput.focus();
-});
