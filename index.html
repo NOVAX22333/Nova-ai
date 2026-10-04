@@ -81,12 +81,16 @@
 <section class="view" id="v-saved"></section>
 
 <section class="view" id="v-quiz"><h1>Quizzes</h1><p class="sub">Generate a fresh, AI-written quiz on any topic.</p>
+<p class="sub" id="qinfo"></p>
 <div class="two"><div class="panel"><h3>New quiz</h3>
 <label>Topic (optional)</label><input id="qt" placeholder="e.g. Newton's laws of motion">
 <div class="two2"><div><label>Difficulty</label><select id="qd"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div>
 <div><label>Questions</label><select id="qn"><option value="5">5 questions</option><option value="10">10 questions</option></select></div></div>
 <button class="btn wide" id="qg">✨ Generate quiz</button></div>
-<div><h3>Past quizzes</h3><div id="qp"></div></div></div>
+<div><div class="panel" id="qbuy"><h3>Need more quizzes?</h3><p class="sub">You get 15 free quizzes every day. Extra quizzes never expire.</p>
+<button class="btn wide" data-p="p1">GH₵1 · 10 quizzes</button>
+<button class="btn wide" data-p="p2">GH₵2 · 20 quizzes</button></div>
+<h3>Past quizzes</h3><div id="qp"></div></div></div>
 <div id="qbox"></div></section>
 
 <section class="view" id="v-plan"><h1>Study planner</h1><p class="sub">Plan your sessions and build a routine that sticks.</p>
@@ -102,6 +106,7 @@
 <label>Answer font</label><select id="sf"><option value="Modern">Modern</option><option value="Serif">Serif</option><option value="Mono">Monospace</option><option value="Comfort">Easy to read</option></select>
 <label>Text size</label><select id="sz"><option value="14">Small</option><option value="16">Medium</option><option value="18">Large</option><option value="20">Extra large</option></select>
 <label>Appearance</label><button class="btn o" id="dk">Switch light / dark</button>
+<label>Admin code</label><input id="acode" type="password" autocomplete="off" placeholder="Admin only"><button class="btn o" id="adm" style="margin-top:8px">Unlock admin</button>
 <label>Data</label><button class="btn o" id="cl">Clear my chats</button>
 <label>Account</label><button class="btn o" id="lo">Log out</button></div></section>
 </main></div>
@@ -109,4 +114,5 @@
 <input type="file" id="ii" hidden accept="image/*">
 <div id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://js.paystack.co/v1/inline.js"></script>
 <script src="App.js"></script></body></html>
