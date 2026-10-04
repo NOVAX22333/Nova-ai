@@ -89,245 +89,35 @@ header h3{margin:0}#burger{display:none;background:none;border:0;font-size:22px}
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1d1d2c;color:#fff;padding:10px 16px;border-radius:10px;opacity:0;transition:.3s;pointer-events:none;z-index:30}
 #toast.on{opacity:1}
 @media(max-width:800px){aside{position:fixed;inset:0 auto 0 0;z-index:5;transform:translateX(-100%);transition:.25s}aside.open{transform:none}#burger{display:block}}
-/* ===== GLASS MORPHISM MAIN AREA ===== */
-main {
-  background: linear-gradient(135deg, #0a0a12 0%, #1a1a2e 50%, #0f0f1a 100%) !important;
-  position: relative;
-  overflow: hidden;
-}
 
-/* Large dimmed ACE_X logo watermark in background */
-main::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  height: 600px;
-  background-image: url('logo.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0.03;
-  pointer-events: none;
-  z-index: 0;
-}
+/* ===== LOGO ===== */
+.main-logo{display:block;width:180px;max-width:50vw;height:auto;margin:0 auto 20px;filter:drop-shadow(0 0 30px rgba(138,100,255,.4));animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 
-/* Make all sections sit above the watermark */
-.view {
-  position: relative;
-  z-index: 1;
-}
-
-/* Glass morphism effect for the empty chat state */
-#v-chat .empty {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 60px 40px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-#v-chat .empty h2 {
-  color: #ffffff !important;
-  font-size: 2.5em;
-  margin-bottom: 10px;
-  text-shadow: 0 0 30px rgba(138, 100, 255, 0.5);
-}
-
-#v-chat .empty > p {
-  color: rgba(255, 255, 255, 0.7) !important;
-  font-size: 1.1em;
-  margin-bottom: 30px;
-}
-
-/* Glass morphism quick action buttons */
-#v-chat .empty .chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-}
-
-#v-chat .empty .chip {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  padding: 12px 20px;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  font-size: 0.95em;
-}
-
-#v-chat .empty .chip:hover {
-  background: rgba(138, 100, 255, 0.15);
-  border-color: rgba(138, 100, 255, 0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 20px rgba(138, 100, 255, 0.2);
-}
-
-/* Make the header dark too */
-header {
-  background: rgba(10, 10, 18, 0.8) !important;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  color: #ffffff;
-}
-
-header h3 {
-  color: #ffffff !important;
-}
-
-/* Dark theme for chat input area */
-.comp {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 12px;
-}
-
-#inp {
-  background: rgba(255, 255, 255, 0.05);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  padding: 12px 16px;
-}
-
-#inp::placeholder {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-/* Chat messages area */
-#msgs {
-  background: transparent;
-}
-
-.m {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 12px;
-  color: #ffffff;
-}
-
-.m .bd {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-/* Stats cards on dashboard */
-.st {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 20px;
-  color: #ffffff;
-}
-
-.st span {
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.st b {
-  color: #ffffff;
-  font-size: 1.8em;
-}
-
-/* Panel styling */
-.panel {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 24px;
-  color: #ffffff;
-}
-
-.panel h3 {
-  color: #ffffff;
-}
-
-/* Quick actions chips on dashboard */
-.chips .chip {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-}
-
-.chips .chip:hover {
-  background: rgba(138, 100, 255, 0.15);
-  border-color: rgba(138, 100, 255, 0.4);
-}
-
-/* Text colors for dark theme */
-.sub {
-  color: rgba(255, 255, 255, 0.6) !important;
-}
-
-h1, h3 {
-  color: #ffffff !important;
-}
-
-/* Input fields */
-input, select, textarea {
-  background: rgba(255, 255, 255, 0.05);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 10px 12px;
-}
-
-input::placeholder, textarea::placeholder {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-label {
-  color: rgba(255, 255, 255, 0.7);
-  }/* Main logo in the center of empty chat */
-.main-logo {
-  width: 180px;
-  height: auto;
-  margin: 0 auto 20px;
-  display: block;
-  filter: drop-shadow(0 0 30px rgba(138, 100, 255, 0.4));
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-/* Large dimmed background watermark */
-main::before {
-  content: '';
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 800px;
-  height: 800px;
-  background-image: url('logo.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0.02;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.view {
-  position: relative;
-  z-index: 1;
-  }
+/* ===== GLASS (dark theme) ===== */
+.view{position:relative;z-index:1}
+[data-theme=dark] main{background:linear-gradient(135deg,#0a0a12 0%,#1a1a2e 50%,#0f0f1a 100%);position:relative;overflow:hidden}
+[data-theme=dark] main::before{content:"";position:absolute;top:50%;left:50%;width:min(85vw,750px);height:min(85vw,750px);transform:translate(-50%,-50%);background:url(logo.png) center/contain no-repeat;opacity:.03;pointer-events:none;z-index:0}
+[data-theme=dark] header{background:rgba(10,10,18,.8);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.05);color:#fff}
+[data-theme=dark] h1,[data-theme=dark] h3{color:#fff}
+[data-theme=dark] .sub{color:rgba(255,255,255,.6)}
+[data-theme=dark] label{color:rgba(255,255,255,.7)}
+[data-theme=dark] .box label{color:#17171f}
+[data-theme=dark] #v-chat .empty{background:rgba(255,255,255,.03);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:clamp(28px,6vw,60px) clamp(18px,5vw,40px);box-shadow:0 8px 32px rgba(0,0,0,.3);color:rgba(255,255,255,.7);font-size:1.1em;max-width:640px}
+[data-theme=dark] #v-chat .empty h2{color:#fff;font-size:2.5em;margin:0 0 10px;text-shadow:0 0 30px rgba(138,100,255,.5)}
+[data-theme=dark] #v-chat .empty .chips{gap:12px}
+[data-theme=dark] #v-chat .empty .chip{padding:12px 20px;border-radius:12px;font-size:.95em}
+[data-theme=dark] .chip{background:rgba(255,255,255,.05);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1);color:#fff;transition:all .3s ease}
+[data-theme=dark] .chip:hover{background:rgba(138,100,255,.15);border-color:rgba(138,100,255,.4);transform:translateY(-2px);box-shadow:0 5px 20px rgba(138,100,255,.2)}
+[data-theme=dark] .comp{background:rgba(255,255,255,.03);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);border-radius:16px;margin:8px 12px 12px}
+[data-theme=dark] #msgs{background:transparent}
+[data-theme=dark] .m .bd{background:rgba(255,255,255,.05);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.9)}
+[data-theme=dark] .st,[data-theme=dark] .panel{background:rgba(255,255,255,.03);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);color:#fff}
+[data-theme=dark] .st{border-radius:12px;padding:20px}
+[data-theme=dark] .st span{color:rgba(255,255,255,.6)}
+[data-theme=dark] .st b{color:#fff;font-size:1.8em}
+[data-theme=dark] .panel{border-radius:16px;padding:24px}
+[data-theme=dark] input,[data-theme=dark] select,[data-theme=dark] textarea{background:rgba(255,255,255,.05);color:#fff;border:1px solid rgba(255,255,255,.1);border-radius:8px}
+[data-theme=dark] input::placeholder,[data-theme=dark] textarea::placeholder{color:rgba(255,255,255,.4)}
+[data-theme=dark] .box input{background:#f7f7fa;color:#17171f;border-color:#e4e1d8}
+select option{color:#17171f;background:#fff}
