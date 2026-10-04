@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import { cors, getUser, rpc, FREE, ADMIN_LIMIT } from "./_lib.js";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -13,27 +14,33 @@ const SYSTEM =
 const hits = new Map();
 
 export default async function handler(req, res) {
-  const origins = (process.env.ALLOWED_ORIGIN || "http://localhost:8000").split(",").map((s) => s.trim());
-  const origin = req.headers.origin;
-  if (origins.includes(origin)) res.setHeader("Access-Control-Allow-Origin", origin);
-  res.setHeader("Vary", "Origin");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-  if (req.method === "OPTIONS") return res.status(200).end();
+  if (cors(req, res)) return;
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
-  const ip = (req.headers["x-forwarded-for"] || "").split(",")[0] || "unknown";
+  const user = await getUser(req);
+  if (!user) return res.status(401).json({ error: "Please log in first." });
+
   const now = Date.now();
-  const recent = (hits.get(ip) || []).filter((t) => now - t < 60000);
+  const recent = (hits.get(user.id) || []).filter((t) => now - t < 60000);
   if (recent.length >= 20) return res.status(429).json({ error: "Too many messages. Please wait a minute." });
   recent.push(now);
-  hits.set(ip, recent);
+  hits.set(user.id, recent);
 
   try {
-    const { message, history, image } = req.body || {};
+    const { message, history, image, quiz } = req.body || {};
     if (typeof message !== "string" || !message.trim()) return res.status(400).json({ error: "Message is required" });
     if (message.length > 25000) return res.status(400).json({ error: "Message is too long" });
+
+    if (quiz === true) {
+      const q = await rpc("consume_quiz", { uid: user.id, free_limit: FREE, admin_limit: ADMIN_LIMIT });
+      if (!q) return res.status(500).json({ error: "Could not check your quiz limit. Try again." });
+      if (!q.ok) {
+        return res.status(402).json({
+          error: q.reason === "limit" ? "You reached today's admin limit." : "Your 15 free quizzes for today are used. Buy more to continue.",
+          reason: q.reason,
+        });
+      }
+    }
 
     const past = Array.isArray(history)
       ? history
@@ -64,4 +71,4 @@ export default async function handler(req, res) {
     console.error("AI error:", error);
     res.status(500).json({ error: "Failed to get response from AI" });
   }
-                                                                }
+                                                  }
