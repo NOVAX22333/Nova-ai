@@ -16,6 +16,65 @@ function mathIn(el){if(!window.katex)return;el.querySelectorAll('.mx').forEach(s
 const note=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2600)};
 const sha=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(x=>x.toString(16).padStart(2,'0')).join('');
 const key=()=>me||'guest';
+
+// ===== CREDIT & PAYSTACK SYSTEM =====
+function getCreditData() {
+    const today = ymd(new Date());
+    let data = ls.g('nv_credits_' + key(), { count: 15, lastDate: today });
+    if (data.lastDate !== today) {
+        data = { count: 15, lastDate: today };
+        ls.s('nv_credits_' + key(), data);
+    }
+    return data;
+}
+function hasCredits() { return getCreditData().count > 0; }
+function deductCredit() {
+    let data = getCreditData();
+    data.count = Math.max(0, data.count - 1);
+    ls.s('nv_credits_' + key(), data);
+    return data.count;
+}
+function addCredits(amount) {
+    let data = getCreditData();
+    data.count += amount;
+    data.lastDate = ymd(new Date());
+    ls.s('nv_credits_' + key(), data);
+}
+function renderQuizCredits() {
+    const creditsEl = $('#quizCredits');
+    if (creditsEl) {
+        const data = getCreditData();
+        creditsEl.textContent = `Quizzes Remaining: ${data.count}`;
+        creditsEl.style.color = data.count <= 2 ? '#ef4444' : 'var(--g)';
+    }
+}
+function openPaystackModal(amountGHS, creditsToAdd) {
+    if (!me) return openAuth('Log in to purchase quiz credits.');
+    const amountInPesewas = amountGHS * 100;
+    const ref = 'ACEX_' + Math.floor((Math.random() * 1000000000) + 1);
+    const handler = PaystackPop.setup({
+        key: 'pk_test_YOUR_PUBLIC_KEY_HERE', // ⚠️ REPLACE WITH YOUR REAL PAYSTACK PUBLIC KEY
+        email: me,
+        amount: amountInPesewas,
+        currency: 'GHS',
+        ref: ref,
+        callback: function(response) {
+            addCredits(creditsToAdd);
+            note('Payment successful! ' + creditsToAdd + ' quizzes added.');
+            closePaystackModal();
+            renderQuizCredits();
+        },
+        onClose: function() {
+            note('Payment window closed.');
+        }
+    });
+    handler.openIframe();
+}
+function closePaystackModal() {
+    $('#payModal').hidden = true;
+}
+// ==========================================
+
 const load=()=>{chats=ls.g('nv_c_'+key(),[]);saved=ls.g('nv_s_'+key(),[]);quizzes=ls.g('nv_q_'+key(),[]);plan=ls.g('nv_p_'+key(),[])};
 const store=()=>{ls.s('nv_c_'+key(),chats.map(c=>({...c,msgs:c.msgs.map(({img,...m})=>m)})));ls.s('nv_s_'+key(),saved);ls.s('nv_q_'+key(),quizzes);ls.s('nv_p_'+key(),plan)};
 document.documentElement.dataset.theme=ls.g('nv_th','dark');
@@ -45,7 +104,7 @@ $('#go').onclick=async()=>{
   users[e]={name:n,role:'Student',h};ls.s('nv_users',users);
  }else if(!users[e]||users[e].h!==h)return er('Wrong email or password.');
  me=e;ses.s('nv_me',me);$('#pw').value='';$('#auth').hidden=true;
- load();$('#sn').value=users[me].name;$('#sr').value=users[me].role;paint();refresh();
+ load();$('#sn').value=users[me].name;$('#sr').value=users[me].role;paint();refresh();renderQuizCredits();
  if($('#inp').value.trim()||att.img||att.txt)send();
 };
 function paint(){
@@ -57,11 +116,11 @@ function refresh(){dash();renderPast();renderCal()}
 /* ---- navigation ---- */
 const T={home:'Dashboard',chat:'Tutor Chat',history:'Chat History',saved:'Saved Items',quiz:'Quizzes',plan:'Study Planner',settings:'Settings'};
 function show(v){$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('.nav').forEach(x=>x.classList.toggle('on',x.dataset.v===v));$('#ttl').textContent=T[v];$('#side').classList.remove('open');
- if(v==='home')dash();if(v==='history')renderHist();if(v==='saved')renderSaved();if(v==='quiz')renderPast();if(v==='plan')renderCal();if(v==='chat')$('#inp').focus()}
+ if(v==='home')dash();if(v==='history')renderHist();if(v==='saved')renderSaved();if(v==='quiz'){renderPast();renderQuizCredits();}if(v==='plan')renderCal();if(v==='chat')$('#inp').focus()}
 $$('.nav').forEach(b=>b.onclick=()=>{if(b.id==='newc')newChat();show(b.dataset.v)});
 $('#burger').onclick=()=>$('#side').classList.toggle('open');
 $('#startc').onclick=()=>{newChat();show('chat')};
-$('#up').onclick=()=>note('Pro plans are coming soon.');
+$('#up').onclick=()=>openPaystackModal(3, 10);
 
 /* ---- dashboard ---- */
 function dash(){
@@ -74,7 +133,7 @@ function dash(){
 /* ---- attachments ---- */
 function shrink(f){return new Promise((ok,bad)=>{const r=new FileReader();r.onerror=()=>bad(new Error('Could not read the image.'));r.onload=()=>{const i=new Image();i.onerror=()=>bad(new Error('That is not a valid image.'));i.onload=()=>{const k=Math.min(1,1024/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext('2d').drawImage(i,0,0,c.width,c.height);ok(c.toDataURL('image/jpeg',0.8))};i.src=r.result};r.readAsDataURL(f)})}
 function pv(){const p=$('#pv'),on=att.img||att.txt;p.hidden=!on;p.innerHTML='';if(!on)return;
- const s=document.createElement('span');s.textContent=(att.img?'🖼️ ':'📎 ')+att.name;const b=document.createElement('button');b.textContent='Remove';
+ const s=document.createElement('span');s.textContent=(att.img?'🖼️ ':' ')+att.name;const b=document.createElement('button');b.textContent='Remove';
  b.onclick=()=>{att={img:null,txt:null,name:''};pv()};p.append(s,b)}
 $('#bi').onclick=()=>{$('#ii').value='';$('#ii').click()};
 $('#bf').onclick=()=>{$('#fi').value='';$('#fi').click()};
@@ -94,7 +153,7 @@ async function apiAsk(msg,history,image){
  finally{clearTimeout(to)}}
 function newChat(){chat={id:Date.now(),title:'New chat',msgs:[]};renderMsgs()}
 function renderMsgs(){const box=$('#msgs');box.innerHTML='';
- if(!chat.msgs.length){const e=document.createElement('div');e.className='empty';e.innerHTML='<img src="logo.png" alt="ACE_X AI" class="main-logo" onerror="this.remove()"><h2>ACE_X AI</h2>Your coding and study assistant. Ask me anything.<div class="chips e"></div>';
+ if(!chat.msgs.length){const e=document.createElement('div');e.className='empty';e.innerHTML='<img src="logo.png" alt="ACE_X AI" class="main-logo" onerror="this.style.display=\'none\'"><h2 style="margin-top:5px;font-size:1.1em;opacity:0.8;font-weight:400">Your coding and study assistant. Ask me anything.</h2><div class="chips e"></div>';
   P.slice(0,4).forEach(p=>{const b=document.createElement('button');b.className='chip';b.textContent=p[0];b.onclick=()=>{$('#inp').value=p[1];$('#inp').focus()};e.lastChild.appendChild(b)});box.appendChild(e);return}
  chat.msgs.forEach(m=>{const d=document.createElement('div');d.className='m '+m.r;
   d.innerHTML='<div class="av">'+(m.r==='user'?'U':'N')+'</div><div class="bd">'+fmt(m.t)+(m.r==='assistant'?'<button class="sv cp">Copy</button><button class="sv sa">🔖 Save</button>':'')+'</div>';
@@ -136,14 +195,24 @@ function renderSaved(){rows($('#v-saved'),saved,'Remove',()=>{},s=>{saved=saved.
 /* ---- quizzes ---- */
 $('#qg').onclick=async()=>{
  if(!me)return openAuth('Log in to generate quizzes.');
+ if(!hasCredits()) {
+   return openPaystackModal(3, 10); // Opens the modal if they have 0 credits
+ }
  if(busy)return;busy=true;const b=$('#qg');b.disabled=true;b.textContent='Generating…';
  const typed=$('#qt').value.trim(),topic=typed||'a mix of ICT, mathematics and science',n=+$('#qn').value,d=$('#qd').value;
  try{
   const t=await apiAsk('Create a '+n+'-question multiple choice quiz ('+d+' difficulty) for Senior High School students in Ghana on: '+topic+'. Reply with ONLY a JSON array and no other text or markdown. Each item must look like {"q":"question","o":["A","B","C","D"],"a":0,"e":"short explanation"} where a is the index (0-3) of the correct option. Do not use LaTeX or dollar signs; write any maths in plain text.');
   const qs=JSON.parse(t.slice(t.indexOf('['),t.lastIndexOf(']')+1));
   if(!Array.isArray(qs)||!qs.length||!qs.every(x=>x&&typeof x.q==='string'&&Array.isArray(x.o)&&x.o.length>1&&Number.isInteger(x.a)&&x.a>=0&&x.a<x.o.length))throw 0;
+  
+  // Deduct credit ONLY on successful generation
+  deductCredit();
+  renderQuizCredits();
+  
   quiz={topic:typed||'Mixed quiz',qs,ans:[],done:false};renderQuiz();
- }catch(x){note(x instanceof SyntaxError||x===0?'Could not make the quiz. Please try again.':x.message)}
+ }catch(x){
+  note(x instanceof SyntaxError||x===0?'Could not make the quiz. Credit not deducted. Try again.':x.message)
+ }
  b.disabled=false;b.textContent='✨ Generate quiz';busy=false};
 function score(){return quiz.qs.filter((q,i)=>quiz.ans[i]===q.a).length}
 function renderQuiz(){const box=$('#qbox');box.innerHTML='';if(!quiz)return;
@@ -189,9 +258,4 @@ $('#qa').append(...P.map(p=>{const b=document.createElement('button');b.classNam
 /* ---- settings ---- */
 $('#ss').onclick=()=>{if(!me)return openAuth('Log in to edit your profile.');const n=$('#sn').value.trim();if(!n)return note('Enter your name.');users[me].name=n;users[me].role=$('#sr').value;ls.s('nv_users',users);paint();note('Changes saved')};
 $('#dk').onclick=()=>{const t=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=t;ls.s('nv_th',t)};
-$('#cl').onclick=()=>{if(!confirm('Delete all your chats on this device?'))return;chats=[];store();newChat();dash();note('Chats cleared')};
-$('#lo').onclick=()=>{if(!me)return note('You are not logged in.');me=null;ses.s('nv_me',null);load();quiz=null;renderQuiz();paint();refresh();newChat();show('chat');note('Logged out')};
-
-/* ---- start ---- */
-if(me){load();$('#sn').value=users[me].name;$('#sr').value=users[me].role}
-paint();refresh();newChat();show('chat');
+$('#cl').onclick=()=>{if(!confirm('Delete all your chats on this device?'))return;chats=[];s
