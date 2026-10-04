@@ -121,3 +121,6 @@ header h3{margin:0}#burger{display:none;background:none;border:0;font-size:22px}
 [data-theme=dark] input::placeholder,[data-theme=dark] textarea::placeholder{color:rgba(255,255,255,.4)}
 [data-theme=dark] .box input{background:#f7f7fa;color:#17171f;border-color:#e4e1d8}
 select option{color:#17171f;background:#fff}
+.bd .katex-display{overflow-x:auto;overflow-y:hidden;padding:4px 0}
+.mx{font-family:ui-monospace,Menlo,monospace}
+.mx .katex{font-family:KaTeX_Main,"Times New Roman",serif}
