@@ -6,7 +6,7 @@ body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background
 [hidden]{display:none!important}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
-h1,h2,.brand{font-family:Georgia,"Times New Roman",serif}
+h1,h2{font-family:Georgia,"Times New Roman",serif}
 h1{margin:0 0 4px;font-size:clamp(24px,5vw,34px)}
 h3{margin:0 0 10px}
 .sub{color:var(--mu);margin:0 0 14px;line-height:1.5}
@@ -27,9 +27,30 @@ input.ck{width:auto}
 #err{color:#c0392b;font-size:13px;min-height:18px;margin-top:8px}
 .lnk{background:none;border:0;color:#c77d00;font-weight:600;padding:0}
 #app{display:flex;height:100%}
+
+/* FIXED BRAND LOGO STYLING */
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 20px;
+}
+.brand img {
+  width: 100px;
+  height: auto;
+  margin-bottom: 10px;
+}
+.brand-text {
+  font-size: 14px;
+  opacity: 0.8;
+  letter-spacing: 2px;
+  color: var(--a);
+  font-weight: 700;
+}
+
 aside{width:240px;background:var(--side);color:#dcdcea;border-right:1px solid var(--bd);display:flex;flex-direction:column;padding:16px;gap:4px;flex-shrink:0;overflow:auto}
-.brand{font-size:22px;font-weight:700;margin-bottom:14px;display:flex;flex-direction:column;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.1)}.brand span{color:var(--a)}
-.brand img{width:100px;height:auto;margin-bottom:8px}
 aside .nav{background:none;border:0;color:inherit;text-align:left;padding:11px 12px;border-radius:10px}
 aside .nav.on{background:rgba(245,158,11,.14);color:var(--g)}
 .me{margin-top:auto;border-top:1px solid #23233a;padding-top:12px;font-size:14px}
@@ -94,11 +115,11 @@ header h3{margin:0}#burger{display:none;background:none;border:0;font-size:22px}
 /* ===== ACE_X LOGO STYLES ===== */
 .main-logo {
   display: block;
-  width: 220px;
-  max-width: 60vw;
+  width: 180px;
+  max-width: 50vw;
   height: auto;
-  margin: 0 auto 15px;
-  filter: drop-shadow(0 0 25px rgba(138, 100, 255, 0.5));
+  margin: 0 auto 20px;
+  filter: drop-shadow(0 0 30px rgba(138, 100, 255, 0.4));
   animation: float 3s ease-in-out infinite;
 }
 @keyframes float {
@@ -106,7 +127,7 @@ header h3{margin:0}#burger{display:none;background:none;border:0;font-size:22px}
   50% { transform: translateY(-10px); }
 }
 
-/* Background Watermark Logo (Shows on Chat, Quizzes, Planner, etc.) */
+/* Background Watermark Logo */
 main::before {
   content: "";
   position: absolute;
@@ -121,13 +142,11 @@ main::before {
   z-index: 0;
 }
 
-/* Make the watermark slightly more visible in dark mode */
 [data-theme="dark"] main::before {
   opacity: 0.07;
   filter: drop-shadow(0 0 40px rgba(138, 100, 255, 0.15));
 }
 
-/* Glassmorphism enhancements for dark mode */
 [data-theme=dark] main{background:linear-gradient(135deg,#0a0a12 0%,#1a1a2e 50%,#0f0f1a 100%);position:relative;overflow:hidden}
 [data-theme=dark] header{background:rgba(10,10,18,.8);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.05);color:#fff}
 [data-theme=dark] h1,[data-theme=dark] h3{color:#fff}
