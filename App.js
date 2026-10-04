@@ -90,7 +90,7 @@ async function apiAsk(msg,history,image){
  finally{clearTimeout(to)}}
 function newChat(){chat={id:Date.now(),title:'New chat',msgs:[]};renderMsgs()}
 function renderMsgs(){const box=$('#msgs');box.innerHTML='';
- if(!chat.msgs.length){const e=document.createElement('div');e.className='empty';e.innerHTML='<h2>ACE_X AI</h2>Your coding and study assistant. Ask me anything.<div class="chips e"></div>';
+ if(!chat.msgs.length){const e=document.createElement('div');e.className='empty';e.innerHTML='<img src="logo.png" alt="ACE_X AI" class="main-logo" onerror="this.remove()"><h2>ACE_X AI</h2>Your coding and study assistant. Ask me anything.<div class="chips e"></div>';
   P.slice(0,4).forEach(p=>{const b=document.createElement('button');b.className='chip';b.textContent=p[0];b.onclick=()=>{$('#inp').value=p[1];$('#inp').focus()};e.lastChild.appendChild(b)});box.appendChild(e);return}
  chat.msgs.forEach(m=>{const d=document.createElement('div');d.className='m '+m.r;
   d.innerHTML='<div class="av">'+(m.r==='user'?'U':'N')+'</div><div class="bd">'+fmt(m.t)+(m.r==='assistant'?'<button class="sv cp">Copy</button><button class="sv sa">🔖 Save</button>':'')+'</div>';
