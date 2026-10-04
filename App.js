@@ -8,7 +8,11 @@ if(me&&!users[me])me=null;
 const pad=n=>String(n).padStart(2,'0'),ymd=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 let sel=ymd(new Date());
 const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-const fmt=t=>esc(t).replace(/\x60{3}(?:\w*\n)?([\s\S]*?)\x60{3}/g,'<pre>$1</pre>').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
+const fmt=t=>{const K=[];
+ t=t.replace(/\x60{3}(?:\w*\n)?([\s\S]*?)\x60{3}/g,(m,c)=>{K.push('<pre>'+esc(c)+'</pre>');return '\x01'+(K.length-1)+'\x01'});
+ t=t.replace(/\$\$([\s\S]+?)\$\$|\\\[([\s\S]+?)\\\]|\\\(([\s\S]+?)\\\)|\$(?!\s)([^\$\n]*[^\s\$])\$(?!\d)/g,(m,a,b,c,d)=>{const x=a!=null?a:b!=null?b:c!=null?c:d;K.push('<span class="mx" data-d="'+(a!=null||b!=null?1:0)+'">'+esc(x)+'</span>');return '\x01'+(K.length-1)+'\x01'});
+ return esc(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>').replace(/\x01(\d+)\x01/g,(m,i)=>K[i])};
+function mathIn(el){if(!window.katex)return;el.querySelectorAll('.mx').forEach(s=>{try{katex.render(s.textContent,s,{displayMode:s.dataset.d==='1',throwOnError:false})}catch(e){}})}
 const note=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2600)};
 const sha=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(x=>x.toString(16).padStart(2,'0')).join('');
 const key=()=>me||'guest';
@@ -98,7 +102,7 @@ function renderMsgs(){const box=$('#msgs');box.innerHTML='';
   const c=d.querySelector('.cp');
   if(c){c.onclick=async()=>{try{await navigator.clipboard.writeText(m.t);note('Copied')}catch(e){note('Could not copy')}};
    d.querySelector('.sa').onclick=()=>{saved.unshift({id:Date.now(),t:m.t});store();note('Saved')}}
-  box.appendChild(d)});
+  box.appendChild(d);mathIn(d)});
  box.scrollTop=box.scrollHeight}
 async function send(){
  const inp=$('#inp'),text=inp.value.trim();
@@ -135,7 +139,7 @@ $('#qg').onclick=async()=>{
  if(busy)return;busy=true;const b=$('#qg');b.disabled=true;b.textContent='Generating…';
  const typed=$('#qt').value.trim(),topic=typed||'a mix of ICT, mathematics and science',n=+$('#qn').value,d=$('#qd').value;
  try{
-  const t=await apiAsk('Create a '+n+'-question multiple choice quiz ('+d+' difficulty) for Senior High School students in Ghana on: '+topic+'. Reply with ONLY a JSON array and no other text or markdown. Each item must look like {"q":"question","o":["A","B","C","D"],"a":0,"e":"short explanation"} where a is the index (0-3) of the correct option.');
+  const t=await apiAsk('Create a '+n+'-question multiple choice quiz ('+d+' difficulty) for Senior High School students in Ghana on: '+topic+'. Reply with ONLY a JSON array and no other text or markdown. Each item must look like {"q":"question","o":["A","B","C","D"],"a":0,"e":"short explanation"} where a is the index (0-3) of the correct option. Do not use LaTeX or dollar signs; write any maths in plain text.');
   const qs=JSON.parse(t.slice(t.indexOf('['),t.lastIndexOf(']')+1));
   if(!Array.isArray(qs)||!qs.length||!qs.every(x=>x&&typeof x.q==='string'&&Array.isArray(x.o)&&x.o.length>1&&Number.isInteger(x.a)&&x.a>=0&&x.a<x.o.length))throw 0;
   quiz={topic:typed||'Mixed quiz',qs,ans:[],done:false};renderQuiz();
