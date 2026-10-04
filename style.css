@@ -6,7 +6,7 @@ body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background
 [hidden]{display:none!important}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
-h1,h2{font-family:Georgia,"Times New Roman",serif}
+h1,h2,.brand{font-family:Georgia,"Times New Roman",serif}
 h1{margin:0 0 4px;font-size:clamp(24px,5vw,34px)}
 h3{margin:0 0 10px}
 .sub{color:var(--mu);margin:0 0 14px;line-height:1.5}
@@ -27,47 +27,25 @@ input.ck{width:auto}
 #err{color:#c0392b;font-size:13px;min-height:18px;margin-top:8px}
 .lnk{background:none;border:0;color:#c77d00;font-weight:600;padding:0}
 #app{display:flex;height:100%}
-
-/* FIXED BRAND LOGO STYLING */
-.brand {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  margin-bottom: 20px;
-}
-.brand img {
-  width: 100px;
-  height: auto;
-  margin-bottom: 10px;
-}
-.brand-text {
-  font-size: 14px;
-  opacity: 0.8;
-  letter-spacing: 2px;
-  color: var(--a);
-  font-weight: 700;
-}
-
 aside{width:240px;background:var(--side);color:#dcdcea;border-right:1px solid var(--bd);display:flex;flex-direction:column;padding:16px;gap:4px;flex-shrink:0;overflow:auto}
+.brand{font-size:22px;font-weight:700;margin-bottom:14px}.brand span{color:var(--a)}
 aside .nav{background:none;border:0;color:inherit;text-align:left;padding:11px 12px;border-radius:10px}
 aside .nav.on{background:rgba(245,158,11,.14);color:var(--g)}
 .me{margin-top:auto;border-top:1px solid #23233a;padding-top:12px;font-size:14px}
 .me small{display:block;color:#8b8fa8}
 .me .btn{width:100%;margin-top:8px}
 .me .btn.o{background:transparent;color:#dcdcea;border-color:#23233a}
-main{flex:1;display:flex;flex-direction:column;min-width:0;position:relative}
-header{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--bd);background:var(--card);position:relative;z-index:1}
+main{flex:1;display:flex;flex-direction:column;min-width:0}
+header{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--bd);background:var(--card)}
 header h3{margin:0}#burger{display:none;background:none;border:0;font-size:22px}
-.view{flex:1;overflow:auto;padding:22px;display:none;position:relative;z-index:1}
+.view{flex:1;overflow:auto;padding:22px;display:none}
 .view.on{display:block}
 #v-chat.on{display:flex;flex-direction:column;padding:0;overflow:hidden}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
-.st{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;position:relative;z-index:1}
+.st{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px}
 .st span{color:var(--mu);font-size:13px}.st b{display:block;font:700 30px monospace;margin-top:6px}
-.panel{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:14px;position:relative;z-index:1}
+.panel{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:14px}
 .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;align-items:start}
 .two2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .bar{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:13px}
@@ -112,42 +90,14 @@ header h3{margin:0}#burger{display:none;background:none;border:0;font-size:22px}
 #toast.on{opacity:1}
 @media(max-width:800px){aside{position:fixed;inset:0 auto 0 0;z-index:5;transform:translateX(-100%);transition:.25s}aside.open{transform:none}#burger{display:block}}
 
-/* ===== ACE_X LOGO STYLES ===== */
-.main-logo {
-  display: block;
-  width: 180px;
-  max-width: 50vw;
-  height: auto;
-  margin: 0 auto 20px;
-  filter: drop-shadow(0 0 30px rgba(138, 100, 255, 0.4));
-  animation: float 3s ease-in-out infinite;
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
+/* ===== LOGO ===== */
+.main-logo{display:block;width:180px;max-width:50vw;height:auto;margin:0 auto 20px;filter:drop-shadow(0 0 30px rgba(138,100,255,.4));animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 
-/* Background Watermark Logo */
-main::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: min(80vw, 600px);
-  height: min(80vw, 600px);
-  transform: translate(-50%, -50%);
-  background: url('logo.png') center/contain no-repeat;
-  opacity: 0.04;
-  pointer-events: none;
-  z-index: 0;
-}
-
-[data-theme="dark"] main::before {
-  opacity: 0.07;
-  filter: drop-shadow(0 0 40px rgba(138, 100, 255, 0.15));
-}
-
+/* ===== GLASS (dark theme) ===== */
+.view{position:relative;z-index:1}
 [data-theme=dark] main{background:linear-gradient(135deg,#0a0a12 0%,#1a1a2e 50%,#0f0f1a 100%);position:relative;overflow:hidden}
+[data-theme=dark] main::before{content:"";position:absolute;top:50%;left:50%;width:min(85vw,750px);height:min(85vw,750px);transform:translate(-50%,-50%);background:url(logo.png) center/contain no-repeat;opacity:.03;pointer-events:none;z-index:0}
 [data-theme=dark] header{background:rgba(10,10,18,.8);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.05);color:#fff}
 [data-theme=dark] h1,[data-theme=dark] h3{color:#fff}
 [data-theme=dark] .sub{color:rgba(255,255,255,.6)}
@@ -171,6 +121,6 @@ main::before {
 [data-theme=dark] input::placeholder,[data-theme=dark] textarea::placeholder{color:rgba(255,255,255,.4)}
 [data-theme=dark] .box input{background:#f7f7fa;color:#17171f;border-color:#e4e1d8}
 select option{color:#17171f;background:#fff}
-.bd .katex-display{overflow-x:auto;overflow-y:hidden;padding:4px 0}
+  .bd .katex-display{overflow-x:auto;overflow-y:hidden;padding:4px 0}
 .mx{font-family:ui-monospace,Menlo,monospace}
-.mx .katex{font-family:KaTeX_Main,"Times New Roman",serif}
+.mx .katex{font-family:KaTeX_Main,"Times New Roman",serif}     
