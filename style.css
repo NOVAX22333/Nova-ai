@@ -294,4 +294,40 @@ input::placeholder, textarea::placeholder {
 
 label {
   color: rgba(255, 255, 255, 0.7);
+  }/* Main logo in the center of empty chat */
+.main-logo {
+  width: 180px;
+  height: auto;
+  margin: 0 auto 20px;
+  display: block;
+  filter: drop-shadow(0 0 30px rgba(138, 100, 255, 0.4));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Large dimmed background watermark */
+main::before {
+  content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background-image: url('logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.view {
+  position: relative;
+  z-index: 1;
   }
