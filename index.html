@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
+<html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ACE_X AI - Coding and Study Assistant for Students</title>
 <meta name="description" content="ACE_X AI is an AI coding and study assistant for students in Ghana. Get help with programming, ICT, maths, science and WASSCE revision.">
@@ -12,180 +10,103 @@
 <meta property="og:url" content="https://novax22333.github.io/Nova-ai/">
 <meta name="theme-color" content="#0a0a12">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script src="https://js.paystack.co/v1/inline.js"></script>
 <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<style>
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 20px;
+}
+.brand img {
+  width: 120px;
+  height: auto;
+  margin-bottom: 10px;
+}
+.brand-text {
+  font-size: 14px;
+  opacity: 0.8;
+  letter-spacing: 2px;
+}
+</style>
+</head><body>
 
-<div id="auth" hidden>
-  <div class="box">
-    <button class="x" id="ax" aria-label="Close"></button>
-    <h2 id="at">Log in</h2>
-    <p id="am">Log in to continue.</p>
-    <div id="nm" hidden><label>Full name</label><input id="name" autocomplete="name"></div>
-    <label>Email</label><input id="email" type="email" autocomplete="email">
-    <label>Password</label><input id="pw" type="password" autocomplete="current-password">
-    <div id="err"></div>
-    <button class="btn" id="go">Log in</button>
-    <p style="margin-top:14px;text-align:center"><span id="sw">Don't have an account?</span> <button class="lnk" id="tg">Sign Up</button></p>
-  </div>
-</div>
+<div id="auth" hidden><div class="box">
+<button class="x" id="ax" aria-label="Close">✕</button>
+<h2 id="at">Log in</h2><p id="am">Log in to continue.</p>
+<div id="nm" hidden><label>Full name</label><input id="name" autocomplete="name"></div>
+<label>Email</label><input id="email" type="email" autocomplete="email">
+<label>Password</label><input id="pw" type="password" autocomplete="current-password">
+<div id="err"></div>
+<button class="btn" id="go">Log in</button>
+<p style="margin-top:14px;text-align:center"><span id="sw">Don't have an account?</span> <button class="lnk" id="tg">Sign Up</button></p>
+</div></div>
 
 <div id="app">
-  <aside id="side">
-    <div class="brand">
-      <img src="logo.png" alt="ACE_X AI Logo">
-      <span class="brand-text">YOUR AI ASSISTANT</span>
-    </div>
-    <button class="nav" data-v="home">▦ Dashboard</button>
-    <button class="nav on" data-v="chat" id="newc">💬 Tutor Chat</button>
-    <button class="nav" data-v="history">🕘 Chat History</button>
-    <button class="nav" data-v="saved">🔖 Saved Items</button>
-    <button class="nav" data-v="quiz">🧠 Quizzes</button>
-    <button class="nav" data-v="plan">📅 Planner</button>
-    <button class="nav" data-v="settings">⚙️ Settings</button>
-    <div class="me">
-      <span id="mn">Guest</span><small id="mr"></small>
-      <button class="btn" id="li">Log in / Sign up</button>
-      <button class="btn o" id="up">⭐ Upgrade to Pro</button>
-    </div>
-  </aside>
-  
-  <main>
-    <header>
-      <button id="burger" aria-label="Menu">☰</button>
-      <h3 id="ttl">Tutor Chat</h3>
-      <button class="ic2" id="fz" aria-label="Change font" style="margin-left:auto;width:auto;padding:0 10px">Aa</button>
-    </header>
-
-    <section class="view" id="v-home">
-      <div class="top">
-        <div><h1 id="hi"></h1><p class="sub">Here's a snapshot of your studying so far.</p></div>
-        <button class="btn" id="startc">Ask your tutor something</button>
-      </div>
-      <div class="stats">
-        <div class="st"><span>Tutor chats</span><b id="s1">0</b></div>
-        <div class="st"><span>Quizzes taken</span><b id="s2">0</b></div>
-        <div class="st"><span>Average score</span><b id="s3">0%</b></div>
-        <div class="st"><span>Sessions planned</span><b id="s4">0</b></div>
-      </div>
-      <div class="panel"><h3>Recent quiz performance</h3><div id="perf"></div></div>
-      <h3>Quick Actions</h3><div class="chips" id="qa"></div>
-      <p class="sub" style="margin-top:20px">ACE_X AI is an AI coding and study assistant for students in Ghana: programming, ICT, maths, science and WASSCE revision.</p>
-    </section>
-
-    <section class="view on" id="v-chat">
-      <div id="msgs"></div>
-      <div id="pv" hidden></div>
-      <div class="comp">
-        <button class="ic" id="bf" aria-label="Attach file">📎</button>
-        <button class="ic" id="bi" aria-label="Add image">🖼️</button>
-        <textarea id="inp" placeholder="Ask ACE_X anything..."></textarea>
-        <button class="btn" id="send">Send</button>
-      </div>
-    </section>
-
-    <section class="view" id="v-history"></section>
-    <section class="view" id="v-saved"></section>
-
-    <section class="view" id="v-quiz">
-      <h1>Quizzes</h1>
-      <p class="sub">Generate a fresh, AI-written quiz on any topic.</p>
-      
-      <div class="panel" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:16px;">
-        <div>
-          <h3 style="margin:0">New quiz</h3>
-          <span id="quizCredits" style="font-size:14px; font-weight:600; color:var(--g);">Quizzes Remaining: 15</span>
-        </div>
-        <button class="btn" onclick="openPaystackModal(3, 10)" style="padding:8px 16px; font-size:14px;">⚡ Buy Credits</button>
-      </div>
-
-      <div class="two">
-        <div class="panel">
-          <label>Topic (optional)</label><input id="qt" placeholder="e.g. Newton's laws of motion">
-          <div class="two2">
-            <div><label>Difficulty</label><select id="qd"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div>
-            <div><label>Questions</label><select id="qn"><option value="5">5 questions</option><option value="10">10 questions</option></select></div>
-          </div>
-          <button class="btn wide" id="qg">✨ Generate quiz</button>
-        </div>
-        <div><h3>Past quizzes</h3><div id="qp"></div></div>
-      </div>
-      <div id="qbox"></div>
-    </section>
-
-    <section class="view" id="v-plan">
-      <h1>Study planner</h1>
-      <p class="sub">Plan your sessions and build a routine that sticks.</p>
-      <div class="two">
-        <div class="panel">
-          <div class="calh">
-            <button class="ic2" id="pp" aria-label="Previous month">‹</button>
-            <b id="pm"></b>
-            <button class="ic2" id="pn" aria-label="Next month">›</button>
-          </div>
-          <div class="cal" id="cal"></div>
-        </div>
-        <div>
-          <h3 id="pd"></h3>
-          <div class="add">
-            <input id="ptitle" placeholder="Session, e.g. Revise chemistry">
-            <input id="ptime" type="time">
-            <button class="btn" id="padd">Add</button>
-          </div>
-          <div id="pl"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="view" id="v-settings">
-      <div class="set">
-        <label>Name</label><input id="sn">
-        <label>Role</label><select id="sr"><option>Student</option><option>Teacher</option><option>Staff</option></select>
-        <button class="btn" id="ss" style="margin-top:14px">Save changes</button>
-        <label>Answer font</label><select id="sf"><option value="Modern">Modern</option><option value="Serif">Serif</option><option value="Mono">Monospace</option><option value="Comfort">Easy to read</option></select>
-        <label>Text size</label><select id="sz"><option value="14">Small</option><option value="16">Medium</option><option value="18">Large</option><option value="20">Extra large</option></select>
-        <label>Appearance</label><button class="btn o" id="dk">Switch light / dark</button>
-        <label>Data</label><button class="btn o" id="cl">Clear my chats</button>
-        <label>Account</label><button class="btn o" id="lo">Log out</button>
-      </div>
-    </section>
-  </main>
+<aside id="side"><div class="brand">
+<img src="logo.png" alt="ACE_X AI Logo">
+<span class="brand-text">YOUR AI ASSISTANT</span>
 </div>
+<button class="nav" data-v="home">▦ Dashboard</button>
+<button class="nav on" data-v="chat" id="newc"> Tutor Chat</button>
+<button class="nav" data-v="history">🕘 Chat History</button>
+<button class="nav" data-v="saved">🔖 Saved Items</button>
+<button class="nav" data-v="quiz">🧠 Quizzes</button>
+<button class="nav" data-v="plan">📅 Planner</button>
+<button class="nav" data-v="settings">⚙️ Settings</button>
+<div class="me"><span id="mn">Guest</span><small id="mr"></small>
+<button class="btn" id="li">Log in / Sign up</button>
+<button class="btn o" id="up">⭐ Upgrade to Pro</button></div></aside>
+<main><header><button id="burger" aria-label="Menu">☰</button><h3 id="ttl">Tutor Chat</h3><button class="ic2" id="fz" aria-label="Change font" style="margin-left:auto;width:auto;padding:0 10px">Aa</button></header>
 
+<section class="view" id="v-home">
+<div class="top"><div><h1 id="hi"></h1><p class="sub">Here's a snapshot of your studying so far.</p></div><button class="btn" id="startc">Ask your tutor something</button></div>
+<div class="stats">
+<div class="st"><span>Tutor chats</span><b id="s1">0</b></div>
+<div class="st"><span>Quizzes taken</span><b id="s2">0</b></div>
+<div class="st"><span>Average score</span><b id="s3">0%</b></div>
+<div class="st"><span>Sessions planned</span><b id="s4">0</b></div></div>
+<div class="panel"><h3>Recent quiz performance</h3><div id="perf"></div></div>
+<h3>Quick Actions</h3><div class="chips" id="qa"></div>
+<p class="sub" style="margin-top:20px">ACE_X AI is an AI coding and study assistant for students in Ghana: programming, ICT, maths, science and WASSCE revision.</p>
+</section>
+
+<section class="view on" id="v-chat"><div id="msgs"></div>
+<div id="pv" hidden></div>
+<div class="comp"><button class="ic" id="bf" aria-label="Attach file">📎</button><button class="ic" id="bi" aria-label="Add image">🖼️</button><textarea id="inp" placeholder="Ask ACE_X anything..."></textarea><button class="btn" id="send">Send</button></div></section>
+
+<section class="view" id="v-history"></section>
+<section class="view" id="v-saved"></section>
+
+<section class="view" id="v-quiz"><h1>Quizzes</h1><p class="sub">Generate a fresh, AI-written quiz on any topic.</p>
+<div class="two"><div class="panel"><h3>New quiz</h3>
+<label>Topic (optional)</label><input id="qt" placeholder="e.g. Newton's laws of motion">
+<div class="two2"><div><label>Difficulty</label><select id="qd"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div>
+<div><label>Questions</label><select id="qn"><option value="5">5 questions</option><option value="10">10 questions</option></select></div></div>
+<button class="btn wide" id="qg">✨ Generate quiz</button></div>
+<div><h3>Past quizzes</h3><div id="qp"></div></div></div>
+<div id="qbox"></div></section>
+
+<section class="view" id="v-plan"><h1>Study planner</h1><p class="sub">Plan your sessions and build a routine that sticks.</p>
+<div class="two"><div class="panel"><div class="calh"><button class="ic2" id="pp" aria-label="Previous month">‹</button><b id="pm"></b><button class="ic2" id="pn" aria-label="Next month">›</button></div><div class="cal" id="cal"></div></div>
+<div><h3 id="pd"></h3>
+<div class="add"><input id="ptitle" placeholder="Session, e.g. Revise chemistry"><input id="ptime" type="time"><button class="btn" id="padd">Add</button></div>
+<div id="pl"></div></div></div></section>
+
+<section class="view" id="v-settings"><div class="set">
+<label>Name</label><input id="sn">
+<label>Role</label><select id="sr"><option>Student</option><option>Teacher</option><option>Staff</option></select>
+<button class="btn" id="ss" style="margin-top:14px">Save changes</button>
+<label>Answer font</label><select id="sf"><option value="Modern">Modern</option><option value="Serif">Serif</option><option value="Mono">Monospace</option><option value="Comfort">Easy to read</option></select>
+<label>Text size</label><select id="sz"><option value="14">Small</option><option value="16">Medium</option><option value="18">Large</option><option value="20">Extra large</option></select>
+<label>Appearance</label><button class="btn o" id="dk">Switch light / dark</button>
+<label>Data</label><button class="btn o" id="cl">Clear my chats</button>
+<label>Account</label><button class="btn o" id="lo">Log out</button></div></section>
+</main></div>
 <input type="file" id="fi" hidden accept=".txt,.md,.csv,.json,.js,.py,.html,.css,.java,.c,.cpp,.php,.sql,.xml,.ts,text/*">
 <input type="file" id="ii" hidden accept="image/*">
 <div id="toast"></div>
-
-<div id="payModal" hidden style="position:fixed; inset:0; z-index:50; display:flex; align-items:center; justify-content:center; padding:16px; background:rgba(0,0,0,0.7); backdrop-filter:blur(5px);">
-  <div class="box" style="max-width:420px; text-align:center;">
-    <button class="x" onclick="closePaystackModal()">✕</button>
-    <img src="logo.png" alt="ACE_X" style="width:80px; margin-bottom:10px;" onerror="this.style.display='none'">
-    <h2 style="margin-bottom:8px;">Daily Limit Reached!</h2>
-    <p style="color:#6b6f85; margin-bottom:20px;">You've used your 15 free quizzes for today. Top up your credits to keep learning.</p>
-    
-    <div style="background:var(--bg); border:1px solid var(--bd); border-radius:12px; padding:16px; margin-bottom:12px; text-align:left; display:flex; justify-content:space-between; align-items:center;">
-      <div>
-        <b style="font-size:16px;">10 Quizzes</b>
-        <p style="margin:4px 0 0; font-size:13px; color:var(--mu);">Perfect for quick revision</p>
-      </div>
-      <button class="btn" onclick="openPaystackModal(3, 10)" style="padding:8px 16px; font-size:14px; white-space:nowrap;">3.00 GHS</button>
-    </div>
-
-    <div style="background:linear-gradient(135deg, rgba(245,158,11,0.1), rgba(99,102,241,0.1)); border:1px solid var(--a); border-radius:12px; padding:16px; margin-bottom:20px; text-align:left; display:flex; justify-content:space-between; align-items:center; position:relative;">
-      <span style="position:absolute; top:-10px; right:12px; background:var(--a); color:#fff; font-size:11px; font-weight:700; padding:2px 8px; border-radius:20px;">BEST VALUE</span>
-      <div>
-        <b style="font-size:16px;">20 Quizzes</b>
-        <p style="margin:4px 0 0; font-size:13px; color:var(--mu);">Save money, study more</p>
-      </div>
-      <button class="btn" onclick="openPaystackModal(6, 20)" style="padding:8px 16px; font-size:14px; white-space:nowrap;">6.00 GHS</button>
-    </div>
-
-    <p style="font-size:12px; color:var(--mu); margin:0;">Secure payment powered by Paystack (MoMo & Card)</p>
-  </div>
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script src="App.js"></script>
-</body>
-                                                                                       </html>
+<script src="App.js"></script></body></html>
