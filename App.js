@@ -49,11 +49,11 @@ function renderQuizCredits() {
     }
 }
 function openPaystackModal(amountGHS, creditsToAdd) {
-    if (!me) return openAuth('Log in to purchase quiz credits.');
+    if (!me) return openAuth('Please log in first to purchase quiz credits.');
     const amountInPesewas = amountGHS * 100;
     const ref = 'ACEX_' + Math.floor((Math.random() * 1000000000) + 1);
     const handler = PaystackPop.setup({
-        key: 'pk_test_YOUR_PUBLIC_KEY_HERE', // ⚠️ REPLACE WITH YOUR REAL PAYSTACK PUBLIC KEY
+        key: 'pk_test_YOUR_PUBLIC_KEY_HERE', // ⚠️ REPLACE WITH YOUR REAL KEY
         email: me,
         amount: amountInPesewas,
         currency: 'GHS',
@@ -84,7 +84,7 @@ $('#sf').onchange=e=>{ls.s('nv_font',e.target.value);applyFont()};
 $('#sz').onchange=e=>{ls.s('nv_fs',e.target.value);applyFont()};
 $('#fz').onclick=()=>{const k=Object.keys(FONTS),f=k[(k.indexOf(ls.g('nv_font','Modern'))+1)%k.length];ls.s('nv_font',f);applyFont();note('Font: '+f)};
 applyFont();
-const P=[['📝 Summarise text','Summarise this text:\n\n'],['💻 Write code','Write code in Python for: '],['🐞 Fix my code','Find and fix the bug in this code:\n\n'],['🧮 Solve a problem','Solve this step by step: '],['📅 WASSCE study plan','Create a WASSCE study plan for: '],['✉️ Official letter','Draft a formal official letter about: ']];
+const P=[[' Summarise text','Summarise this text:\n\n'],['💻 Write code','Write code in Python for: '],['🐞 Fix my code','Find and fix the bug in this code:\n\n'],['🧮 Solve a problem','Solve this step by step: '],['📅 WASSCE study plan','Create a WASSCE study plan for: '],['✉️ Official letter','Draft a formal official letter about: ']];
 
 /* ---- login ---- */
 function openAuth(m){$('#am').textContent=m||'Log in to continue.';$('#auth').hidden=false}
@@ -133,7 +133,7 @@ function dash(){
 /* ---- attachments ---- */
 function shrink(f){return new Promise((ok,bad)=>{const r=new FileReader();r.onerror=()=>bad(new Error('Could not read the image.'));r.onload=()=>{const i=new Image();i.onerror=()=>bad(new Error('That is not a valid image.'));i.onload=()=>{const k=Math.min(1,1024/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext('2d').drawImage(i,0,0,c.width,c.height);ok(c.toDataURL('image/jpeg',0.8))};i.src=r.result};r.readAsDataURL(f)})}
 function pv(){const p=$('#pv'),on=att.img||att.txt;p.hidden=!on;p.innerHTML='';if(!on)return;
- const s=document.createElement('span');s.textContent=(att.img?'🖼️ ':' ')+att.name;const b=document.createElement('button');b.textContent='Remove';
+ const s=document.createElement('span');s.textContent=(att.img?'🖼️ ':'📎 ')+att.name;const b=document.createElement('button');b.textContent='Remove';
  b.onclick=()=>{att={img:null,txt:null,name:''};pv()};p.append(s,b)}
 $('#bi').onclick=()=>{$('#ii').value='';$('#ii').click()};
 $('#bf').onclick=()=>{$('#fi').value='';$('#fi').click()};
@@ -153,7 +153,7 @@ async function apiAsk(msg,history,image){
  finally{clearTimeout(to)}}
 function newChat(){chat={id:Date.now(),title:'New chat',msgs:[]};renderMsgs()}
 function renderMsgs(){const box=$('#msgs');box.innerHTML='';
- if(!chat.msgs.length){const e=document.createElement('div');e.className='empty';e.innerHTML='<img src="logo.png" alt="ACE_X AI" class="main-logo" onerror="this.style.display=\'none\'"><h2 style="margin-top:5px;font-size:1.1em;opacity:0.8;font-weight:400">Your coding and study assistant. Ask me anything.</h2><div class="chips e"></div>';
+ if(!chat.msgs.length){const e=document.createElement('div');e.className='empty';e.innerHTML='<img src="logo.png" alt="ACE_X AI" class="main-logo" onerror="this.remove()"><h2 style="margin-top:5px;font-size:1.1em;opacity:0.8;font-weight:400">Your coding and study assistant. Ask me anything.</h2><div class="chips e"></div>';
   P.slice(0,4).forEach(p=>{const b=document.createElement('button');b.className='chip';b.textContent=p[0];b.onclick=()=>{$('#inp').value=p[1];$('#inp').focus()};e.lastChild.appendChild(b)});box.appendChild(e);return}
  chat.msgs.forEach(m=>{const d=document.createElement('div');d.className='m '+m.r;
   d.innerHTML='<div class="av">'+(m.r==='user'?'U':'N')+'</div><div class="bd">'+fmt(m.t)+(m.r==='assistant'?'<button class="sv cp">Copy</button><button class="sv sa">🔖 Save</button>':'')+'</div>';
@@ -171,7 +171,7 @@ async function send(){
  const a=att,msg=(text||'Please look at the attachment.')+(a.txt?'\n\n[File: '+a.name+']\n'+a.txt:'');
  const history=chat.msgs.slice(-20).map(m=>({role:m.r,content:m.t}));
  inp.value='';att={img:null,txt:null,name:''};pv();
- chat.msgs.push({r:'user',t:(text||'(attachment)')+(a.name?'\n📎 '+a.name:''),img:a.img});
+ chat.msgs.push({r:'user',t:(text||'(attachment)')+(a.name?'\n '+a.name:''),img:a.img});
  if(chat.msgs.length===1){chat.title=(text||a.name||'Attachment').slice(0,40);chats.unshift(chat)}
  renderMsgs();
  const w=document.createElement('div');w.className='m';w.innerHTML='<div class="av">N</div><div class="bd">Thinking…</div>';$('#msgs').appendChild(w);$('#msgs').scrollTop=1e9;
@@ -196,7 +196,7 @@ function renderSaved(){rows($('#v-saved'),saved,'Remove',()=>{},s=>{saved=saved.
 $('#qg').onclick=async()=>{
  if(!me)return openAuth('Log in to generate quizzes.');
  if(!hasCredits()) {
-   return openPaystackModal(3, 10); // Opens the modal if they have 0 credits
+   return openPaystackModal(3, 10);
  }
  if(busy)return;busy=true;const b=$('#qg');b.disabled=true;b.textContent='Generating…';
  const typed=$('#qt').value.trim(),topic=typed||'a mix of ICT, mathematics and science',n=+$('#qn').value,d=$('#qd').value;
@@ -205,7 +205,6 @@ $('#qg').onclick=async()=>{
   const qs=JSON.parse(t.slice(t.indexOf('['),t.lastIndexOf(']')+1));
   if(!Array.isArray(qs)||!qs.length||!qs.every(x=>x&&typeof x.q==='string'&&Array.isArray(x.o)&&x.o.length>1&&Number.isInteger(x.a)&&x.a>=0&&x.a<x.o.length))throw 0;
   
-  // Deduct credit ONLY on successful generation
   deductCredit();
   renderQuizCredits();
   
@@ -258,4 +257,5 @@ $('#qa').append(...P.map(p=>{const b=document.createElement('button');b.classNam
 /* ---- settings ---- */
 $('#ss').onclick=()=>{if(!me)return openAuth('Log in to edit your profile.');const n=$('#sn').value.trim();if(!n)return note('Enter your name.');users[me].name=n;users[me].role=$('#sr').value;ls.s('nv_users',users);paint();note('Changes saved')};
 $('#dk').onclick=()=>{const t=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=t;ls.s('nv_th',t)};
-$('#cl').onclick=()=>{if(!confirm('Delete all your chats on this device?'))return;chats=[];s
+$('#cl').onclick=()=>{if(!confirm('Delete all your chats on this device?'))return;chats=[];store();newChat();dash();note('Chats cleared')};
+$('#lo').onclick=()=>{if(!me)return note('You are not logged i
