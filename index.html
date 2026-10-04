@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Nova AI - Coding and Study Assistant for Students</title>
-<meta name="description" content="Nova AI is an AI coding and study assistant for students in Ghana. Get help with programming, ICT, maths, science and WASSCE revision.">
+<title>ACE_X AI - Coding and Study Assistant for Students</title>
+<meta name="description" content="ACE_X AI is an AI coding and study assistant for students in Ghana. Get help with programming, ICT, maths, science and WASSCE revision.">
 <link rel="canonical" href="https://novax22333.github.io/Nova-ai/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Nova AI - Coding and Study Assistant">
+<meta property="og:title" content="ACE_X AI - Coding and Study Assistant">
 <meta property="og:description" content="AI coding and study assistant for students in Ghana.">
 <meta property="og:url" content="https://novax22333.github.io/Nova-ai/">
 <meta name="theme-color" content="#0a0a12">
-<link rel="stylesheet" href="style.css"></head><body>
+<link rel="stylesheet" href="style.css">
+<style>
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 20px;
+}
+.brand img {
+  width: 120px;
+  height: auto;
+  margin-bottom: 10px;
+}
+.brand-text {
+  font-size: 14px;
+  opacity: 0.8;
+  letter-spacing: 2px;
+}
+</style>
+</head><body>
 
 <div id="auth" hidden><div class="box">
 <button class="x" id="ax" aria-label="Close">✕</button>
@@ -23,9 +44,12 @@
 </div></div>
 
 <div id="app">
-<aside id="side"><div class="brand">✦ Nova <span>AI</span></div>
+<aside id="side"><div class="brand">
+<img src="logo.png" alt="ACE_X AI Logo">
+<span class="brand-text">YOUR AI ASSISTANT</span>
+</div>
 <button class="nav" data-v="home">▦ Dashboard</button>
-<button class="nav on" data-v="chat" id="newc">💬 Tutor Chat</button>
+<button class="nav on" data-v="chat" id="newc"> Tutor Chat</button>
 <button class="nav" data-v="history">🕘 Chat History</button>
 <button class="nav" data-v="saved">🔖 Saved Items</button>
 <button class="nav" data-v="quiz">🧠 Quizzes</button>
@@ -45,12 +69,12 @@
 <div class="st"><span>Sessions planned</span><b id="s4">0</b></div></div>
 <div class="panel"><h3>Recent quiz performance</h3><div id="perf"></div></div>
 <h3>Quick Actions</h3><div class="chips" id="qa"></div>
-<p class="sub" style="margin-top:20px">Nova AI is an AI coding and study assistant for students in Ghana: programming, ICT, maths, science and WASSCE revision.</p>
+<p class="sub" style="margin-top:20px">ACE_X AI is an AI coding and study assistant for students in Ghana: programming, ICT, maths, science and WASSCE revision.</p>
 </section>
 
 <section class="view on" id="v-chat"><div id="msgs"></div>
 <div id="pv" hidden></div>
-<div class="comp"><button class="ic" id="bf" aria-label="Attach file">📎</button><button class="ic" id="bi" aria-label="Add image">🖼️</button><textarea id="inp" placeholder="Ask Nova anything..."></textarea><button class="btn" id="send">Send</button></div></section>
+<div class="comp"><button class="ic" id="bf" aria-label="Attach file">📎</button><button class="ic" id="bi" aria-label="Add image">🖼️</button><textarea id="inp" placeholder="Ask ACE_X anything..."></textarea><button class="btn" id="send">Send</button></div></section>
 
 <section class="view" id="v-history"></section>
 <section class="view" id="v-saved"></section>
