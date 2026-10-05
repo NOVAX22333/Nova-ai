@@ -27,16 +27,17 @@ export default async function handler(req, res) {
   hits.set(user.id, recent);
 
   try {
-    const { message, history, image, quiz } = req.body || {};
+    const { message, history, image, quiz, count } = req.body || {};
     if (typeof message !== "string" || !message.trim()) return res.status(400).json({ error: "Message is required" });
     if (message.length > 25000) return res.status(400).json({ error: "Message is too long" });
 
     if (quiz === true) {
-      const q = await rpc("consume_quiz", { uid: user.id, free_limit: FREE, admin_limit: ADMIN_LIMIT });
+      const n = Math.min(Math.max(parseInt(count, 10) || 5, 1), 10);
+      const q = await rpc("consume_quiz", { uid: user.id, n, free_limit: FREE, admin_limit: ADMIN_LIMIT });
       if (!q) return res.status(500).json({ error: "Could not check your quiz limit. Try again." });
       if (!q.ok) {
         return res.status(402).json({
-          error: q.reason === "limit" ? "You reached today's admin limit." : "Your 15 free quizzes for today are used. Buy more to continue.",
+          error: q.reason === "limit" ? "You reached today's admin limit." : "You don't have enough quiz questions left. Buy more to continue.",
           reason: q.reason,
         });
       }
@@ -71,4 +72,4 @@ export default async function handler(req, res) {
     console.error("AI error:", error);
     res.status(500).json({ error: "Failed to get response from AI" });
   }
-                                                  }
+}
