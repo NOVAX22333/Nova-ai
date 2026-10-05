@@ -155,7 +155,6 @@ async function send(){
  busy=false;store();renderMsgs()}
 $('#send').onclick=send;
 $('#inp').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});
-
 /* ---- history & saved ---- */
 function rows(v,list,label,onOpen,onDel,empty){v.innerHTML=list.length?'':'<div class="empty">'+empty+'</div>';
  list.forEach(x=>{const r=document.createElement('div');r.className='row';r.innerHTML='<div class="t"></div><button class="btn o">'+label+'</button>';
@@ -204,4 +203,25 @@ function renderCal(){const y=cur.getFullYear(),m=cur.getMonth();$('#pm').textCon
  list.forEach(p=>{const r=document.createElement('div');r.className='row';r.innerHTML='<input type="checkbox" class="ck"><div class="t"></div><button class="btn o">✕</button>';
   const ck=r.firstChild,t=r.children[1];ck.checked=!!p.done;ck.onchange=()=>{p.done=ck.checked;store();renderCal()};
   t.textContent=(p.time?p.time+' · ':'')+p.title;if(p.done)t.style.textDecoration='line-through';
-  r.lastChild.onclick=()=>{plan=plan.filter(x=>x!==p);store();renderCal()};l.appendChild(r)
+  r.lastChild.onclick=()=>{plan=plan.filter(x=>x!==p);store();renderCal()};l.appendChild(r)})}
+$('#pp').onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()-1,1);renderCal()};
+$('#pn').onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()+1,1);renderCal()};
+$('#padd').onclick=()=>{
+ if(!me)return openAuth('Log in to save your study plan.');
+ const t=$('#ptitle').value.trim();if(!t)return note('Enter a session title.');
+ plan.push({id:Date.now(),date:sel,time:$('#ptime').value,title:t,done:false});$('#ptitle').value='';store();renderCal()};
+
+/* ---- quick actions ---- */
+function useP(t){newChat();show('chat');$('#inp').value=t;$('#inp').focus()}
+$('#qa').append(...P.map(p=>{const b=document.createElement('button');b.className='chip';b.textContent=p[0];b.onclick=()=>useP(p[1]);return b}));
+
+/* ---- settings ---- */
+$('#ss').onclick=()=>{if(!me)return openAuth('Log in to edit your profile.');const n=$('#sn').value.trim();if(!n)return note('Enter your name.');prof={name:n,role:$('#sr').value};ls.s('nv_prof_'+me,prof);paint();note('Changes saved')};
+$('#dk').onclick=()=>note('ACE_X uses the dark glass theme.');
+$('#cl').onclick=()=>{if(!confirm('Delete all your chats on this device?'))return;chats=[];store();newChat();dash();note('Chats cleared')};
+$('#lo').onclick=()=>{if(!me)return note('You are not logged in.');logoutLocal();note('Logged out')};
+
+/* ---- start ---- */
+if(me){load();loadProf()}
+paint();showAcc();refresh();newChat();show('chat');
+if(me)tok().then(t=>{if(t)acct()});
