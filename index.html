@@ -32,8 +32,7 @@
 }
 </style>
 </head><body>
-<script>window.onerror=function(m,s,l){var d=document.createElement('div');d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99;background:#b00020;color:#fff;padding:8px;font:13px monospace';d.textContent='Error: '+m+' ('+String(s||'').split('/').pop()+':'+l+')';document.body.appendChild(d)}</script>
-
+<script>window.onerror=function(m,s,l){if(!s||s.indexOf(location.host)<0)return;var d=document.createElement('div');d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99;background:#b00020;color:#fff;padding:8px;font:13px monospace';d.textContent='Error: '+m+' ('+String(s||'').split('/').pop()+':'+l+')';document.body.appendChild(d)}</script>
 <div id="auth" hidden><div class="box">
 <button class="x" id="ax" aria-label="Close">✕</button>
 <h2 id="at">Log in</h2><p id="am">Log in to continue.</p>
