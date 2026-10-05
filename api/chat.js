@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { cors, getUser, rpc, FREE, ADMIN_LIMIT } from "./_lib.js";
+import { cors, getUser, rpc, isPro, FREE, ADMIN_LIMIT } from "./_lib.js";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -11,6 +11,9 @@ const SYSTEM =
   "MATHS FORMAT: write every formula, equation and symbol in LaTeX. Use $...$ for inline maths and $$...$$ on its own line for displayed equations. Never write fractions with a slash like F1/sin(a); use \\frac{F_1}{\\sin\\alpha}. Use \\sin, \\cos, \\theta, \\alpha, \\sqrt{}, x^2, x_1, \\times, \\pm and similar commands. Example of Lami's theorem: $$\\frac{F_1}{\\sin\\alpha}=\\frac{F_2}{\\sin\\beta}=\\frac{F_3}{\\sin\\gamma}$$ " +
   "If you are not sure, say so. Do not help with exam cheating or anything harmful.";
 
+const PRO_EXTRA =
+  " This student is a Pro user: give fuller, more detailed answers. For every problem, show each step with the reason for it, then a short summary, a common mistake to avoid, and one similar practice question.";
+
 const hits = new Map();
 
 export default async function handler(req, res) {
@@ -20,9 +23,11 @@ export default async function handler(req, res) {
   const user = await getUser(req);
   if (!user) return res.status(401).json({ error: "Please log in first." });
 
+  const pro = await isPro(user);
+
   const now = Date.now();
   const recent = (hits.get(user.id) || []).filter((t) => now - t < 60000);
-  if (recent.length >= 20) return res.status(429).json({ error: "Too many messages. Please wait a minute." });
+  if (recent.length >= (pro ? 40 : 20)) return res.status(429).json({ error: "Too many messages. Please wait a minute." });
   recent.push(now);
   hits.set(user.id, recent);
 
@@ -31,7 +36,8 @@ export default async function handler(req, res) {
     if (typeof message !== "string" || !message.trim()) return res.status(400).json({ error: "Message is required" });
     if (message.length > 25000) return res.status(400).json({ error: "Message is too long" });
 
-    if (quiz === true) {
+    // Pro users have unlimited quiz questions, so skip the limit check for them.
+    if (quiz === true && !pro) {
       const n = Math.min(Math.max(parseInt(count, 10) || 5, 1), 10);
       const q = await rpc("consume_quiz", { uid: user.id, n, free_limit: FREE, admin_limit: ADMIN_LIMIT });
       if (!q) return res.status(500).json({ error: "Could not check your quiz limit. Try again." });
@@ -63,8 +69,8 @@ export default async function handler(req, res) {
 
     const response = await openai.chat.completions.create({
       model: process.env.OPENAI_MODEL || "openai/gpt-4o-mini",
-      max_tokens: 3000,
-      messages: [{ role: "system", content: SYSTEM }, ...past, { role: "user", content }],
+      max_tokens: pro ? 4000 : 3000,
+      messages: [{ role: "system", content: SYSTEM + (pro && quiz !== true ? PRO_EXTRA : "") }, ...past, { role: "user", content }],
     });
 
     res.status(200).json({ reply: response.choices[0].message.content });
@@ -72,4 +78,4 @@ export default async function handler(req, res) {
     console.error("AI error:", error);
     res.status(500).json({ error: "Failed to get response from AI" });
   }
-}
+      }
