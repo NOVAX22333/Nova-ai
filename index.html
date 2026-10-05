@@ -68,6 +68,7 @@
 <div class="st"><span>Quizzes taken</span><b id="s2">0</b></div>
 <div class="st"><span>Average score</span><b id="s3">0%</b></div>
 <div class="st"><span>Sessions planned</span><b id="s4">0</b></div></div>
+<div class="panel" id="fod"></div>
 <div class="panel"><h3>Recent quiz performance</h3><div id="perf"></div></div>
 <h3>Quick Actions</h3><div class="chips" id="qa"></div>
 <p class="sub" style="margin-top:20px">ACE_X AI is an AI coding and study assistant for students in Ghana: programming, ICT, maths, science and WASSCE revision.</p>
@@ -86,10 +87,11 @@
 <label>Topic (optional)</label><input id="qt" placeholder="e.g. Newton's laws of motion">
 <div class="two2"><div><label>Difficulty</label><select id="qd"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div>
 <div><label>Questions</label><select id="qn"><option value="5">5 questions</option><option value="10">10 questions</option></select></div></div>
+<label>Seconds per question (optional)</label><input id="qs" type="number" min="5" max="300" placeholder="e.g. 30. Leave empty for no timer">
 <button class="btn wide" id="qg">✨ Generate quiz</button></div>
-<div><div class="panel" id="qbuy"><h3>Need more quizzes?</h3><p class="sub">You get 15 free quizzes every day. Extra quizzes never expire.</p>
-<button class="btn wide" data-p="p1">GH₵1 · 10 quizzes</button>
-<button class="btn wide" data-p="p2">GH₵2 · 20 quizzes</button></div>
+<div><div class="panel" id="qbuy"><h3>Need more quizzes?</h3><p class="sub">You get 15 free quiz questions every day. Extra questions never expire.</p>
+<button class="btn wide" data-p="p1">GH₵1 · 10 questions</button>
+<button class="btn wide" data-p="p2">GH₵2 · 20 questions</button></div>
 <h3>Past quizzes</h3><div id="qp"></div></div></div>
 <div id="qbox"></div></section>
 
