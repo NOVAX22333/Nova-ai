@@ -9,7 +9,7 @@
 <meta property="og:description" content="AI coding and study assistant for students in Ghana.">
 <meta property="og:url" content="https://novax22333.github.io/Nova-ai/">
 <meta name="theme-color" content="#0a0a12">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="style.css">
 <style>
 .brand {
@@ -32,6 +32,7 @@
 }
 </style>
 </head><body>
+<script>window.onerror=function(m,s,l){var d=document.createElement('div');d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99;background:#b00020;color:#fff;padding:8px;font:13px monospace';d.textContent='Error: '+m+' ('+String(s||'').split('/').pop()+':'+l+')';document.body.appendChild(d)}</script>
 
 <div id="auth" hidden><div class="box">
 <button class="x" id="ax" aria-label="Close">✕</button>
@@ -113,6 +114,7 @@
 <input type="file" id="fi" hidden accept=".txt,.md,.csv,.json,.js,.py,.html,.css,.java,.c,.cpp,.php,.sql,.xml,.ts,text/*">
 <input type="file" id="ii" hidden accept="image/*">
 <div id="toast"></div>
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script src="https://js.paystack.co/v1/inline.js"></script>
-<script src="App.js"></script></body></html>
+<script src="App.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script async src="https://js.paystack.co/v1/inline.js"></script>
+</body></html>
