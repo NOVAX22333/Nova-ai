@@ -1,6 +1,6 @@
 const API='https://nova-ai-backend-rho.vercel.app/api/chat',ACC='https://nova-ai-backend-rho.vercel.app/api/account';
 const SB='https://qlvbuxrmgxpytgpvcguw.supabase.co',PUB='sb_publishable_GVKoHxwlqBKilE0j90s2Ww_Me0rb9Ua',PK='pk_test_222f3ca8b56326bd1f91f555ffe76c4a452699ae';
-const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const $=s=>document.querySelector(s)||document.createElement('div'),$$=s=>[...document.querySelectorAll(s)];
 const ls={g:(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}},s:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const ses={g:k=>{try{return JSON.parse(sessionStorage.getItem(k))}catch(e){return null}},s:(k,v)=>{try{sessionStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 try{localStorage.removeItem('nv_me');localStorage.removeItem('nv_users')}catch(e){}
@@ -204,5 +204,4 @@ function renderCal(){const y=cur.getFullYear(),m=cur.getMonth();$('#pm').textCon
  list.forEach(p=>{const r=document.createElement('div');r.className='row';r.innerHTML='<input type="checkbox" class="ck"><div class="t"></div><button class="btn o">✕</button>';
   const ck=r.firstChild,t=r.children[1];ck.checked=!!p.done;ck.onchange=()=>{p.done=ck.checked;store();renderCal()};
   t.textContent=(p.time?p.time+' · ':'')+p.title;if(p.done)t.style.textDecoration='line-through';
-  r.lastChild.onclick=()=>{plan=plan.filter(x=>x!==p);store();renderCal()};l.appendChild(r)})}
-$('#pp').onclick=()=>{cur=n
+  r.lastChild.onclick=()=>{plan=plan.filter(x=>x!==p);store();renderCal()};l.appendChild(r)
