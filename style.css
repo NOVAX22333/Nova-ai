@@ -461,3 +461,60 @@ select option{color:#17171f;background:#fff}
     display: none;
   }
   }
+/* =========================================
+   MOBILE BUTTON FIX - Ensure Clickability
+   ========================================= */
+@media (max-width: 1024px) {
+  /* Make sure all interactive elements are clickable */
+  .nav-item,
+  .nav-item *,
+  .plus-btn,
+  .attach-option,
+  .attach-option *,
+  #send,
+  #mic,
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  
+  /* Ensure bottom nav is above everything */
+  .bottom-nav {
+    pointer-events: auto !important;
+    z-index: 9999 !important;
+  }
+  
+  .nav-item {
+    pointer-events: auto !important;
+    z-index: 10000;
+    position: relative;
+  }
+  
+  /* Fix for iOS Safari */
+  .nav-item:active {
+    opacity: 0.7;
+  }
+  
+  /* Ensure buttons are not blocked */
+  .comp {
+    position: relative;
+    z-index: 100;
+  }
+  
+  .plus-btn,
+  #send,
+  #mic {
+    position: relative;
+    z-index: 101;
+  }
+  
+  /* Popup should be above nav but below other elements */
+  .attach-popup {
+    z-index: 102;
+    pointer-events: auto;
+  }
+}
