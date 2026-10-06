@@ -303,4 +303,76 @@ initMobileNav();
     $$('.nav-link, .nav-item').forEach(el => el.classList.toggle('active', el.dataset.v === v));
   };
 })();
+/* =========================================
+   FINAL MOBILE NAVIGATION LOGIC
+   ========================================= */
 
+document.addEventListener('DOMContentLoaded', () => {
+  const side = document.getElementById('side');
+  const overlay = document.getElementById('sidebar-overlay'); // Make sure this div exists in HTML!
+  const burger = document.getElementById('burger');
+  
+  if (!side || !burger) return; // Safety check
+
+  // Toggle Sidebar Open/Close
+  const toggleSidebar = (open) => {
+    side.classList.toggle('open', open);
+    if (overlay) overlay.classList.toggle('active', open);
+  };
+
+  // Burger Menu Click
+  burger.onclick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleSidebar(true);
+  };
+
+  // Overlay Click (to close)
+  if (overlay) {
+    overlay.onclick = () => toggleSidebar(false);
+  }
+
+  // Handle ALL Navigation Links (Sidebar + Bottom Nav)
+  const navLinks = document.querySelectorAll('.nav-link, .nav-item');
+  
+  navLinks.forEach(link => {
+    const handleNavClick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const view = link.dataset.v;
+      if (!view) return;
+
+      // Switch View using existing show() function
+      if (typeof show === 'function') {
+        show(view);
+      }
+
+      // Update Active States everywhere
+      navLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+
+      // Close sidebar automatically after selection (Mobile UX best practice)
+      if (window.innerWidth <= 768) {
+        toggleSidebar(false);
+      }
+    };
+
+    // Add both click AND touchstart for reliability across devices
+    link.addEventListener('click', handleNavClick);
+    link.addEventListener('touchstart', handleNavClick, { passive: true });
+  });
+
+  // Sync initial active state based on current visible view
+  const updateInitialActive = () => {
+    const currentViewEl = document.querySelector('.view.on');
+    if (currentViewEl) {
+      const currentId = currentViewEl.id.replace('v-', '');
+      navLinks.forEach(l => {
+        l.classList.toggle('active', l.dataset.v === currentId);
+      });
+    }
+  };
+  
+  updateInitialActive();
+});
