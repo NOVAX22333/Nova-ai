@@ -34,7 +34,7 @@
 </head><body>
 <script>window.onerror=function(m,s,l){if(!s||s.indexOf(location.host)<0)return;var d=document.createElement('div');d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99;background:#b00020;color:#fff;padding:8px;font:13px monospace';d.textContent='Error: '+m+' ('+String(s||'').split('/').pop()+':'+l+')';document.body.appendChild(d)}</script>
 <div id="auth" hidden><div class="box">
-<button class="x" id="ax" aria-label="Close">✕</button>
+<button class="x" id="ax" aria-label="Close"></button>
 <h2 id="at">Log in</h2><p id="am">Log in to continue.</p>
 <div id="nm" hidden><label>Full name</label><input id="name" autocomplete="name"></div>
 <label>Email</label><input id="email" type="email" autocomplete="email">
@@ -51,10 +51,10 @@
 </div>
 <button class="nav" data-v="home">▦ Dashboard</button>
 <button class="nav on" data-v="chat" id="newc"> Tutor Chat</button>
-<button class="nav" data-v="history">🕘 Chat History</button>
-<button class="nav" data-v="saved">🔖 Saved Items</button>
+<button class="nav" data-v="history"> Chat History</button>
+<button class="nav" data-v="saved"> Saved Items</button>
 <button class="nav" data-v="quiz">🧠 Quizzes</button>
-<button class="nav" data-v="hub">📐 Formula Hub ⭐</button>
+<button class="nav" data-v="hub"> Formula Hub ⭐</button>
 <button class="nav" data-v="exam">📝 Exam Practice ⭐</button>
 <button class="nav" data-v="studio">🎨 Image Studio ⭐</button>
 <button class="nav" data-v="plan">📅 Planner</button>
@@ -79,7 +79,7 @@
 
 <section class="view on" id="v-chat"><div id="msgs"></div>
 <div id="pv" hidden></div>
-<div class="comp"><button class="ic" id="bf" aria-label="Attach file">📎</button><button class="ic" id="bi" aria-label="Add image">🖼️</button><button class="ic" id="mic" aria-label="Speak">🎤</button><textarea id="inp" placeholder="Ask ACE_X anything..."></textarea><button class="btn" id="send">Send</button></div></section>
+<div class="comp"><button class="ic" id="bf" aria-label="Attach file">📎</button><button class="ic" id="bi" aria-label="Add image">️</button><button class="ic" id="mic" aria-label="Speak"></button><textarea id="inp" placeholder="Ask ACE_X anything..."></textarea><button class="btn" id="send">Send</button></div></section>
 
 <section class="view" id="v-history"></section>
 <section class="view" id="v-saved"></section>
@@ -93,18 +93,21 @@
 <label>Seconds per question (optional)</label><input id="qs" type="number" min="5" max="300" placeholder="e.g. 30. Leave empty for no timer">
 <button class="btn wide" id="qg">✨ Generate quiz</button></div>
 <div><div class="panel" id="qbuy"><h3>Need more quizzes?</h3><p class="sub">You get 15 free quiz questions every day. Extra questions never expire.</p>
-<button class="btn wide" data-p="p1">GH₵1 · 10 questions</button>
+<button class="btn wide" data-p="p1">GH1 · 10 questions</button>
 <button class="btn wide" data-p="p2">GH₵2 · 20 questions</button></div>
 <h3>Past quizzes</h3><div id="qp"></div></div></div>
 <div id="qbox"></div></section>
 
 <section class="view" id="v-pro"><h1>Go Pro ⭐</h1><p class="sub" id="proinfo"></p>
 <div class="two"><div class="panel"><h3>Everything in Pro</h3>
-<p class="sub">📐 Formula & Definition Hub: formulas stated and proved, key terms defined<br><br>📝 Probable exam questions with model answers and marking schemes<br><br>🎨 Image Studio: diagrams and illustrations<br><br>💡 "Explain my mistakes" after every quiz<br><br>🧠 100 quiz questions a day<br><br>⭐ Pro badge</p></div>
+<p class="sub"> Formula & Definition Hub: formulas stated and proved, key terms defined<br><br>📝 Probable exam questions with model answers and marking schemes<br><br> Image Studio: diagrams and illustrations<br><br>💡 "Explain my mistakes" after every quiz<br><br>🧠 100 quiz questions a day<br><br>⭐ Pro badge</p></div>
 <div class="panel"><h3>Choose a plan</h3>
-<button class="btn wide" data-pro="pw">GH₵10 · 1 week</button>
-<button class="btn wide" data-pro="pm">GH₵40 · 1 month</button>
-<button class="btn wide" data-pro="py">GH₵100 · 1 year (best value)</button>
+<button class="btn wide" data-pro="w1">GH₵2 · 1 week</button>
+<button class="btn wide" data-pro="w2">GH₵4 · 2 weeks</button>
+<button class="btn wide" data-pro="w3">GH₵6 · 3 weeks</button>
+<button class="btn wide" data-pro="m1">GH₵8 · 1 month</button>
+<button class="btn wide" data-pro="m5">GH₵40 · 5 months</button>
+<button class="btn wide" data-pro="y1">GH₵100 · 1 year</button>
 <p class="sub" style="margin-top:12px">One-time payment. It does not renew by itself.</p></div></div></section>
 
 <section class="view" id="v-hub"><h1>Formula & Definition Hub ⭐</h1><p class="sub">State and prove formulas, and define useful terms.</p>
@@ -122,7 +125,8 @@
 
 <section class="view" id="v-studio"><h1>Image Studio ⭐</h1><p class="sub">Describe a diagram or illustration and ACE_X will create it.</p>
 <div class="panel"><textarea id="ip" placeholder="e.g. A labelled diagram of a plant cell" style="height:90px"></textarea>
-<button class="btn wide" id="ig">Create image</button></div>
+<button class="btn wide" id="ig">Create image</button>
+<button class="btn o wide" id="ig2">🪄 Draw labelled diagram</button></div>
 <div class="panel" id="iout" hidden></div></section>
 
 <section class="view" id="v-plan"><h1>Study planner</h1><p class="sub">Plan your sessions and build a routine that sticks.</p>
