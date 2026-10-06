@@ -121,418 +121,41 @@ header h3{margin:0}#burger{display:none;background:none;border:0;font-size:22px}
 [data-theme=dark] input::placeholder,[data-theme=dark] textarea::placeholder{color:rgba(255,255,255,.4)}
 [data-theme=dark] .box input{background:#f7f7fa;color:#17171f;border-color:#e4e1d8}
 select option{color:#17171f;background:#fff}
-  .bd .katex-display{overflow-x:auto;overflow-y:hidden;padding:4px 0}
-.mx{font-family:ui-monospace,Menlo,monospace}
-.mx .katex{font-family:KaTeX_Main,"Times New Roman",serif}     
-.bottom-nav {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #1a1a2e;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  padding: 8px 0;
-  z-index: 100;
-}
-
-@media (max-width: 768px) {
-  .bottom-nav {
-    display: flex;
-    justify-content: space-around;
-  }
-  
-  main {
-    padding-bottom: 70px;
-  }
-}
-
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  color: #888;
-  font-size: 11px;
-  padding: 4px 8px;
-}
-
-.nav-item.active {
-  color: #fff;
-}
-
-.nav-icon {
-  font-size: 20px;
-  margin-bottom: 2px;
-}
+.bd .katex-display{overflow-x:auto;overflow-y:hidden;padding:4px 0}
 /* =========================================
-   MOBILE SIDEBAR NAVIGATION FIX
+   MOBILE NAVIGATION & SIDEBAR (Clean Version)
    ========================================= */
 
-/* 1. Make the hamburger menu visible ONLY on mobile */
-@media (max-width: 768px) {
-  #burger {
-    display: block !important;
-    font-size: 24px;
-    background: none;
-    border: none;
-    color: #fff; /* Change to your text color if needed */
-    cursor: pointer;
-    padding: 8px;
-  }
-
-  /* 2. Hide the sidebar off the left side of the screen by default */
-  #side {
-    position: fixed;
-    top: 0;
-    left: -100%; /* Completely hidden */
-    width: 280px;
-    height: 100vh;
-    background: #0a0a12; /* Match your app's dark background */
-    border-right: 1px solid rgba(255,255,255,0.1);
-    transition: left 0.3s ease-in-out; /* Smooth slide animation */
-    z-index: 1000;
-    overflow-y: auto;
-    padding: 20px;
-  }
-
-  /* 3. Slide the sidebar INTO view when the 'open' class is added */
-  #side.open {
-    left: 0;
-  }
-
-  /* 4. Add a dark overlay behind the sidebar so users can tap it to close */
-  #side.open::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 280px; /* Starts right at the edge of the sidebar */
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: -1;
-    cursor: pointer;
-  }
-}
-
-/* 5. Desktop: Keep sidebar visible always, hide the burger button */
+/* --- Desktop Layout --- */
 @media (min-width: 769px) {
-  #burger {
-    display: none;
-  }
-  #side {
-    position: relative;
-    left: 0;
-    width: 260px; /* Adjust to match your current desktop sidebar width */
-    height: 100vh;
-  }
-}
-/* =========================================
-   BOTTOM NAVIGATION BAR (Mobile & Tablet)
-   ========================================= */
-.bottom-nav {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #1a1a2e;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  padding: 8px 0;
-  z-index: 1000;
-  box-shadow: 0 -4px 12px rgba(0,0,0,0.3);
+  #burger { display: none; }
+  aside { position: relative; left: 0; width: 260px; height: 100vh; transform: none !important; }
 }
 
-@media (max-width: 1024px) {
-  .bottom-nav {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+/* --- Mobile/Tablet Sidebar Overlay --- */
+@media (max-width: 768px) {
+  /* Hide Sidebar by default */
+  aside {
+    position: fixed; top: 0; left: -100%; width: 85%; max-width: 300px; height: 100vh;
+    background: #0f0f1a; z-index: 1000; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex; flex-direction: column; box-shadow: 4px 0 20px rgba(0,0,0,0.6);
+    overflow-y: auto; padding: 0; /* Reset padding to handle internally */
   }
   
-  /* Add padding to main content so it doesn't hide behind nav */
-  main {
-    padding-bottom: 80px;
-  }
+  /* Show when open class added via JS */
+  aside.open { left: 0; }
   
-  /* Hide the sidebar on mobile/tablet */
-  #side {
-    display: none;
-  }
+  /* Burger Button Visible */
+  #burger { display: block !important; font-size: 24px; background: none; border: none; color: #fff; cursor: pointer; padding: 8px; }
   
-  /* Show hamburger menu */
-  #burger {
-    display: block !important;
-  }
+  /* Main Content Adjustment */
+  main { margin-left: 0 !important; }
 }
 
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: #888;
-  font-size: 11px;
-  padding: 6px 12px;
-  transition: all 0.3s ease;
-  flex: 1;
-  max-width: 80px;
-}
-
-.nav-item:hover {
-  color: #fff;
-  background: rgba(255,255,255,0.05);
-  border-radius: 8px;
-}
-
-.nav-item.active {
-  color: #fff;
-}
-
-.nav-item.active .nav-icon {
-  transform: scale(1.1);
-}
-
-.nav-icon {
-  font-size: 22px;
-  margin-bottom: 3px;
-  transition: transform 0.2s ease;
-}
-
-/* =========================================
-   IMPROVED CHAT INPUT AREA
-   ========================================= */
-@media (max-width: 1024px) {
-  .comp {
-    position: relative;
-    background: #1a1a2e;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    padding: 12px;
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-    margin-bottom: 0;
-  }
-  
-  /* Attachment button container */
-  .attach-container {
-    position: relative;
-  }
-  
-  /* Plus button */
-  .plus-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: none;
-    color: #fff;
-    font-size: 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-  }
-  
-  .plus-btn:hover {
-    transform: rotate(45deg);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-  }
-  
-  .plus-btn.active {
-    transform: rotate(45deg);
-    background: #e74c3c;
-  }
-  
-  /* Attachment options popup */
-  .attach-popup {
-    position: absolute;
-    bottom: 50px;
-    left: 0;
-    background: #1a1a2e;
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    padding: 8px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-    display: none;
-    flex-direction: column;
-    gap: 6px;
-    min-width: 160px;
-    z-index: 100;
-    animation: slideUp 0.3s ease;
-  }
-  
-  .attach-popup.show {
-    display: flex;
-  }
-  
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .attach-option {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    background: rgba(255,255,255,0.05);
-    border: none;
-    border-radius: 8px;
-    color: #fff;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-align: left;
-  }
-  
-  .attach-option:hover {
-    background: rgba(255,255,255,0.1);
-    transform: translateX(4px);
-  }
-  
-  .attach-option .icon {
-    font-size: 18px;
-    width: 24px;
-    text-align: center;
-  }
-  
-  /* Textarea */
-  #inp {
-    flex: 1;
-    min-height: 40px;
-    max-height: 120px;
-    padding: 10px 14px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: rgba(255,255,255,0.05);
-    color: #fff;
-    font-size: 14px;
-    resize: none;
-    font-family: inherit;
-  }
-  
-  #inp:focus {
-    outline: none;
-    border-color: #667eea;
-    background: rgba(255,255,255,0.08);
-  }
-  
-  /* Send button */
-  #send {
-    width: 44px;
-    height: 40px;
-    border-radius: 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: none;
-    color: #fff;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-  }
-  
-  #send:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-  }
-  
-  #send:active {
-    transform: scale(0.95);
-  }
-}
-
-/* Hide old attachment buttons on mobile */
-@media (max-width: 1024px) {
-  #bf, #bi {
-    display: none;
-  }
-  }
-/* =========================================
-   MOBILE BUTTON FIX - Ensure Clickability
-   ========================================= */
-@media (max-width: 1024px) {
-  /* Make sure all interactive elements are clickable */
-  .nav-item,
-  .nav-item *,
-  .plus-btn,
-  .attach-option,
-  .attach-option *,
-  #send,
-  #mic,
-  button,
-  a {
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-  
-  /* Ensure bottom nav is above everything */
-  .bottom-nav {
-    pointer-events: auto !important;
-    z-index: 9999 !important;
-  }
-  
-  .nav-item {
-    pointer-events: auto !important;
-    z-index: 10000;
-    position: relative;
-  }
-  
-  /* Fix for iOS Safari */
-  .nav-item:active {
-    opacity: 0.7;
-  }
-  
-  /* Ensure buttons are not blocked */
-  .comp {
-    position: relative;
-    z-index: 100;
-  }
-  
-  .plus-btn,
-  #send,
-  #mic {
-    position: relative;
-    z-index: 101;
-  }
-  
-  /* Popup should be above nav but below other elements */
-  .attach-popup {
-    z-index: 102;
-    pointer-events: auto;
-  }
-  /* === PROFESSIONAL MOBILE SIDEBAR === */
-#side {
-  position: fixed; top: 0; left: -100%; width: 85%; max-width: 300px;
-  height: 100vh; background: #0f0f1a; z-index: 1000;
-  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex; flex-direction: column; box-shadow: 4px 0 20px rgba(0,0,0,0.6);
-}
-#side.open { left: 0; }
-#sidebar-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999;
-  opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-}
-#sidebar-overlay.active { opacity: 1; pointer-events: auto; }
-
-.sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); }
-.brand-title { color: #ff9900; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+/* --- Sidebar Internal Styling (Matches Screenshot) --- */
+.sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); text-align: center; }
+.brand-title { color: #ff9900; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; display: block; margin-top: 10px;}
+.sidebar-header img { width: 80px; height: auto; margin-bottom: 8px; }
 
 .sidebar-nav { flex: 1; overflow-y: auto; padding: 8px 0; }
 .nav-link {
@@ -556,26 +179,111 @@ select option{color:#17171f;background:#fff}
 }
 .btn-upgrade:active { transform: scale(0.98); }
 
-/* === BOTTOM NAV & CHAT INPUT FIXES === */
-@media (max-width: 1024px) {
-  .bottom-nav {
-    display: flex !important; justify-content: space-around; align-items: center;
-    position: fixed; bottom: 0; left: 0; right: 0; height: 64px;
-    background: #0f0f1a; border-top: 1px solid rgba(255,255,255,0.08); z-index: 998;
-  }
-  .nav-item {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    color: #666; text-decoration: none; font-size: 10px; gap: 4px; flex: 1;
-    -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-  }
-  .nav-item.active { color: #ff9900; }
-  .nav-icon { font-size: 22px; line-height: 1; }
+/* --- Bottom Navigation Bar --- */
+.bottom-nav {
+  display: none; /* Hidden on Desktop */
+  position: fixed; bottom: 0; left: 0; right: 0; height: 64px;
+  background: #0f0f1a; border-top: 1px solid rgba(255,255,255,0.08);
+  z-index: 998; justify-content: space-around; align-items: center;
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.3);
+}
+
+@media (max-width: 768px) {
+  .bottom-nav { display: flex !important; }
+  main { padding-bottom: 70px !important; } /* Space for nav */
+}
+
+.nav-item {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: #666; text-decoration: none; font-size: 10px; gap: 4px; flex: 1;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.nav-item.active { color: #ff9900; }
+.nav-icon { font-size: 22px; line-height: 1; }
+
+
+/* =========================================
+   CHAT INPUT AREA (Professional & iOS Safe)
+   ========================================= */
+
+/* The Container Bar */
+.comp {
+  position: sticky; /* Glues to bottom without jumping */
+  bottom: 0;        
+  left: 0; right: 0;
+  background: #0f0f1a; 
+  padding: 12px 16px; 
+  gap: 10px; display: flex; align-items: flex-end;
+  border-top: 1px solid rgba(255,255,255,0.08); z-index: 997;
+  box-shadow: 0 -4px 15px rgba(0,0,0,0.4); 
   
-  /* Chat input area refinement */
-  .comp { padding: 10px 12px !important; gap: 8px !important; background: #0f0f1a !important; border-top: 1px solid rgba(255,255,255,0.08) !important; }
-  #inp { border-radius: 24px !important; padding: 12px 18px !important; font-size: 15px !important; background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.1) !important; }
-  #send { border-radius: 50% !important; width: 44px !important; height: 44px !important; background: #ff9900 !important; color: #000 !important; font-weight: 700 !important; }
+  /* CRITICAL FOR IPHONE: Prevents zoom/jump when typing */
+  transform: translateZ(0);
+  will-change: transform;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* The Text Input Field */
+#inp {
+  flex: 1; min-height: 44px; max-height: 120px; 
+  padding: 12px 16px; 
+  border-radius: 24px; 
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.06); color: #fff; 
+  font-size: 16px; /* 16px prevents iOS auto-zoom! */
+  resize: none; font-family: inherit; line-height: 1.4;
   
-  main { padding-bottom: 70px !important; }
-  }
-}    
+  /* Remove default browser styles */
+  -webkit-appearance: none; appearance: none; outline: none;
+}
+
+/* Focus State */
+#inp:focus {
+  border-color: #ff9900; 
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.15); 
+}
+
+/* Placeholder */
+#inp::placeholder { color: #888; opacity: 0.7; }
+
+/* Send Button */
+#send {
+  width: 48px; height: 48px; 
+  border-radius: 50%; 
+  background: linear-gradient(135deg, #ff9900 0%, #e68a00 100%);
+  border: none; color: #000; font-weight: 700; font-size: 14px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0; 
+  box-shadow: 0 4px 12px rgba(255, 153, 0, 0.3); 
+}
+#send:hover { transform: scale(1.05); box-shadow: 0 6px 16px rgba(255, 153, 0, 0.4); }
+#send:active { transform: scale(0.95); }
+
+/* Attachment Plus Button (+) */
+.plus-btn {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);
+  color: #ccc; font-size: 24px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s ease; flex-shrink: 0;
+}
+.plus-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+.plus-btn.active { transform: rotate(45deg); background: #e74c3c; border-color: #e74c3c; color: #fff; }
+
+/* Mic Button */
+#mic {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: none; color: #ccc;
+  font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+#mic:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+/* Hide old attachment buttons on mobile if they exist in HTML */
+@media (max-width: 768px) {
+  #bf, #bi { display: none; }
+}
+
+
