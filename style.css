@@ -227,3 +227,237 @@ select option{color:#17171f;background:#fff}
     height: 100vh;
   }
 }
+/* =========================================
+   BOTTOM NAVIGATION BAR (Mobile & Tablet)
+   ========================================= */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1a1a2e;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 8px 0;
+  z-index: 1000;
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.3);
+}
+
+@media (max-width: 1024px) {
+  .bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  /* Add padding to main content so it doesn't hide behind nav */
+  main {
+    padding-bottom: 80px;
+  }
+  
+  /* Hide the sidebar on mobile/tablet */
+  #side {
+    display: none;
+  }
+  
+  /* Show hamburger menu */
+  #burger {
+    display: block !important;
+  }
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #888;
+  font-size: 11px;
+  padding: 6px 12px;
+  transition: all 0.3s ease;
+  flex: 1;
+  max-width: 80px;
+}
+
+.nav-item:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+}
+
+.nav-item.active {
+  color: #fff;
+}
+
+.nav-item.active .nav-icon {
+  transform: scale(1.1);
+}
+
+.nav-icon {
+  font-size: 22px;
+  margin-bottom: 3px;
+  transition: transform 0.2s ease;
+}
+
+/* =========================================
+   IMPROVED CHAT INPUT AREA
+   ========================================= */
+@media (max-width: 1024px) {
+  .comp {
+    position: relative;
+    background: #1a1a2e;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 12px;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 0;
+  }
+  
+  /* Attachment button container */
+  .attach-container {
+    position: relative;
+  }
+  
+  /* Plus button */
+  .plus-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+  
+  .plus-btn:hover {
+    transform: rotate(45deg);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+  
+  .plus-btn.active {
+    transform: rotate(45deg);
+    background: #e74c3c;
+  }
+  
+  /* Attachment options popup */
+  .attach-popup {
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    background: #1a1a2e;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 160px;
+    z-index: 100;
+    animation: slideUp 0.3s ease;
+  }
+  
+  .attach-popup.show {
+    display: flex;
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .attach-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.05);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+  }
+  
+  .attach-option:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateX(4px);
+  }
+  
+  .attach-option .icon {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+  }
+  
+  /* Textarea */
+  #inp {
+    flex: 1;
+    min-height: 40px;
+    max-height: 120px;
+    padding: 10px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    font-size: 14px;
+    resize: none;
+    font-family: inherit;
+  }
+  
+  #inp:focus {
+    outline: none;
+    border-color: #667eea;
+    background: rgba(255,255,255,0.08);
+  }
+  
+  /* Send button */
+  #send {
+    width: 44px;
+    height: 40px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+  
+  #send:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+  
+  #send:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Hide old attachment buttons on mobile */
+@media (max-width: 1024px) {
+  #bf, #bi {
+    display: none;
+  }
+  }
