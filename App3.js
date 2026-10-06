@@ -1,69 +1,112 @@
-(function(){
-const PRO_PRICE=15;
-const st=document.createElement('style');
-st.textContent=`
-#pro{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:14px}
-#pro[hidden]{display:none}
-#pro .pb{background:#14141f;color:#fff;border-radius:18px;max-width:440px;width:100%;max-height:90vh;overflow:auto;padding:20px;position:relative}
-#pro h2{margin:0 0 4px}#pro .px{position:absolute;top:10px;right:12px;background:none;border:0;color:#fff;font-size:20px;cursor:pointer}
-#pro table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
-#pro td,#pro th{padding:8px 6px;border-bottom:1px solid rgba(255,255,255,.1);text-align:center}
-#pro td:first-child,#pro th:first-child{text-align:left}
-#pro .pr{font-size:28px;font-weight:700;text-align:center;margin:6px 0}
-.mic.on{background:#e53935!important;color:#fff}
-`;
-document.head.appendChild(st);
+/* ---- Pro, hub, exam practice, image studio, voice ---- */
+const IMG='https://nova-ai-backend-rho.vercel.app/api/image';
+T.pro='Go Pro';T.hub='Formula & Definition Hub';T.exam='Probable Exam Questions';T.studio='Image Studio';
+const isVip=()=>!!(acc&&(acc.pro||acc.admin));
+async function needPro(){if(!me){openAuth('Log in to use Pro features.');return false}
+ if(!acc)await acct();
+ if(!isVip()){note('This is a Pro feature. Pick a plan to unlock it.');show('pro');return false}
+ return true}
 
-const qs=document.getElementById('qs');
-if(qs)qs.addEventListener('change',()=>{const v=parseInt(qs.value,10);if(v>0&&v<5){qs.value=5;note('Minimum is 5 seconds per question.')}});
+/* ask the AI, with the Pro flag */
+async function apiAsk(msg,history,image,isQuiz,count,isPro){
+ const t=await tok();if(!t){openAuth('Please log in again.');throw new Error('Please log in again.')}
+ const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),60000);
+ try{
+  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+t},body:JSON.stringify({message:msg,history:history||[],image:image||null,quiz:!!isQuiz,count:count||0,pro:!!isPro}),signal:ctl.signal});
+  if(!r.ok){let m='Server error '+r.status+'. Try again.';try{const j=await r.json();if(j.error)m=j.error}catch(x){}const er=new Error(m);er.status=r.status;throw er}
+  return (await r.json()).reply||'No response received.';
+ }catch(e){if(e.status===401){logoutLocal();openAuth('Your session ended. Please log in again.')}
+  const er=new Error(e.name==='AbortError'?'Request timed out. Try again.':e.message);er.status=e.status;throw er}
+ finally{clearTimeout(to)}}
 
-const pro=document.createElement('div');pro.id='pro';pro.hidden=true;
-pro.innerHTML=`<div class="pb"><button class="px" aria-label="Close">✕</button>
-<h2>⭐ ACE_X Pro</h2><p style="opacity:.75;margin:0">Study without limits.</p>
-<table><tr><th></th><th>Free</th><th>Pro</th></tr>
-<tr><td>Quiz questions</td><td>15/day</td><td>Unlimited</td></tr>
-<tr><td>Custom quiz timer</td><td>✓</td><td>✓</td></tr>
-<tr><td>Exam mode</td><td>–</td><td>✓</td></tr>
-<tr><td>Image and voice questions</td><td>Limited</td><td>Unlimited</td></tr>
-<tr><td>Step-by-step solutions</td><td>–</td><td>✓</td></tr>
-<tr><td>Mistake notebook</td><td>–</td><td>✓</td></tr>
-<tr><td>Weak-topic report</td><td>–</td><td>✓</td></tr>
-<tr><td>Streaks and daily goals</td><td>–</td><td>✓</td></tr>
-<tr><td>Priority AI replies</td><td>–</td><td>✓</td></tr></table>
-<div class="pr">GH₵${PRO_PRICE}<small style="font-size:14px;font-weight:400"> / month</small></div>
-<button class="btn wide" id="probuy">Upgrade to Pro</button></div>`;
-document.body.appendChild(pro);
-const closePro=()=>{pro.hidden=true};
-pro.querySelector('.px').onclick=closePro;
-pro.onclick=e=>{if(e.target===pro)closePro()};
-document.getElementById('up').onclick=()=>{pro.hidden=false};
-document.getElementById('probuy').onclick=()=>{
- if(!me){closePro();return openAuth('Log in to upgrade to Pro.')}
+/* account display with Pro badge */
+function showAcc(){
+ const pro=acc&&acc.pro,adm=acc&&acc.admin;
+ $('#qinfo').textContent=!me?'Log in to take quizzes.':!acc?'':(pro||adm)?(adm?'Admin: ':'Pro ⭐: ')+acc.left+' of '+acc.limit+' quiz questions left today.':acc.left+' of '+acc.limit+' free quiz questions left today'+(acc.credits?' · '+acc.credits+' bought questions':'');
+ $('#qbuy').hidden=!(me&&acc&&!adm&&!pro);
+ if(me)$('#mr').textContent=(prof.role||'Student')+(pro?' · ⭐ Pro':'')+(adm?' · Admin':'');
+ $('#proinfo').textContent=!me?'Log in to upgrade.':pro?'You are Pro until '+new Date(acc.proUntil).toLocaleDateString()+'. Buy again to extend.':adm?'Admin: every feature is free.':'Pick a plan to unlock all Pro features.'}
+const _paint=paint;paint=function(){_paint();if(me)showAcc()};
+const _show=show;show=function(v){_show(v);if(['pro','hub','exam','studio'].includes(v))acct()};
+
+/* buy Pro */
+const PRO={pw:[1000],pm:[4000],py:[10000]};
+function buyPro(plan){
+ if(!me)return openAuth('Log in to go Pro.');
  if(!window.PaystackPop)return note('Payment page did not load. Check your internet and refresh.');
- PaystackPop.setup({key:PK,email:me,amount:PRO_PRICE*100,currency:'GHS',ref:'axpro'+Date.now()+Math.floor(Math.random()*1e6),metadata:{uid:sess.id,plan:'pro'},
-  callback:function(r){
-   note('Confirming your payment…');
-   callAcc({action:'verify',reference:r.reference,plan:'pro'}).then(a=>{acc=a;showAcc();closePro();note('Welcome to Pro!')}).catch(e=>note(e.message))
-  },onClose:function(){note('Payment window closed.')}}).openIframe()};
+ PaystackPop.setup({key:PK,email:me,amount:PRO[plan][0],currency:'GHS',ref:'ax'+Date.now()+Math.floor(Math.random()*1e6),metadata:{uid:sess.id,plan:plan},
+  callback:function(r){verifyPay(r.reference,plan)},onClose:function(){note('Payment window closed.')}}).openIframe()}
+async function verifyPay(ref,plan){note('Confirming your payment…');
+ try{acc=await callAcc({action:'verify',reference:ref,plan:plan});showAcc();note(acc.added===false?'This payment was already counted.':PRO[plan]?'Welcome to Pro! ⭐':'Payment confirmed. Questions added!')}
+ catch(e){note(e.message)}}
+$$('[data-pro]').forEach(b=>b.onclick=()=>buyPro(b.dataset.pro));
+$('#up').onclick=()=>show('pro');
 
-const comp=document.querySelector('.comp'),inp=document.getElementById('inp');
-const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-const mic=document.createElement('button');mic.className='ic mic';mic.textContent='🎤';mic.setAttribute('aria-label','Speak');
-const cam=document.createElement('button');cam.className='ic';cam.textContent='📷';cam.setAttribute('aria-label','Take a photo');
-comp.insertBefore(cam,inp);comp.insertBefore(mic,inp);
+/* formula and definition hub */
+async function hub(kind){if(!await needPro())return;
+ const q=$('#hq').value.trim();if(!q)return note('Type a formula, topic or word.');
+ const out=$('#hout');out.hidden=false;out.textContent='Thinking…';
+ const p=kind==='f'?'Topic or formula: "'+q+'". State the formula clearly, explain every symbol and unit, then give a step-by-step proof or derivation a secondary-school student can follow, then one worked example. Use LaTeX for all maths.':'Term: "'+q+'". Give: 1) a simple definition, 2) the formal definition, 3) an everyday example, 4) related terms. Keep it clear for secondary-school students.';
+ try{out.innerHTML=fmt(await apiAsk(p,[],null,false,0,true));mathIn(out)}catch(e){out.hidden=true;note(e.message)}}
+$('#hf').onclick=()=>hub('f');$('#hd').onclick=()=>hub('d');
 
-const ci=document.createElement('input');ci.type='file';ci.accept='image/*';ci.setAttribute('capture','environment');ci.hidden=true;document.body.appendChild(ci);
-cam.onclick=()=>{ci.value='';ci.click()};
-ci.onchange=async e=>{const f=e.target.files[0];if(!f)return;try{att={img:await shrink(f),txt:null,name:f.name||'photo.jpg'};pv()}catch(x){note(x.message)}};
+/* probable exam questions */
+$('#eg').onclick=async()=>{if(!await needPro())return;
+ const s=$('#es').value.trim();if(!s)return note('Enter a subject.');
+ const t=$('#et').value.trim(),n=$('#en').value,ex=$('#ex').value,out=$('#eout');
+ out.hidden=false;out.textContent='Generating…';
+ const p='Create '+n+' probable '+ex+' exam questions for '+s+(t?' on the topic: '+t:'')+'. Base them on the style, difficulty and most frequently tested areas of past papers for this exam. For each question give the marks, then a model answer with a short marking scheme. Use LaTeX for maths. End with one line saying these are predictions, not real exam papers.';
+ try{out.innerHTML=fmt(await apiAsk(p,[],null,false,0,true));mathIn(out)}catch(e){out.hidden=true;note(e.message)}};
 
-let rec=null,base='';
-mic.onclick=()=>{
- if(!SR)return note('Voice input is not supported in this browser. Try Chrome.');
+/* image studio */
+$('#ig').onclick=async()=>{if(!await needPro())return;
+ const p=$('#ip').value.trim();if(!p)return note('Describe the image first.');
+ const b=$('#ig'),out=$('#iout');b.disabled=true;b.textContent='Creating…';
+ try{const t=await tok();
+  const r=await fetch(IMG,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+t},body:JSON.stringify({prompt:p})});
+  const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'Could not create the image.');
+  out.hidden=false;out.innerHTML='';
+  const im=new Image();im.src=d.image;im.style.cssText='max-width:100%;border-radius:12px';
+  const a=document.createElement('a');a.href=d.image;a.download='ace_x_image.png';a.textContent='⬇ Download';a.className='btn o';a.style.marginTop='10px';
+  out.append(im,document.createElement('br'),a)}
+ catch(e){note(e.message)}
+ b.disabled=false;b.textContent='Create image'};
+
+/* explain my mistakes (Pro) */
+const _fin=finish;finish=function(){_fin();addExplain()};
+function addExplain(){if(!quiz||!quiz.done)return;
+ const wrong=quiz.qs.map((q,i)=>({q:q,i:i})).filter(x=>quiz.ans[x.i]!==x.q.a);if(!wrong.length)return;
+ const b=document.createElement('button');b.className='btn o wide';b.textContent='💡 Explain my mistakes (Pro)';
+ const out=document.createElement('div');out.className='panel';out.hidden=true;
+ b.onclick=async()=>{if(!await needPro())return;b.disabled=true;out.hidden=false;out.textContent='Thinking…';
+  const list=wrong.map(x=>'Q: '+x.q.q+'\nStudent answered: '+(x.q.o[quiz.ans[x.i]]||'no answer')+'\nCorrect: '+x.q.o[x.q.a]).join('\n\n');
+  try{out.innerHTML=fmt(await apiAsk('For each question below, explain simply why the student answer is wrong and why the correct answer is right, then give a quick tip to remember it.\n\n'+list,[],null,false,0,true));mathIn(out)}
+  catch(e){out.hidden=true;b.disabled=false;note(e.message)}};
+ $('#qbox').append(b,out)}
+
+/* voice input (free) */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null,vbase='';
+const vlang=()=>ls.g('nv_vl',navigator.language||'en-US');
+$('#vl').value=vlang();if($('#vl').value!==vlang())$('#vl').value='en-US';
+$('#vl').onchange=e=>ls.s('nv_vl',e.target.value);
+$('#mic').onclick=()=>{
+ if(!SR)return note('Voice input works in Chrome or Edge. Please use one of them.');
  if(rec){rec.stop();return}
- rec=new SR();rec.lang='en-GB';rec.interimResults=true;rec.continuous=true;
- base=inp.value?inp.value.trim()+' ':'';
- rec.onresult=e=>{let t='';for(let i=0;i<e.results.length;i++)t+=e.results[i][0].transcript;inp.value=base+t};
- rec.onerror=e=>{note(e.error==='not-allowed'?'Allow microphone access to speak.':'Voice error: '+e.error)};
- rec.onend=()=>{rec=null;mic.classList.remove('on');mic.textContent='🎤'};
- rec.start();mic.classList.add('on');mic.textContent='⏹';note('Listening… tap again to stop.')};
-})();
+ const m=$('#mic');vbase=$('#inp').value;
+ try{rec=new SR();rec.lang=vlang();rec.interimResults=true;rec.continuous=false;m.textContent='⏺';
+  rec.onresult=e=>{let t='';for(let i=0;i<e.results.length;i++)t+=e.results[i][0].transcript;$('#inp').value=(vbase?vbase+' ':'')+t};
+  rec.onerror=e=>note(e.error==='not-allowed'?'Allow the microphone to use voice input.':'Voice input stopped. Try again.');
+  rec.onend=()=>{rec=null;m.textContent='🎤'};
+  rec.start()}catch(e){rec=null;m.textContent='🎤';note('Could not start voice input.')}};
+
+/* read answers aloud (free) */
+function addListen(){if(!window.speechSynthesis||!chat)return;
+ const ms=chat.msgs.filter(m=>m.r==='assistant'),els=$$('#msgs .m.assistant');
+ els.forEach((el,i)=>{const m=ms[i];if(!m)return;
+  const b=document.createElement('button');b.className='sv';b.textContent='🔊 Listen';
+  b.onclick=()=>{const s=speechSynthesis;if(s.speaking){s.cancel();return}
+   const u=new SpeechSynthesisUtterance(m.t.replace(/\$+/g,'').replace(/\\[a-zA-Z]+/g,' ').replace(/[*_`#{}]/g,''));u.lang=vlang();s.speak(u)};
+  el.querySelector('.bd').appendChild(b)})}
+const _rm=renderMsgs;renderMsgs=function(){_rm();addListen()};
+
+showAcc();
