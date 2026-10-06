@@ -110,3 +110,19 @@ function addListen(){if(!window.speechSynthesis||!chat)return;
 const _rm=renderMsgs;renderMsgs=function(){_rm();addListen()};
 
 showAcc();
+/* labelled diagrams (Pro) */
+$('#ig2').onclick=async()=>{if(!await needPro())return;
+ const p=$('#ip').value.trim();if(!p)return note('Describe the diagram first.');
+ const b=$('#ig2'),out=$('#iout');b.disabled=true;b.textContent='Drawing…';
+ try{
+  const t=await apiAsk('Draw a clear, accurate, labelled educational diagram of: '+p+'. Reply with ONLY one complete SVG element and nothing else (no markdown, no explanation). Use viewBox="0 0 800 600", a white background rectangle, thick dark outlines, soft fill colours and font-size 18 dark text. Label every important part with a short text label joined by a thin line to the part. Keep labels from overlapping. Do not use scripts, images or external links.',[],null,false,0,true);
+  const m=t.match(/<svg[\s\S]*<\/svg>/i);if(!m)throw new Error('Could not draw that. Try describing it differently.');
+  let svg=m[0].replace(/<script[\s\S]*?<\/script>/gi,'');
+  if(!/xmlns=/.test(svg.slice(0,300)))svg=svg.replace(/<svg/i,'<svg xmlns="http://www.w3.org/2000/svg"');
+  const url='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+  out.hidden=false;out.innerHTML='';
+  const im=new Image();im.src=url;im.style.cssText='max-width:100%;background:#fff;border-radius:12px';
+  const a=document.createElement('a');a.href=url;a.download='ace_x_diagram.svg';a.textContent='⬇ Download';a.className='btn o';a.style.marginTop='10px';
+  out.append(im,document.createElement('br'),a)}
+ catch(e){note(e.message)}
+ b.disabled=false;b.textContent='✏️ Draw labelled diagram'};
