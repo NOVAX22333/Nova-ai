@@ -257,6 +257,50 @@ if (document.readyState === 'loading') {
 } else {
   setTimeout(initMobileNav, 100);
 }
-
 initMobileNav();
+// === PROFESSIONAL MOBILE NAVIGATION ===
+(function() {
+  const side = $('#side'), overlay = $('#sidebar-overlay'), burger = $('#burger');
+  const bottomNav = $('#bottomNav'), moreBtn = $('#moreBtn');
+  
+  // Sidebar toggle
+  const toggleSidebar = (open) => {
+    side.classList.toggle('open', open);
+    overlay.classList.toggle('active', open);
+  };
+  
+  if (burger) burger.onclick = () => toggleSidebar(true);
+  if (overlay) overlay.onclick = () => toggleSidebar(false);
+  
+  // Bottom nav + sidebar links
+  const handleNav = (e) => {
+    e.preventDefault();
+    const view = e.currentTarget.dataset.v;
+    if (!view) return;
+    
+    show(view);
+    $$('.nav-link, .nav-item').forEach(el => el.classList.remove('active'));
+    $$(`[data-v="${view}"]`).forEach(el => el.classList.add('active'));
+    toggleSidebar(false);
+  };
+  
+  $$('.nav-link, .nav-item:not(#moreBtn)').forEach(el => {
+    el.addEventListener('click', handleNav);
+    el.addEventListener('touchstart', handleNav, { passive: true });
+  });
+  
+  // "More" button opens sidebar on mobile
+  if (moreBtn) {
+    const openMore = (e) => { e.preventDefault(); toggleSidebar(true); };
+    moreBtn.addEventListener('click', openMore);
+    moreBtn.addEventListener('touchstart', openMore, { passive: true });
+  }
+  
+  // Sync active state on view change
+  const origShow = window.show;
+  window.show = function(v) {
+    origShow(v);
+    $$('.nav-link, .nav-item').forEach(el => el.classList.toggle('active', el.dataset.v === v));
+  };
+})();
 
