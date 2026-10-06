@@ -135,7 +135,6 @@ $$('.bottom-nav .nav-item').forEach(item => {
     item.classList.add('active');
   };
 });
-<script>
 // Emergency mobile button fix
 (function() {
   'use strict';
@@ -168,4 +167,3 @@ $$('.bottom-nav .nav-item').forEach(item => {
     console.log('Mobile navigation initialized');
   }, 500);
 })();
-</script>
