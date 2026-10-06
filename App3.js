@@ -126,3 +126,12 @@ $('#ig2').onclick=async()=>{if(!await needPro())return;
   out.append(im,document.createElement('br'),a)}
  catch(e){note(e.message)}
  b.disabled=false;b.textContent='✏️ Draw labelled diagram'};
+$$('.bottom-nav .nav-item').forEach(item => {
+  item.onclick = (e) => {
+    e.preventDefault();
+    const view = item.dataset.v;
+    show(view);
+    $$('.bottom-nav .nav-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+  };
+});
