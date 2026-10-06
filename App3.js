@@ -30,7 +30,7 @@ const _paint=paint;paint=function(){_paint();if(me)showAcc()};
 const _show=show;show=function(v){_show(v);if(['pro','hub','exam','studio'].includes(v))acct()};
 
 /* buy Pro */
-const PRO={pw:[1000],pm:[4000],py:[10000]};
+const PRO={w1:[200],w2:[400],w3:[600],m1:[800],m5:[4000],y1:[10000]};
 function buyPro(plan){
  if(!me)return openAuth('Log in to go Pro.');
  if(!window.PaystackPop)return note('Payment page did not load. Check your internet and refresh.');
