@@ -135,35 +135,128 @@ $$('.bottom-nav .nav-item').forEach(item => {
     item.classList.add('active');
   };
 });
-// Emergency mobile button fix
-(function() {
-  'use strict';
+/* =========================================
+   BOTTOM NAVIGATION & ATTACHMENT POPUP
+   ========================================= */
+
+// Wait for DOM to be fully loaded
+function initMobileNav() {
+  const bottomNav = $('#bottomNav');
   
-  // Wait a bit for everything to load
-  setTimeout(function() {
-    const navItems = document.querySelectorAll('.bottom-nav .nav-item');
-    
-    navItems.forEach(function(item) {
-      // Remove old listeners by cloning
-      const newItem = item.cloneNode(true);
-      item.parentNode.replaceChild(newItem, item);
-      
-      // Add fresh listener
-      newItem.addEventListener('click', function(e) {
+  if (bottomNav) {
+    // Add click AND touch handlers for better mobile support
+    $$('.nav-item', bottomNav).forEach(item => {
+      const handleNavClick = (e) => {
         e.preventDefault();
-        const view = this.getAttribute('data-v');
-        if (typeof show === 'function') {
-          show(view);
+        e.stopPropagation();
+        
+        const view = item.dataset.v;
+        console.log('Navigating to:', view);
+        
+        show(view);
+        
+        $$('.nav-item', bottomNav).forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        
+        const side = $('#side');
+        if (side) {
+          side.classList.remove('open');
         }
         
-        // Update active state
-        navItems.forEach(function(i) {
-          i.classList.remove('active');
-        });
-        this.classList.add('active');
-      });
+        const popup = $('.attach-popup');
+        if (popup) {
+          popup.classList.remove('show');
+        }
+      };
+      
+      item.addEventListener('click', handleNavClick);
+      item.addEventListener('touchstart', handleNavClick, { passive: true });
     });
     
-    console.log('Mobile navigation initialized');
-  }, 500);
-})();
+    function updateNavActive() {
+      const currentView = $$('.view.on')[0]?.id.replace('v-', '') || 'chat';
+      $$('.nav-item', bottomNav).forEach(item => {
+        item.classList.toggle('active', item.dataset.v === currentView);
+      });
+    }
+    
+    if (typeof show === 'function') {
+      const originalShow = show;
+      window.show = function(v) {
+        originalShow(v);
+        setTimeout(updateNavActive, 100);
+      };
+    }
+  }
+  
+  const plusBtn = $('#plusBtn');
+  const attachPopup = $('#attachPopup');
+  
+  if (plusBtn && attachPopup) {
+    const togglePopup = (e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      plusBtn.classList.toggle('active');
+      attachPopup.classList.toggle('show');
+    };
+    
+    plusBtn.addEventListener('click', togglePopup);
+    plusBtn.addEventListener('touchstart', togglePopup, { passive: true });
+    
+    const closePopup = (e) => {
+      if (!plusBtn.contains(e.target) && !attachPopup.contains(e.target)) {
+        plusBtn.classList.remove('active');
+        attachPopup.classList.remove('show');
+      }
+    };
+    
+    document.addEventListener('click', closePopup);
+    document.addEventListener('touchstart', closePopup, { passive: true });
+    
+    const attachFile = $('.attach-option[data-action="file"]');
+    if (attachFile) {
+      const handleFileClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const fileInput = $('#fi');
+        if (fileInput) {
+          fileInput.click();
+        }
+        plusBtn.classList.remove('active');
+        attachPopup.classList.remove('show');
+      };
+      
+      attachFile.addEventListener('click', handleFileClick);
+      attachFile.addEventListener('touchstart', handleFileClick, { passive: true });
+    }
+    
+    const attachImage = $('.attach-option[data-action="image"]');
+    if (attachImage) {
+      const handleImageClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const imageInput = $('#ii');
+        if (imageInput) {
+          imageInput.click();
+        }
+        plusBtn.classList.remove('active');
+        attachPopup.classList.remove('show');
+      };
+      
+      attachImage.addEventListener('click', handleImageClick);
+      attachImage.addEventListener('touchstart', handleImageClick, { passive: true });
+    }
+  }
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initMobileNav);
+} else {
+  setTimeout(initMobileNav, 100);
+}
+
+initMobileNav();
+
