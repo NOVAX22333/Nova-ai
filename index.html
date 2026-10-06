@@ -1,405 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-  <title>ACE_X AI - AI Study and Coding Assistant for Students</title>
-  <meta name="description" content="ACE_X AI is an AI study and coding assistant for students worldwide. Get help with programming, maths, science, languages, exam revision, quizzes and more.">
-  <link rel="canonical" href="https://novax22333.github.io/Nova-ai/">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="ACE_X AI - AI Study and Coding Assistant">
-  <meta property="og:description" content="AI study and coding assistant for students worldwide.">
-  <meta property="og:url" content="https://novax22333.github.io/Nova-ai/">
-  <meta name="theme-color" content="#0a0a12">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="style.css">
-  
-  <!-- INLINE STYLES FOR MOBILE SIDEBAR & BOTTOM NAV -->
-  <style>
-    /* === RESET & BASE === */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: system-ui, -apple-system, sans-serif; background: #0a0a12; color: #fff; overflow-x: hidden; }
-    
-    /* === SIDEBAR (MOBILE FIRST) === */
-    #side {
-      position: fixed; top: 0; left: -100%; width: 85%; max-width: 300px; height: 100vh;
-      background: #0f0f1a; z-index: 1000; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex; flex-direction: column; box-shadow: 4px 0 20px rgba(0,0,0,0.6);
-    }
-    #side.open { left: 0; }
-    #sidebar-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999;
-      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-    }
-    #sidebar-overlay.active { opacity: 1; pointer-events: auto; }
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ACE_X AI - AI Study and Coding Assistant for Students</title>
+<meta name="description" content="ACE_X AI is an AI study and coding assistant for students worldwide. Get help with programming, maths, science, languages, exam revision, quizzes and more.">
+<link rel="canonical" href="https://novax22333.github.io/Nova-ai/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ACE_X AI - AI Study and Coding Assistant">
+<meta property="og:description" content="AI study and coding assistant for students worldwide.">
+<meta property="og:url" content="https://novax22333.github.io/Nova-ai/">
+<meta name="theme-color" content="#0a0a12">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="style.css">
+<style>
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 20px;
+}
+.brand img {
+  width: 120px;
+  height: auto;
+  margin-bottom: 10px;
+}
+.brand-text {
+  font-size: 14px;
+  opacity: 0.8;
+  letter-spacing: 2px;
+}
+</style>
+</head><body>
+<script>window.onerror=function(m,s,l){if(!s||s.indexOf(location.host)<0)return;var d=document.createElement('div');d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99;background:#b00020;color:#fff;padding:8px;font:13px monospace';d.textContent='Error: '+m+' ('+String(s||'').split('/').pop()+':'+l+')';document.body.appendChild(d)}</script>
+<div id="auth" hidden><div class="box">
+<button class="x" id="ax" aria-label="Close">✕</button>
+<h2 id="at">Log in</h2><p id="am">Log in to continue.</p>
+<div id="nm" hidden><label>Full name</label><input id="name" autocomplete="name"></div>
+<label>Email</label><input id="email" type="email" autocomplete="email">
+<label>Password</label><input id="pw" type="password" autocomplete="current-password">
+<div id="err"></div>
+<button class="btn" id="go">Log in</button>
+<p style="margin-top:14px;text-align:center"><span id="sw">Don't have an account?</span> <button class="lnk" id="tg">Sign Up</button></p>
+</div></div>
 
-    .sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .brand-title { color: #ff9900; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+<div id="app">
+<aside id="side"><div class="brand">
+<img src="logo.png" alt="ACE_X AI Logo">
+<span class="brand-text">YOUR AI ASSISTANT</span>
+</div>
+<button class="nav" data-v="home">▦ Dashboard</button>
+<button class="nav on" data-v="chat" id="newc"> Tutor Chat</button>
+<button class="nav" data-v="history">🕘 Chat History</button>
+<button class="nav" data-v="saved">🔖 Saved Items</button>
+<button class="nav" data-v="quiz">🧠 Quizzes</button>
+<button class="nav" data-v="hub">📐 Formula Hub ⭐</button>
+<button class="nav" data-v="exam">📝 Exam Practice ⭐</button>
+<button class="nav" data-v="studio">🎨 Image Studio ⭐</button>
+<button class="nav" data-v="plan">📅 Planner</button>
+<button class="nav" data-v="settings">⚙️ Settings</button>
+<div class="me"><span id="mn">Guest</span><small id="mr"></small>
+<button class="btn" id="li">Log in / Sign up</button>
+<button class="btn o" id="up">⭐ Upgrade to Pro</button></div></aside>
+<main><header><button id="burger" aria-label="Menu">☰</button><h3 id="ttl">Tutor Chat</h3><button class="ic2" id="fz" aria-label="Change font" style="margin-left:auto;width:auto;padding:0 10px">Aa</button></header>
 
-    .sidebar-nav { flex: 1; overflow-y: auto; padding: 8px 0; }
-    .nav-link {
-      display: flex; align-items: center; gap: 14px; padding: 14px 20px;
-      color: #b0b0b0; text-decoration: none; font-size: 15px; font-weight: 500;
-      transition: all 0.2s ease; border-left: 3px solid transparent;
-    }
-    .nav-link:hover, .nav-link.active {
-      background: rgba(255, 153, 0, 0.12); color: #ff9900; border-left-color: #ff9900;
-    }
-    .nav-link .icon { font-size: 18px; width: 24px; text-align: center; }
+<section class="view" id="v-home">
+<div class="top"><div><h1 id="hi"></h1><p class="sub">Here's a snapshot of your studying so far.</p></div><button class="btn" id="startc">Ask your tutor something</button></div>
+<div class="stats">
+<div class="st"><span>Tutor chats</span><b id="s1">0</b></div>
+<div class="st"><span>Quizzes taken</span><b id="s2">0</b></div>
+<div class="st"><span>Average score</span><b id="s3">0%</b></div>
+<div class="st"><span>Sessions planned</span><b id="s4">0</b></div></div>
+<div class="panel" id="fod"></div>
+<div class="panel"><h3>Recent quiz performance</h3><div id="perf"></div></div>
+<h3>Quick Actions</h3><div class="chips" id="qa"></div>
+<p class="sub" style="margin-top:20px">ACE_X AI is an AI study and coding assistant for students worldwide: programming, maths, science, languages, exam revision and more.</p>
+</section>
 
-    .sidebar-footer { padding: 20px; border-top: 1px solid rgba(255,255,255,0.08); background: #0a0a12; }
-    .user-name { display: block; color: #fff; font-size: 16px; font-weight: 600; margin-bottom: 2px; }
-    .user-role { display: block; color: #666; font-size: 13px; }
-    .btn-upgrade {
-      width: 100%; margin-top: 12px; padding: 12px; border-radius: 10px;
-      background: linear-gradient(135deg, #ff9900 0%, #e68a00 100%);
-      border: none; color: #000; font-weight: 700; font-size: 14px; cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .btn-upgrade:active { transform: scale(0.98); }
+<section class="view on" id="v-chat"><div id="msgs"></div>
+<div id="pv" hidden></div>
+<div class="comp"><button class="ic" id="bf" aria-label="Attach file">📎</button><button class="ic" id="bi" aria-label="Add image">🖼️</button><button class="ic" id="mic" aria-label="Speak">🎤</button><textarea id="inp" placeholder="Ask ACE_X anything..."></textarea><button class="btn" id="send">Send</button></div></section>
 
-    /* === MAIN CONTENT AREA === */
-    main { min-height: 100vh; padding: 0; }
-    header { 
-      position: sticky; top: 0; z-index: 100; background: #0a0a12; 
-      padding: 12px 16px; display: flex; align-items: center; gap: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-    #burger { 
-      background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; 
-      padding: 8px; display: block; /* Always visible on mobile/tablet */
-    }
-    #ttl { font-size: 18px; font-weight: 600; flex: 1; }
-    .ic2 { 
-      background: rgba(255,255,255,0.1); border: none; color: #fff; 
-      padding: 6px 10px; border-radius: 6px; font-size: 14px; cursor: pointer;
-    }
+<section class="view" id="v-history"></section>
+<section class="view" id="v-saved"></section>
 
-    .view { display: none; padding: 16px; animation: fadeIn 0.3s ease; }
-    .view.on { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+<section class="view" id="v-quiz"><h1>Quizzes</h1><p class="sub">Generate a fresh, AI-written quiz on any topic.</p>
+<p class="sub" id="qinfo"></p>
+<div class="two"><div class="panel"><h3>New quiz</h3>
+<label>Topic (optional)</label><input id="qt" placeholder="e.g. Newton's laws of motion">
+<div class="two2"><div><label>Difficulty</label><select id="qd"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div>
+<div><label>Questions</label><select id="qn"><option value="5">5 questions</option><option value="10">10 questions</option></select></div></div>
+<label>Seconds per question (optional)</label><input id="qs" type="number" min="5" max="300" placeholder="e.g. 30. Leave empty for no timer">
+<button class="btn wide" id="qg">✨ Generate quiz</button></div>
+<div><div class="panel" id="qbuy"><h3>Need more quizzes?</h3><p class="sub">You get 15 free quiz questions every day. Extra questions never expire.</p>
+<button class="btn wide" data-p="p1">GH₵1 · 10 questions</button>
+<button class="btn wide" data-p="p2">GH₵2 · 20 questions</button></div>
+<h3>Past quizzes</h3><div id="qp"></div></div></div>
+<div id="qbox"></div></section>
 
-    /* === CHAT INPUT AREA === */
-    .comp {
-      position: fixed; bottom: 64px; /* Above bottom nav */
-      left: 0; right: 0; background: #0f0f1a; 
-      padding: 10px 12px; gap: 8px; display: flex; align-items: flex-end;
-      border-top: 1px solid rgba(255,255,255,0.08); z-index: 997;
-    }
-    .attach-container { position: relative; }
-    .plus-btn {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border: none; color: #fff; font-size: 20px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.3s ease; flex-shrink: 0;
-    }
-    .plus-btn.active { transform: rotate(45deg); background: #e74c3c; }
-    
-    .attach-popup {
-      position: absolute; bottom: 50px; left: 0;
-      background: #1a1a2e; border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px; padding: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-      display: none; flex-direction: column; gap: 6px; min-width: 160px; z-index: 102;
-      animation: slideUp 0.3s ease;
-    }
-    .attach-popup.show { display: flex; }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    
-    .attach-option {
-      display: flex; align-items: center; gap: 10px; padding: 10px 12px;
-      background: rgba(255,255,255,0.05); border: none; border-radius: 8px;
-      color: #fff; font-size: 13px; cursor: pointer; transition: all 0.2s ease; text-align: left;
-    }
-    .attach-option:hover { background: rgba(255,255,255,0.1); transform: translateX(4px); }
-    .attach-option .icon { font-size: 18px; width: 24px; text-align: center; }
+<section class="view" id="v-pro"><h1>Go Pro ⭐</h1><p class="sub" id="proinfo"></p>
+<div class="two"><div class="panel"><h3>Everything in Pro</h3>
+<p class="sub">📐 Formula & Definition Hub: formulas stated and proved, key terms defined<br><br>📝 Probable exam questions with model answers and marking schemes<br><br>🎨 Image Studio: pictures and labelled diagrams<br><br>💡 "Explain my mistakes" after every quiz<br><br>🧠 100 quiz questions a day<br><br>⭐ Pro badge</p></div>
+<div class="panel"><h3>Choose a plan</h3>
+<button class="btn wide" data-pro="w1">GH₵2 · 1 week</button>
+<button class="btn wide" data-pro="w2">GH₵4 · 2 weeks</button>
+<button class="btn wide" data-pro="w3">GH₵6 · 3 weeks</button>
+<button class="btn wide" data-pro="m1">GH₵8 · 1 month</button>
+<button class="btn wide" data-pro="m5">GH₵40 · 5 months</button>
+<button class="btn wide" data-pro="y1">GH₵100 · 1 year</button>
+<p class="sub" style="margin-top:12px">One-time payment. It does not renew by itself.</p></div></div></section>
 
-    #mic {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: rgba(255,255,255,0.1); border: none; color: #fff;
-      font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;
-    }
-    #inp {
-      flex: 1; min-height: 40px; max-height: 120px; padding: 10px 14px;
-      border-radius: 24px; border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.06); color: #fff; font-size: 15px; resize: none; font-family: inherit;
-    }
-    #inp:focus { outline: none; border-color: #ff9900; background: rgba(255,255,255,0.08); }
-    
-    #send {
-      width: 44px; height: 44px; border-radius: 50%;
-      background: #ff9900; border: none; color: #000; font-weight: 700; font-size: 13px;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: all 0.3s ease; flex-shrink: 0;
-    }
-    #send:hover { transform: scale(1.05); }
-    #send:active { transform: scale(0.95); }
+<section class="view" id="v-hub"><h1>Formula & Definition Hub ⭐</h1><p class="sub">State and prove formulas, and define useful terms.</p>
+<div class="panel"><input id="hq" placeholder="e.g. Quadratic formula, photosynthesis, Lami's theorem">
+<div class="two2" style="margin-top:12px"><button class="btn" id="hf">State & prove</button><button class="btn" id="hd">Define term</button></div></div>
+<div class="panel" id="hout" hidden></div></section>
 
-    /* === BOTTOM NAVIGATION === */
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; height: 64px;
-      background: #0f0f1a; border-top: 1px solid rgba(255,255,255,0.08);
-      z-index: 998; display: flex; justify-content: space-around; align-items: center;
-      box-shadow: 0 -4px 12px rgba(0,0,0,0.3);
-    }
-    .nav-item {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      color: #666; text-decoration: none; font-size: 10px; gap: 4px; flex: 1;
-      -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-    }
-    .nav-item.active { color: #ff9900; }
-    .nav-icon { font-size: 22px; line-height: 1; }
+<section class="view" id="v-exam"><h1>Probable Exam Questions ⭐</h1><p class="sub">Practice questions in the style of real exams, with model answers. They are AI predictions based on common patterns, not real or leaked papers.</p>
+<div class="panel"><label>Exam</label><select id="ex"><option>WASSCE</option><option>BECE</option><option>JAMB / UTME</option><option>IGCSE / GCSE</option><option>A-Level</option><option>SAT / ACT</option><option>IB</option><option>KCSE</option><option>Other / school exam</option></select>
+<label>Subject</label><input id="es" placeholder="e.g. Physics">
+<label>Topic (optional)</label><input id="et" placeholder="e.g. Forces and equilibrium">
+<label>Number of questions</label><select id="en"><option>3</option><option selected>5</option><option>8</option></select>
+<button class="btn wide" id="eg">Generate probable questions</button></div>
+<div class="panel" id="eout" hidden></div></section>
 
-    /* === DESKTOP OVERRIDES === */
-    @media (min-width: 1025px) {
-      #side { left: 0 !important; width: 260px; }
-      main { margin-left: 260px; }
-      .bottom-nav { display: none; }
-      .comp { bottom: 0; }
-      #burger { display: none; }
-    }
-  </style>
-</head>
-<body>
-  <script>window.onerror=function(m,s,l){if(!s||s.indexOf(location.host)<0)return;var d=document.createElement('div');d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99;background:#b00020;color:#fff;padding:8px;font:13px monospace';d.textContent='Error: '+m+' ('+String(s||'').split('/').pop()+':'+l+')';document.body.appendChild(d)}</script>
-  
-  <div id="auth" hidden><div class="box">
-    <button class="x" id="ax" aria-label="Close"></button>
-    <h2 id="at">Log in</h2><p id="am">Log in to continue.</p>
-    <div id="nm" hidden><label>Full name</label><input id="name" autocomplete="name"></div>
-    <label>Email</label><input id="email" type="email" autocomplete="email">
-    <label>Password</label><input id="pw" type="password" autocomplete="current-password">
-    <div id="err"></div>
-    <button class="btn" id="go">Log in</button>
-    <p style="margin-top:14px;text-align:center"><span id="sw">Don't have an account?</span> <button class="lnk" id="tg">Sign Up</button></p>
-  </div></div>
+<section class="view" id="v-studio"><h1>Image Studio ⭐</h1><p class="sub">Describe a picture or diagram and ACE_X will create it. For labelled diagrams, use the Draw button.</p>
+<div class="panel"><textarea id="ip" placeholder="e.g. A labelled diagram of a plant cell" style="height:90px"></textarea>
+<button class="btn wide" id="ig">Create image</button>
+<button class="btn o wide" id="ig2">✏️ Draw labelled diagram</button></div>
+<div class="panel" id="iout" hidden></div></section>
 
-  <!-- Mobile Sidebar -->
-  <aside id="side">
-  <div class="sidebar-header">
-    <!-- Logo stuff -->
-  </div>
-  
-  <!-- Now directly goes to footer -->
-  <div class="sidebar-footer">
-     <!-- User info & Upgrade button -->
-  </div>
-</aside>
-    <nav class="bottom-nav" id="bottomNav">
-  <a href="#" class="nav-item active" data-v="home"><span class="nav-icon">▦</span><span class="nav-label">Home</span></a>
-  <a href="#" class="nav-item" data-v="chat"><span class="nav-icon">💬</span><span class="nav-label">Chat</span></a>
-  <a href="#" class="nav-item" data-v="quiz"><span class="nav-icon">🧠</span><span class="nav-label">Quizzes</span></a>
-  <a href="#" class="nav-item" data-v="exam"><span class="nav-icon">📝</span><span class="nav-label">Exam</span></a>
-  <a href="#" class="nav-item" data-v="settings"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></a>
-</nav>
-    <div class="sidebar-footer">
-      <div class="user-profile">
-        <span class="user-name" id="mn">Guest</span>
-        <span class="user-role" id="mr">Not logged in</span>
-      </div>
-      <button class="btn-upgrade" id="up">⭐ Upgrade to Pro</button>
-    </div>
-  </aside>
-  <div id="sidebar-overlay"></div>
+<section class="view" id="v-plan"><h1>Study planner</h1><p class="sub">Plan your sessions and build a routine that sticks.</p>
+<div class="two"><div class="panel"><div class="calh"><button class="ic2" id="pp" aria-label="Previous month">‹</button><b id="pm"></b><button class="ic2" id="pn" aria-label="Next month">›</button></div><div class="cal" id="cal"></div></div>
+<div><h3 id="pd"></h3>
+<div class="add"><input id="ptitle" placeholder="Session, e.g. Revise chemistry"><input id="ptime" type="time"><button class="btn" id="padd">Add</button></div>
+<div id="pl"></div></div></div></section>
 
-  <div id="app">
-    <main>
-      <header>
-        <button id="burger" aria-label="Menu">☰</button>
-        <h3 id="ttl">Tutor Chat</h3>
-        <button class="ic2" id="fz" aria-label="Change font" style="margin-left:auto;width:auto;padding:0 10px">Aa</button>
-      </header>
-      <section class="view" id="v-home">
-        <div class="top"><div><h1 id="hi"></h1><p class="sub">Here's a snapshot of your studying so far.</p></div><button class="btn" id="startc">Ask your tutor something</button></div>
-        <div class="stats">
-          <div class="st"><span>Tutor chats</span><b id="s1">0</b></div>
-          <div class="st"><span>Quizzes taken</span><b id="s2">0</b></div>
-          <div class="st"><span>Average score</span><b id="s3">0%</b></div>
-          <div class="st"><span>Sessions planned</span><b id="s4">0</b></div></div>
-        <div class="panel" id="fod"></div>
-        <div class="panel"><h3>Recent quiz performance</h3><div id="perf"></div></div>
-        <h3>Quick Actions</h3><div class="chips" id="qa"></div>
-        <p class="sub" style="margin-top:20px">ACE_X AI is an AI study and coding assistant for students worldwide: programming, maths, science, languages, exam revision and more.</p>
-      </section>
-
-      <section class="view on" id="v-chat"><div id="msgs"></div>
-        <div id="pv" hidden></div>
-        <div class="comp">
-          <div class="attach-container">
-            <button class="plus-btn" id="plusBtn">+</button>
-            <div class="attach-popup" id="attachPopup">
-              <button class="attach-option" data-action="file">
-                <span class="icon">📎</span>
-                <span>Attach File</span>
-              </button>
-              <button class="attach-option" data-action="image">
-                <span class="icon">🖼️</span>
-                <span>Add Image</span>
-              </button>
-            </div>
-          </div>
-          <button class="ic" id="mic" aria-label="Speak">🎤</button>
-          <textarea id="inp" placeholder="Ask ACE_X anything..."></textarea>
-          <button class="btn" id="send">Send</button>
-        </div>
-      </section>
-
-      <section class="view" id="v-history"></section>
-      <section class="view" id="v-saved"></section>
-
-      <section class="view" id="v-quiz"><h1>Quizzes</h1><p class="sub">Generate a fresh, AI-written quiz on any topic.</p>
-        <p class="sub" id="qinfo"></p>
-        <div class="two"><div class="panel"><h3>New quiz</h3>
-          <label>Topic (optional)</label><input id="qt" placeholder="e.g. Newton's laws of motion">
-          <div class="two2"><div><label>Difficulty</label><select id="qd"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div>
-          <div><label>Questions</label><select id="qn"><option value="5">5 questions</option><option value="10">10 questions</option></select></div></div>
-          <label>Seconds per question (optional)</label><input id="qs" type="number" min="5" max="300" placeholder="e.g. 30. Leave empty for no timer">
-          <button class="btn wide" id="qg">✨ Generate quiz</button></div>
-          <div><div class="panel" id="qbuy"><h3>Need more quizzes?</h3><p class="sub">You get 15 free quiz questions every day. Extra questions never expire.</p>
-            <button class="btn wide" data-p="p1">GH₵1 · 10 questions</button>
-            <button class="btn wide" data-p="p2">GH₵2 · 20 questions</button></div>
-            <h3>Past quizzes</h3><div id="qp"></div></div></div>
-        <div id="qbox"></div></section>
-
-      <section class="view" id="v-pro"><h1>Go Pro ⭐</h1><p class="sub" id="proinfo"></p>
-        <div class="two"><div class="panel"><h3>Everything in Pro</h3>
-          <p class="sub">📐 Formula & Definition Hub: formulas stated and proved, key terms defined<br><br>📝 Probable exam questions with model answers and marking schemes<br><br>🎨 Image Studio: diagrams and illustrations<br><br>💡 "Explain my mistakes" after every quiz<br><br>🧠 100 quiz questions a day<br><br>⭐ Pro badge</p></div>
-          <div class="panel"><h3>Choose a plan</h3>
-            <button class="btn wide" data-pro="w1">GH₵2 · 1 week</button>
-            <button class="btn wide" data-pro="w2">GH₵4 · 2 weeks</button>
-            <button class="btn wide" data-pro="w3">GH₵6 · 3 weeks</button>
-            <button class="btn wide" data-pro="m1">GH₵8 · 1 month</button>
-            <button class="btn wide" data-pro="m5">GH₵40 · 5 months</button>
-            <button class="btn wide" data-pro="y1">GH₵100 · 1 year</button>
-            <p class="sub" style="margin-top:12px">One-time payment. It does not renew by itself.</p></div></div></section>
-
-      <section class="view" id="v-hub"><h1>Formula & Definition Hub ⭐</h1><p class="sub">State and prove formulas, and define useful terms.</p>
-        <div class="panel"><input id="hq" placeholder="e.g. Quadratic formula, photosynthesis, Lami's theorem">
-          <div class="two2" style="margin-top:12px"><button class="btn" id="hf">State & prove</button><button class="btn" id="hd">Define term</button></div></div>
-        <div class="panel" id="hout" hidden></div></section>
-
-      <section class="view" id="v-exam"><h1>Probable Exam Questions ⭐</h1><p class="sub">Practice questions in the style of real exams, with model answers. They are AI predictions based on common patterns, not real or leaked papers.</p>
-        <div class="panel"><label>Exam</label><select id="ex"><option>WASSCE</option><option>BECE</option><option>JAMB / UTME</option><option>IGCSE / GCSE</option><option>A-Level</option><option>SAT / ACT</option><option>IB</option><option>KCSE</option><option>Other / school exam</option></select>
-          <label>Subject</label><input id="es" placeholder="e.g. Physics">
-          <label>Topic (optional)</label><input id="et" placeholder="e.g. Forces and equilibrium">
-          <label>Number of questions</label><select id="en"><option>3</option><option selected>5</option><option>8</option></select>
-          <button class="btn wide" id="eg">Generate probable questions</button></div>
-        <div class="panel" id="eout" hidden></div></section>
-
-      <section class="view" id="v-studio"><h1>Image Studio ⭐</h1><p class="sub">Describe a diagram or illustration and ACE_X will create it.</p>
-        <div class="panel"><textarea id="ip" placeholder="e.g. A labelled diagram of a plant cell" style="height:90px"></textarea>
-          <button class="btn wide" id="ig">Create image</button>
-          <button class="btn o wide" id="ig2">🪄 Draw labelled diagram</button></div>
-        <div class="panel" id="iout" hidden></div></section>
-
-      <section class="view" id="v-plan"><h1>Study planner</h1><p class="sub">Plan your sessions and build a routine that sticks.</p>
-        <div class="two"><div class="panel"><div class="calh"><button class="ic2" id="pp" aria-label="Previous month">‹</button><b id="pm"></b><button class="ic2" id="pn" aria-label="Next month">›</button></div><div class="cal" id="cal"></div></div>
-          <div><h3 id="pd"></h3>
-            <div class="add"><input id="ptitle" placeholder="Session, e.g. Revise chemistry"><input id="ptime" type="time"><button class="btn" id="padd">Add</button></div>
-            <div id="pl"></div></div></div></section>
-
-      <section class="view" id="v-settings"><div class="set">
-        <label>Name</label><input id="sn">
-        <label>Role</label><select id="sr"><option>Student</option><option>Teacher</option><option>Staff</option></select>
-        <button class="btn" id="ss" style="margin-top:14px">Save changes</button>
-        <label>Answer font</label><select id="sf"><option value="Modern">Modern</option><option value="Serif">Serif</option><option value="Mono">Monospace</option><option value="Comfort">Easy to read</option></select>
-        <label>Text size</label><select id="sz"><option value="14">Small</option><option value="16">Medium</option><option value="18">Large</option><option value="20">Extra large</option></select>
-        <label>Voice language</label><select id="vl"><option value="en-US">English (US)</option><option value="en-GB">English (UK)</option><option value="en-GH">English (Ghana)</option><option value="en-NG">English (Nigeria)</option><option value="en-IN">English (India)</option><option value="fr-FR">Français</option><option value="es-ES">Español</option><option value="pt-PT">Português</option><option value="ar-SA">العربية</option><option value="sw-KE">Kiswahili</option><option value="hi-IN">हिन्दী</option><option value="zh-CN">中文</option></select>
-        <label>Appearance</label><button class="btn o" id="dk">Switch light / dark</button>
-        <label>Admin code</label><input id="acode" type="password" autocomplete="off" placeholder="Admin only"><button class="btn o" id="adm" style="margin-top:8px">Unlock admin</button>
-        <label>Data</label><button class="btn o" id="cl">Clear my chats</button>
-        <label>Account</label><button class="btn o" id="lo">Log out</button></div></section>
-    </main>
-  </div>
-
-  <input type="file" id="fi" hidden accept=".txt,.md,.csv,.json,.js,.py,.html,.css,.java,.c,.cpp,.php,.sql,.xml,.ts,text/*">
-  <input type="file" id="ii" hidden accept="image/*">
-  <div id="toast"></div>
-
-  <script src="App.js"></script>
-  <script src="App2.js"></script>
-  <script src="App3.js"></script>
-  <script async src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-  <script async src="https://js.paystack.co/v1/inline.js"></script>
-
-  <script>
-    // === MOBILE NAVIGATION & ATTACHMENT LOGIC ===
-    document.addEventListener('DOMContentLoaded', () => {
-      const side = document.getElementById('side');
-      const overlay = document.getElementById('sidebar-overlay');
-      const burger = document.getElementById('burger');
-      const plusBtn = document.getElementById('plusBtn');
-      const attachPopup = document.getElementById('attachPopup');
-
-      // Sidebar toggle
-      const toggleSidebar = (open) => {
-        side.classList.toggle('open', open);
-        overlay.classList.toggle('active', open);
-      };
-
-      if (burger) burger.addEventListener('click', () => toggleSidebar(true));
-      if (overlay) overlay.addEventListener('click', () => toggleSidebar(false));
-
-      // Attachment popup
-      const togglePopup = (e) => {
-        if (e) e.preventDefault();
-        plusBtn.classList.toggle('active');
-        attachPopup.classList.toggle('show');
-      };
-      if (plusBtn) {
-        plusBtn.addEventListener('click', togglePopup);
-        plusBtn.addEventListener('touchstart', togglePopup, { passive: true });
-      }
-      if (attachPopup) {
-        document.addEventListener('click', (e) => {
-          if (!plusBtn.contains(e.target) && !attachPopup.contains(e.target)) {
-            plusBtn.classList.remove('active');
-            attachPopup.classList.remove('show');
-          }
-        });
-      }
-
-      // Nav links
-      const navLinks = document.querySelectorAll('.nav-link, .nav-item');
-      navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          const view = link.dataset.v;
-          if (typeof show === 'function') show(view);
-          
-          // Update active state
-          navLinks.forEach(l => l.classList.remove('active'));
-          link.classList.add('active');
-          
-          // Close sidebar on mobile
-          if (window.innerWidth <= 1024) toggleSidebar(false);
-        });
-        link.addEventListener('touchstart', (e) => {
-          e.preventDefault();
-          const view = link.dataset.v;
-          if (typeof show === 'function') show(view);
-          
-          navLinks.forEach(l => l.classList.remove('active'));
-          link.classList.add('active');
-          
-          if (window.innerWidth <= 1024) toggleSidebar(false);
-        }, { passive: true });
-      });
-
-      // Initialize active state
-      const updateActive = () => {
-        const currentView = document.querySelector('.view.on')?.id.replace('v-', '') || 'chat';
-        navLinks.forEach(l => l.classList.toggle('active', l.dataset.v === currentView));
-      };
-      updateActive();
-
-      // Override show to sync nav
-      const originalShow = window.show;
-      window.show = function(v) {
-        originalShow(v);
-        setTimeout(updateActive, 100);
-      };
-    });
-  </script>
-</body>
-  </html>
+<section class="view" id="v-settings"><div class="set">
+<label>Name</label><input id="sn">
+<label>Role</label><select id="sr"><option>Student</option><option>Teacher</option><option>Staff</option></select>
+<button class="btn" id="ss" style="margin-top:14px">Save changes</button>
+<label>Answer font</label><select id="sf"><option value="Modern">Modern</option><option value="Serif">Serif</option><option value="Mono">Monospace</option><option value="Comfort">Easy to read</option></select>
+<label>Text size</label><select id="sz"><option value="14">Small</option><option value="16">Medium</option><option value="18">Large</option><option value="20">Extra large</option></select>
+<label>Voice language</label><select id="vl"><option value="en-US">English (US)</option><option value="en-GB">English (UK)</option><option value="en-GH">English (Ghana)</option><option value="en-NG">English (Nigeria)</option><option value="en-IN">English (India)</option><option value="fr-FR">Français</option><option value="es-ES">Español</option><option value="pt-PT">Português</option><option value="ar-SA">العربية</option><option value="sw-KE">Kiswahili</option><option value="hi-IN">हिन्दी</option><option value="zh-CN">中文</option></select>
+<label>Appearance</label><button class="btn o" id="dk">Switch light / dark</button>
+<label>Admin code</label><input id="acode" type="password" autocomplete="off" placeholder="Admin only"><button class="btn o" id="adm" style="margin-top:8px">Unlock admin</button>
+<label>Data</label><button class="btn o" id="cl">Clear my chats</button>
+<label>Account</label><button class="btn o" id="lo">Log out</button></div></section>
+</main></div>
+<input type="file" id="fi" hidden accept=".txt,.md,.csv,.json,.js,.py,.html,.css,.java,.c,.cpp,.php,.sql,.xml,.ts,text/*">
+<input type="file" id="ii" hidden accept="image/*">
+<div id="toast"></div>
+<script src="App.js"></script>
+<script src="App2.js"></script>
+<script src="App3.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script async src="https://js.paystack.co/v1/inline.js"></script>
+</body></html>
