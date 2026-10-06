@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ACE_X AI - Coding and Study Assistant for Students</title>
-<meta name="description" content="ACE_X AI is an AI coding and study assistant for students in Ghana. Get help with programming, ICT, maths, science and WASSCE revision.">
+<title>ACE_X AI - AI Study and Coding Assistant for Students</title>
+<meta name="description" content="ACE_X AI is an AI study and coding assistant for students worldwide. Get help with programming, maths, science, languages, exam revision, quizzes and more.">
 <link rel="canonical" href="https://novax22333.github.io/Nova-ai/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="ACE_X AI - Coding and Study Assistant">
-<meta property="og:description" content="AI coding and study assistant for students in Ghana.">
+<meta property="og:title" content="ACE_X AI - AI Study and Coding Assistant">
+<meta property="og:description" content="AI study and coding assistant for students worldwide.">
 <meta property="og:url" content="https://novax22333.github.io/Nova-ai/">
 <meta name="theme-color" content="#0a0a12">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" media="print" onload="this.media='all'">
@@ -54,6 +54,9 @@
 <button class="nav" data-v="history">🕘 Chat History</button>
 <button class="nav" data-v="saved">🔖 Saved Items</button>
 <button class="nav" data-v="quiz">🧠 Quizzes</button>
+<button class="nav" data-v="hub">📐 Formula Hub ⭐</button>
+<button class="nav" data-v="exam">📝 Exam Practice ⭐</button>
+<button class="nav" data-v="studio">🎨 Image Studio ⭐</button>
 <button class="nav" data-v="plan">📅 Planner</button>
 <button class="nav" data-v="settings">⚙️ Settings</button>
 <div class="me"><span id="mn">Guest</span><small id="mr"></small>
@@ -71,12 +74,12 @@
 <div class="panel" id="fod"></div>
 <div class="panel"><h3>Recent quiz performance</h3><div id="perf"></div></div>
 <h3>Quick Actions</h3><div class="chips" id="qa"></div>
-<p class="sub" style="margin-top:20px">ACE_X AI is an AI coding and study assistant for students in Ghana: programming, ICT, maths, science and WASSCE revision.</p>
+<p class="sub" style="margin-top:20px">ACE_X AI is an AI study and coding assistant for students worldwide: programming, maths, science, languages, exam revision and more.</p>
 </section>
 
 <section class="view on" id="v-chat"><div id="msgs"></div>
 <div id="pv" hidden></div>
-<div class="comp"><button class="ic" id="bf" aria-label="Attach file">📎</button><button class="ic" id="bi" aria-label="Add image">🖼️</button><textarea id="inp" placeholder="Ask ACE_X anything..."></textarea><button class="btn" id="send">Send</button></div></section>
+<div class="comp"><button class="ic" id="bf" aria-label="Attach file">📎</button><button class="ic" id="bi" aria-label="Add image">🖼️</button><button class="ic" id="mic" aria-label="Speak">🎤</button><textarea id="inp" placeholder="Ask ACE_X anything..."></textarea><button class="btn" id="send">Send</button></div></section>
 
 <section class="view" id="v-history"></section>
 <section class="view" id="v-saved"></section>
@@ -95,6 +98,33 @@
 <h3>Past quizzes</h3><div id="qp"></div></div></div>
 <div id="qbox"></div></section>
 
+<section class="view" id="v-pro"><h1>Go Pro ⭐</h1><p class="sub" id="proinfo"></p>
+<div class="two"><div class="panel"><h3>Everything in Pro</h3>
+<p class="sub">📐 Formula & Definition Hub: formulas stated and proved, key terms defined<br><br>📝 Probable exam questions with model answers and marking schemes<br><br>🎨 Image Studio: diagrams and illustrations<br><br>💡 "Explain my mistakes" after every quiz<br><br>🧠 100 quiz questions a day<br><br>⭐ Pro badge</p></div>
+<div class="panel"><h3>Choose a plan</h3>
+<button class="btn wide" data-pro="pw">GH₵10 · 1 week</button>
+<button class="btn wide" data-pro="pm">GH₵40 · 1 month</button>
+<button class="btn wide" data-pro="py">GH₵100 · 1 year (best value)</button>
+<p class="sub" style="margin-top:12px">One-time payment. It does not renew by itself.</p></div></div></section>
+
+<section class="view" id="v-hub"><h1>Formula & Definition Hub ⭐</h1><p class="sub">State and prove formulas, and define useful terms.</p>
+<div class="panel"><input id="hq" placeholder="e.g. Quadratic formula, photosynthesis, Lami's theorem">
+<div class="two2" style="margin-top:12px"><button class="btn" id="hf">State & prove</button><button class="btn" id="hd">Define term</button></div></div>
+<div class="panel" id="hout" hidden></div></section>
+
+<section class="view" id="v-exam"><h1>Probable Exam Questions ⭐</h1><p class="sub">Practice questions in the style of real exams, with model answers. They are AI predictions based on common patterns, not real or leaked papers.</p>
+<div class="panel"><label>Exam</label><select id="ex"><option>WASSCE</option><option>BECE</option><option>JAMB / UTME</option><option>IGCSE / GCSE</option><option>A-Level</option><option>SAT / ACT</option><option>IB</option><option>KCSE</option><option>Other / school exam</option></select>
+<label>Subject</label><input id="es" placeholder="e.g. Physics">
+<label>Topic (optional)</label><input id="et" placeholder="e.g. Forces and equilibrium">
+<label>Number of questions</label><select id="en"><option>3</option><option selected>5</option><option>8</option></select>
+<button class="btn wide" id="eg">Generate probable questions</button></div>
+<div class="panel" id="eout" hidden></div></section>
+
+<section class="view" id="v-studio"><h1>Image Studio ⭐</h1><p class="sub">Describe a diagram or illustration and ACE_X will create it.</p>
+<div class="panel"><textarea id="ip" placeholder="e.g. A labelled diagram of a plant cell" style="height:90px"></textarea>
+<button class="btn wide" id="ig">Create image</button></div>
+<div class="panel" id="iout" hidden></div></section>
+
 <section class="view" id="v-plan"><h1>Study planner</h1><p class="sub">Plan your sessions and build a routine that sticks.</p>
 <div class="two"><div class="panel"><div class="calh"><button class="ic2" id="pp" aria-label="Previous month">‹</button><b id="pm"></b><button class="ic2" id="pn" aria-label="Next month">›</button></div><div class="cal" id="cal"></div></div>
 <div><h3 id="pd"></h3>
@@ -107,6 +137,7 @@
 <button class="btn" id="ss" style="margin-top:14px">Save changes</button>
 <label>Answer font</label><select id="sf"><option value="Modern">Modern</option><option value="Serif">Serif</option><option value="Mono">Monospace</option><option value="Comfort">Easy to read</option></select>
 <label>Text size</label><select id="sz"><option value="14">Small</option><option value="16">Medium</option><option value="18">Large</option><option value="20">Extra large</option></select>
+<label>Voice language</label><select id="vl"><option value="en-US">English (US)</option><option value="en-GB">English (UK)</option><option value="en-GH">English (Ghana)</option><option value="en-NG">English (Nigeria)</option><option value="en-IN">English (India)</option><option value="fr-FR">Français</option><option value="es-ES">Español</option><option value="pt-PT">Português</option><option value="ar-SA">العربية</option><option value="sw-KE">Kiswahili</option><option value="hi-IN">हिन्दी</option><option value="zh-CN">中文</option></select>
 <label>Appearance</label><button class="btn o" id="dk">Switch light / dark</button>
 <label>Admin code</label><input id="acode" type="password" autocomplete="off" placeholder="Admin only"><button class="btn o" id="adm" style="margin-top:8px">Unlock admin</button>
 <label>Data</label><button class="btn o" id="cl">Clear my chats</button>
@@ -117,6 +148,7 @@
 <div id="toast"></div>
 <script src="App.js"></script>
 <script src="App2.js"></script>
+<script src="App3.js"></script>
 <script async src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script async src="https://js.paystack.co/v1/inline.js"></script>
 </body></html>
