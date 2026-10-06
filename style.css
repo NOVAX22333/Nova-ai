@@ -124,3 +124,44 @@ select option{color:#17171f;background:#fff}
   .bd .katex-display{overflow-x:auto;overflow-y:hidden;padding:4px 0}
 .mx{font-family:ui-monospace,Menlo,monospace}
 .mx .katex{font-family:KaTeX_Main,"Times New Roman",serif}     
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1a1a2e;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 8px 0;
+  z-index: 100;
+}
+
+@media (max-width: 768px) {
+  .bottom-nav {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  main {
+    padding-bottom: 70px;
+  }
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #888;
+  font-size: 11px;
+  padding: 4px 8px;
+}
+
+.nav-item.active {
+  color: #fff;
+}
+
+.nav-icon {
+  font-size: 20px;
+  margin-bottom: 2px;
+}
