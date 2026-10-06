@@ -135,81 +135,37 @@ $$('.bottom-nav .nav-item').forEach(item => {
     item.classList.add('active');
   };
 });
-
-/* =========================================
-   BOTTOM NAVIGATION & ATTACHMENT POPUP
-   ========================================= */
-
-// Bottom Navigation Functionality
-const bottomNav = $('#bottomNav');
-if (bottomNav) {
-  $$('.nav-item', bottomNav).forEach(item => {
-    item.onclick = (e) => {
-      e.preventDefault();
-      const view = item.dataset.v;
-      show(view);
-      
-      // Update active state
-      $$('.nav-item', bottomNav).forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      
-      // Close sidebar if open
-      $('#side').classList.remove('open');
-    };
-  });
+<script>
+// Emergency mobile button fix
+(function() {
+  'use strict';
   
-  // Set initial active state
-  function updateNavActive() {
-    const currentView = $$('.view.on')[0]?.id.replace('v-', '') || 'chat';
-    $$('.nav-item', bottomNav).forEach(item => {
-      item.classList.toggle('active', item.dataset.v === currentView);
+  // Wait a bit for everything to load
+  setTimeout(function() {
+    const navItems = document.querySelectorAll('.bottom-nav .nav-item');
+    
+    navItems.forEach(function(item) {
+      // Remove old listeners by cloning
+      const newItem = item.cloneNode(true);
+      item.parentNode.replaceChild(newItem, item);
+      
+      // Add fresh listener
+      newItem.addEventListener('click', function(e) {
+        e.preventDefault();
+        const view = this.getAttribute('data-v');
+        if (typeof show === 'function') {
+          show(view);
+        }
+        
+        // Update active state
+        navItems.forEach(function(i) {
+          i.classList.remove('active');
+        });
+        this.classList.add('active');
+      });
     });
-  }
-  
-  // Override show function to update nav
-  const originalShow = show;
-  show = function(v) {
-    originalShow(v);
-    updateNavActive();
-  };
-}
-
-// Attachment Popup Functionality
-const plusBtn = $('.plus-btn');
-const attachPopup = $('.attach-popup');
-
-if (plusBtn && attachPopup) {
-  plusBtn.onclick = (e) => {
-    e.stopPropagation();
-    plusBtn.classList.toggle('active');
-    attachPopup.classList.toggle('show');
-  };
-  
-  // Close popup when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!plusBtn.contains(e.target) && !attachPopup.contains(e.target)) {
-      plusBtn.classList.remove('active');
-      attachPopup.classList.remove('show');
-    }
-  });
-  
-  // File attachment
-  const attachFile = $('.attach-option[data-action="file"]');
-  if (attachFile) {
-    attachFile.onclick = () => {
-      $('#fi').click();
-      plusBtn.classList.remove('active');
-      attachPopup.classList.remove('show');
-    };
-  }
-  
-  // Image attachment
-  const attachImage = $('.attach-option[data-action="image"]');
-  if (attachImage) {
-    attachImage.onclick = () => {
-      $('#ii').click();
-      plusBtn.classList.remove('active');
-      attachPopup.classList.remove('show');
-    };
-  }
-}
+    
+    console.log('Mobile navigation initialized');
+  }, 500);
+})();
+</script>
