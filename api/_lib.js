@@ -36,18 +36,6 @@ export async function rpc(fn, args) {
   return r.ok ? r.json() : null;
 }
 
-// Is this user a Pro subscriber right now?
-export async function isPro(u) {
-  try {
-    const r = await svc("/rest/v1/accounts?id=eq." + u.id + "&select=pro_until");
-    if (!r.ok) return false;
-    const a = (await r.json())[0];
-    return !!(a && a.pro_until && new Date(a.pro_until) > new Date());
-  } catch (e) {
-    return false;
-  }
-}
-
 export async function status(u) {
   await svc("/rest/v1/accounts?on_conflict=id", {
     method: "POST",
@@ -57,11 +45,9 @@ export async function status(u) {
   const r = await svc("/rest/v1/accounts?id=eq." + u.id + "&select=*");
   const a = (await r.json())[0];
   const today = new Date().toISOString().slice(0, 10);
-  const used = a.qday === today ? a.qcount : 0;
   const pro = !!(a.pro_until && new Date(a.pro_until) > new Date());
-  if (pro) {
-    return { credits: a.credits, admin: a.is_admin, pro: true, proUntil: a.pro_until, used, limit: 9999, left: 9999 };
-  }
-  const limit = a.is_admin ? ADMIN_LIMIT : FREE;
-  return { credits: a.credits, admin: a.is_admin, pro: false, used, limit, left: Math.max(0, limit - used) };
-    }
+  const vip = !!a.is_admin || pro;
+  const used = a.qday === today ? a.qcount : 0;
+  const limit = vip ? ADMIN_LIMIT : FREE;
+  return { credits: a.credits, admin: !!a.is_admin, pro, proUntil: a.pro_until, vip, used, limit, left: Math.max(0, limit - used) };
+                    }
