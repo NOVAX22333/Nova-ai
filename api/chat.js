@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { cors, getUser, rpc, isPro, FREE, ADMIN_LIMIT } from "./_lib.js";
+import { cors, getUser, rpc, status, FREE, ADMIN_LIMIT } from "./_lib.js";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -7,12 +7,9 @@ const openai = new OpenAI({
 });
 
 const SYSTEM =
-  "You are ACE_X AI, a friendly coding and study assistant for students in Ghana (Senior High School, WASSCE and GES curriculum). Teach step by step in simple language. For code, give working, well-commented examples in fenced code blocks and explain how they work. Help with programming, ICT, mathematics and the sciences. " +
+  "You are ACE_X AI, a friendly study and coding assistant for students around the world. Reply in the same language the student writes in. If the student mentions their country, curriculum or exam, adapt to it; otherwise use clear, widely applicable examples. Teach step by step in simple language. For code, give working, well-commented examples in fenced code blocks and explain how they work. Help with programming, mathematics, the sciences, languages, humanities and exam revision. " +
   "MATHS FORMAT: write every formula, equation and symbol in LaTeX. Use $...$ for inline maths and $$...$$ on its own line for displayed equations. Never write fractions with a slash like F1/sin(a); use \\frac{F_1}{\\sin\\alpha}. Use \\sin, \\cos, \\theta, \\alpha, \\sqrt{}, x^2, x_1, \\times, \\pm and similar commands. Example of Lami's theorem: $$\\frac{F_1}{\\sin\\alpha}=\\frac{F_2}{\\sin\\beta}=\\frac{F_3}{\\sin\\gamma}$$ " +
   "If you are not sure, say so. Do not help with exam cheating or anything harmful.";
-
-const PRO_EXTRA =
-  " This student is a Pro user: give fuller, more detailed answers. For every problem, show each step with the reason for it, then a short summary, a common mistake to avoid, and one similar practice question.";
 
 const hits = new Map();
 
@@ -23,27 +20,29 @@ export default async function handler(req, res) {
   const user = await getUser(req);
   if (!user) return res.status(401).json({ error: "Please log in first." });
 
-  const pro = await isPro(user);
-
   const now = Date.now();
   const recent = (hits.get(user.id) || []).filter((t) => now - t < 60000);
-  if (recent.length >= (pro ? 40 : 20)) return res.status(429).json({ error: "Too many messages. Please wait a minute." });
+  if (recent.length >= 20) return res.status(429).json({ error: "Too many messages. Please wait a minute." });
   recent.push(now);
   hits.set(user.id, recent);
 
   try {
-    const { message, history, image, quiz, count } = req.body || {};
+    const { message, history, image, quiz, count, pro } = req.body || {};
     if (typeof message !== "string" || !message.trim()) return res.status(400).json({ error: "Message is required" });
     if (message.length > 25000) return res.status(400).json({ error: "Message is too long" });
 
-    // Pro users have unlimited quiz questions, so skip the limit check for them.
-    if (quiz === true && !pro) {
+    if (pro === true) {
+      const st = await status(user);
+      if (!st.vip) return res.status(403).json({ error: "This is a Pro feature. Upgrade to use it." });
+    }
+
+    if (quiz === true) {
       const n = Math.min(Math.max(parseInt(count, 10) || 5, 1), 10);
       const q = await rpc("consume_quiz", { uid: user.id, n, free_limit: FREE, admin_limit: ADMIN_LIMIT });
       if (!q) return res.status(500).json({ error: "Could not check your quiz limit. Try again." });
       if (!q.ok) {
         return res.status(402).json({
-          error: q.reason === "limit" ? "You reached today's admin limit." : "You don't have enough quiz questions left. Buy more to continue.",
+          error: q.reason === "limit" ? "You reached today's quiz limit." : "You don't have enough quiz questions left. Buy more or go Pro.",
           reason: q.reason,
         });
       }
@@ -69,8 +68,8 @@ export default async function handler(req, res) {
 
     const response = await openai.chat.completions.create({
       model: process.env.OPENAI_MODEL || "openai/gpt-4o-mini",
-      max_tokens: pro ? 4000 : 3000,
-      messages: [{ role: "system", content: SYSTEM + (pro && quiz !== true ? PRO_EXTRA : "") }, ...past, { role: "user", content }],
+      max_tokens: 3000,
+      messages: [{ role: "system", content: SYSTEM }, ...past, { role: "user", content }],
     });
 
     res.status(200).json({ reply: response.choices[0].message.content });
@@ -78,4 +77,4 @@ export default async function handler(req, res) {
     console.error("AI error:", error);
     res.status(500).json({ error: "Failed to get response from AI" });
   }
-      }
+}
