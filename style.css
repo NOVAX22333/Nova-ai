@@ -165,3 +165,65 @@ select option{color:#17171f;background:#fff}
   font-size: 20px;
   margin-bottom: 2px;
 }
+/* =========================================
+   MOBILE SIDEBAR NAVIGATION FIX
+   ========================================= */
+
+/* 1. Make the hamburger menu visible ONLY on mobile */
+@media (max-width: 768px) {
+  #burger {
+    display: block !important;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #fff; /* Change to your text color if needed */
+    cursor: pointer;
+    padding: 8px;
+  }
+
+  /* 2. Hide the sidebar off the left side of the screen by default */
+  #side {
+    position: fixed;
+    top: 0;
+    left: -100%; /* Completely hidden */
+    width: 280px;
+    height: 100vh;
+    background: #0a0a12; /* Match your app's dark background */
+    border-right: 1px solid rgba(255,255,255,0.1);
+    transition: left 0.3s ease-in-out; /* Smooth slide animation */
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 20px;
+  }
+
+  /* 3. Slide the sidebar INTO view when the 'open' class is added */
+  #side.open {
+    left: 0;
+  }
+
+  /* 4. Add a dark overlay behind the sidebar so users can tap it to close */
+  #side.open::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 280px; /* Starts right at the edge of the sidebar */
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: -1;
+    cursor: pointer;
+  }
+}
+
+/* 5. Desktop: Keep sidebar visible always, hide the burger button */
+@media (min-width: 769px) {
+  #burger {
+    display: none;
+  }
+  #side {
+    position: relative;
+    left: 0;
+    width: 260px; /* Adjust to match your current desktop sidebar width */
+    height: 100vh;
+  }
+}
