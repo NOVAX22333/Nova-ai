@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,interactive-widget=resizes-content">
 <title>ACE_X AI - AI Study and Coding Assistant for Students</title>
 <meta name="description" content="ACE_X AI is an AI study and coding assistant for students worldwide. Get help with programming, maths, science, languages, exam revision, quizzes and more.">
 <link rel="canonical" href="https://novax22333.github.io/Nova-ai/">
@@ -54,6 +54,7 @@
 <button class="nav" data-v="history">🕘 Chat History</button>
 <button class="nav" data-v="saved">🔖 Saved Items</button>
 <button class="nav" data-v="quiz">🧠 Quizzes</button>
+<button class="nav" data-v="lab">💻 Code Lab</button>
 <button class="nav" data-v="hub">📐 Formula Hub ⭐</button>
 <button class="nav" data-v="exam">📝 Exam Practice ⭐</button>
 <button class="nav" data-v="studio">🎨 Image Studio ⭐</button>
@@ -98,9 +99,16 @@
 <h3>Past quizzes</h3><div id="qp"></div></div></div>
 <div id="qbox"></div></section>
 
+<section class="view" id="v-lab"><h1>Code Lab 💻</h1><p class="sub">Write and run code right here. Running is free. AI help is Pro ⭐.</p>
+<div class="panel"><label>Language</label><select id="cl-l"><option value="py">Python</option><option value="js">JavaScript</option></select>
+<label>Your code</label><textarea id="cl-c" spellcheck="false" style="height:200px;font-family:ui-monospace,Menlo,monospace">print("Hello, world!")</textarea>
+<div class="two2" style="margin-top:12px"><button class="btn" id="cl-run">▶ Run</button><button class="btn o" id="cl-stop">■ Stop</button></div></div>
+<div class="panel"><h3>Output</h3><pre id="cl-o" style="white-space:pre-wrap;margin:0;min-height:60px"></pre></div>
+<div class="panel"><h3>AI help ⭐</h3><div class="two2"><button class="btn o" id="cl-x">Explain</button><button class="btn o" id="cl-f">Fix errors</button><button class="btn o" id="cl-r">Review</button><button class="btn o" id="cl-t">Write tests</button></div><div id="cl-a" hidden style="margin-top:12px"></div></div></section>
+
 <section class="view" id="v-pro"><h1>Go Pro ⭐</h1><p class="sub" id="proinfo"></p>
 <div class="two"><div class="panel"><h3>Everything in Pro</h3>
-<p class="sub">📐 Formula & Definition Hub: formulas stated and proved, key terms defined<br><br>📝 Probable exam questions with model answers and marking schemes<br><br>🎨 Image Studio: pictures and labelled diagrams<br><br>💡 "Explain my mistakes" after every quiz<br><br>🧠 100 quiz questions a day<br><br>⭐ Pro badge</p></div>
+<p class="sub">💬 Unlimited chat messages<br><br>💻 AI help in Code Lab: explain, fix, review, write tests<br><br>📐 Formula & Definition Hub: formulas stated and proved, key terms defined<br><br>📝 Probable exam questions with model answers and marking schemes<br><br>🎨 Image Studio: pictures and labelled diagrams<br><br>💡 "Explain my mistakes" after every quiz<br><br>✅ Double-check button on maths answers<br><br>🧠 100 quiz questions a day<br><br>⭐ Pro badge</p></div>
 <div class="panel"><h3>Choose a plan</h3>
 <button class="btn wide" data-pro="w1">GH₵2 · 1 week</button>
 <button class="btn wide" data-pro="w2">GH₵4 · 2 weeks</button>
@@ -153,6 +161,8 @@
 <script src="App.js"></script>
 <script src="App2.js"></script>
 <script src="App3.js"></script>
+<script src="App4.js"></script>
+<script src="App5.js"></script>
 <script async src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script async src="https://js.paystack.co/v1/inline.js"></script>
 </body></html>
