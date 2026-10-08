@@ -289,3 +289,6 @@ select option{color:#17171f;background:#fff}
 .bottom-nav {
   display: none; /* Hidden on Desktop */
   position: fixed; bottom: 0; left: 0; right
+   #app{height:100vh;height:100dvh}
+.comp{padding-bottom:max(12px,env(safe-area-inset-bottom))}
+[data-theme=dark] .comp{margin:0;border-radius:16px 16px 0 0}
