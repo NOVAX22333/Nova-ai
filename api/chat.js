@@ -1,5 +1,7 @@
 import OpenAI from "openai";
-import { cors, getUser, rpc, status, FREE, ADMIN_LIMIT } from "./_lib.js";
+import { cors, getUser, rpc, status, FREE, ADMIN_LIMIT, FREE_CHAT } from "./_lib.js";
+
+export const config = { maxDuration: 60 };
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -8,8 +10,9 @@ const openai = new OpenAI({
 
 const SYSTEM =
   "You are ACE_X AI, a friendly study and coding assistant for students around the world. Reply in the same language the student writes in. If the student mentions their country, curriculum or exam, adapt to it; otherwise use clear, widely applicable examples. Teach step by step in simple language. For code, give working, well-commented examples in fenced code blocks and explain how they work. Help with programming, mathematics, the sciences, languages, humanities and exam revision. " +
+  "ACCURACY RULES: for any calculation or problem, write the formula, substitute the numbers, and work step by step. Do arithmetic slowly and carefully. Before giving the final answer, CHECK it (substitute back, estimate, or recompute a different way) and fix any error. Give units and sensible rounding. If the question is ambiguous, state your assumption. Never guess a number; if you are unsure, say so. " +
   "MATHS FORMAT: write every formula, equation and symbol in LaTeX. Use $...$ for inline maths and $$...$$ on its own line for displayed equations. Never write fractions with a slash like F1/sin(a); use \\frac{F_1}{\\sin\\alpha}. Use \\sin, \\cos, \\theta, \\alpha, \\sqrt{}, x^2, x_1, \\times, \\pm and similar commands. Example of Lami's theorem: $$\\frac{F_1}{\\sin\\alpha}=\\frac{F_2}{\\sin\\beta}=\\frac{F_3}{\\sin\\gamma}$$ " +
-  "If you are not sure, say so. Do not help with exam cheating or anything harmful.";
+  "Do not help with exam cheating or anything harmful.";
 
 const hits = new Map();
 
@@ -34,6 +37,20 @@ export default async function handler(req, res) {
     if (pro === true) {
       const st = await status(user);
       if (!st.vip) return res.status(403).json({ error: "This is a Pro feature. Upgrade to use it." });
+    }
+
+    if (quiz !== true && pro !== true) {
+      const st = await status(user);
+      if (!st.vip) {
+        const c = await rpc("consume_chat", { uid: user.id, lim: FREE_CHAT });
+        if (!c) return res.status(500).json({ error: "Could not check your message limit. Try again." });
+        if (!c.ok) {
+          return res.status(402).json({
+            error: "You've used your " + FREE_CHAT + " free messages for today. Go Pro for unlimited chat.",
+            reason: "chat",
+          });
+        }
+      }
     }
 
     if (quiz === true) {
@@ -77,4 +94,4 @@ export default async function handler(req, res) {
     console.error("AI error:", error);
     res.status(500).json({ error: "Failed to get response from AI" });
   }
-}
+    }
