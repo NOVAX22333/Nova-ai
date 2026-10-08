@@ -1,16 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
-import { svc, getUser, rpc, status, cors } from "./_lib.js";
+import { svc, getUser, rpc, status, cors, PLANS } from "./_lib.js";
 
-const PLANS = {
-  p1: { pesewas: 100, credits: 10 },
-  p2: { pesewas: 200, credits: 20 },
-  w1: { pesewas: 200, days: 7 },
-  w2: { pesewas: 400, days: 14 },
-  w3: { pesewas: 600, days: 21 },
-  m1: { pesewas: 800, days: 30 },
-  m5: { pesewas: 4000, days: 150 },
-  y1: { pesewas: 10000, days: 365 },
-};
 const tries = new Map();
 
 export default async function handler(req, res) {
@@ -66,4 +56,4 @@ export default async function handler(req, res) {
     console.error(e);
     return res.status(500).json({ error: "Something went wrong." });
   }
-  }
+    }
