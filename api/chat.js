@@ -1,7 +1,9 @@
 import OpenAI from "openai";
-import { cors, getUser, rpc, status, FREE, ADMIN_LIMIT, FREE_CHAT } from "./_lib.js";
+import { cors, getUser, rpc, status, FREE, ADMIN_LIMIT } from "./_lib.js";
 
 export const config = { maxDuration: 60 };
+
+const FREE_CHAT = parseInt(process.env.FREE_CHAT_LIMIT, 10) || 15;
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -43,8 +45,8 @@ export default async function handler(req, res) {
       const st = await status(user);
       if (!st.vip) {
         const c = await rpc("consume_chat", { uid: user.id, lim: FREE_CHAT });
-        if (!c) return res.status(500).json({ error: "Could not check your message limit. Try again." });
-        if (!c.ok) {
+        if (!c) console.error("consume_chat failed. Did you run the chat-limit SQL in Supabase?");
+        else if (!c.ok) {
           return res.status(402).json({
             error: "You've used your " + FREE_CHAT + " free messages for today. Go Pro for unlimited chat.",
             reason: "chat",
@@ -94,4 +96,4 @@ export default async function handler(req, res) {
     console.error("AI error:", error);
     res.status(500).json({ error: "Failed to get response from AI" });
   }
-    }
+        }
