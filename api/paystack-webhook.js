@@ -1,5 +1,17 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { rpc, PLANS } from "./_lib.js";
+import { rpc } from "./_lib.js";
+
+// Keep these prices the same as in api/account.js.
+const PLANS = {
+  p1: { pesewas: 100, credits: 10 },
+  p2: { pesewas: 200, credits: 20 },
+  w1: { pesewas: 200, days: 7 },
+  w2: { pesewas: 400, days: 14 },
+  w3: { pesewas: 600, days: 21 },
+  m1: { pesewas: 800, days: 30 },
+  m5: { pesewas: 4000, days: 150 },
+  y1: { pesewas: 10000, days: 365 },
+};
 
 async function readRaw(req) {
   const chunks = [];
@@ -40,4 +52,4 @@ export default async function handler(req, res) {
     return res.status(500).end();
   }
   return res.status(200).end();
-}  
+}
